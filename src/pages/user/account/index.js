@@ -1,0 +1,9 @@
+export { default as AccountChangePassword } from './AccountChangePassword';
+export { default as AccountGeneral } from './AccountGeneral';
+export { default as AccountNotifications } from './AccountNotifications';
+export { default as AccountSocialLinks } from './AccountSocialLinks';
+export { default as Kyc } from './Kyc';
+export { default as KycBanner } from './KycBanner';
+export { default as KycSlider } from './KycSlider';
+export { default as ReferralLog } from './ReferralLog';
+export { default as ReferralLink } from './ReferralLink';

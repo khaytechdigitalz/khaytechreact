@@ -1,0 +1,273 @@
+// @mui
+import { useState, React } from 'react';
+import * as Yup from 'yup';
+ import { styled, alpha } from '@mui/material/styles';
+
+import { Divider, Typography, Stack,TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+
+import { useSnackbar } from 'notistack';
+
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+// components
+import {
+  SkeletonProductItem,
+  SkeletonInputLoader,
+} from '../../../components/skeleton';
+
+import Iconify from '../../../components/Iconify';
+
+import {
+  FormProvider,
+   RHFSelect,
+   RHFTextField,
+  } from '../../../components/hook-form';
+  import axios from '../../../utils/axios';
+
+  import { fCurrency } from '../../../utils/formatNumber';
+  import useAuth from '../../../hooks/useAuth';
+  import Page from '../../../components/Page';
+ 
+  // ----------------------------------------------------------------------
+
+const RootStyle = styled('div')(({ theme }) => ({
+  padding: theme.spacing(5),
+  backgroundColor: theme.palette.background.neutral,
+  borderRadius: Number(theme.shape.borderRadius) * 2,
+}));
+
+
+
+
+ 
+
+// ----------------------------------------------------------------------
+
+export default function AirtimeInput() {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { user } = useAuth();
+
+  const UpdateUserSchema = Yup.object().shape({
+    firstname: Yup.string().required('First Name is required'),
+    lastname: Yup.string().required('Last Name is required'),
+  });
+
+  const defaultValues = {
+    firstname: user?.firstname || '',
+    lastname: user?.lastname || '',
+    email: user?.email || '',
+    photoURL: user?.photoURL || '',
+    phone: user?.phone || '',
+    country: user?.address.country || '',
+    address: user?.address.address || '',
+    state: user?.address.state || '',
+    city: user?.address.city || '',
+    zip: user?.address.zip || '',
+    about: user?.about || '',
+    isPublic: user?.isPublic || false,
+  };
+
+  const methods = useForm({
+    resolver: yupResolver(UpdateUserSchema),
+    defaultValues,
+  });
+
+
+  const {
+    setValue,
+    reset,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+  
+  const onSubmit = async (event, formState) => {
+    try { 
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const form = document.querySelector("form");
+      const formData = new FormData(form);
+    
+      axios.post('user/decoderbuy', formData,{ 
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        plan: formState.plan,
+        number: formState.number, 
+       })
+      .then(res => { 
+        if(res.data.code === 200)
+        {
+          enqueueSnackbar(res.data.message);
+        }
+        else
+        {
+          enqueueSnackbar(res.data.message, {variant:'error'});
+        }
+       
+      })
+     // reset();
+     } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const {general} = useAuth();
+  const CATEGORY_OPTION = [
+    {
+      "name": "DSTV",
+      "symbol": "dstv"
+  },
+  {
+      "name": "GOTV",
+      "symbol": "gotv"
+  },
+  {
+      "name": "STARTIMES",
+      "symbol": "startimes"
+  }
+];
+  const PLAN_OPTION = [];
+ 
+
+  const getamount = (event) => {
+    document.getElementById("customer").innerHTML = "Select Plan";
+    document.getElementById("customername").value = false;
+    const dnumber = document.getElementById('number').value;
+    const cost = event.target.options[event.target.selectedIndex].dataset.cost;
+    const decodertype = event.target.options[event.target.selectedIndex].dataset.decoder;
+  
+    document.getElementById("total").innerHTML = cost;
+     try {
+      axios.post('/user/validatedecoder', { 
+        number: dnumber,
+        decoder: decodertype,
+       })
+     .then(res => { 
+
+      if(res.data.code === 200)
+      {
+        enqueueSnackbar(res.data.message);
+        document.getElementById("customer").innerHTML = res.data.data.customername;
+        document.getElementById("customername").value = res.data.data.customername;
+      }
+      else
+      {
+        enqueueSnackbar(res.data.message, {variant:'error'});
+        document.getElementById("customer").innerHTML = "Invalid";
+        document.getElementById("customername").value = false;
+      } 
+
+     })
+   } catch (error) {
+     console.error(error);
+     document.getElementById("customer").innerHTML = "Invalid Number";
+   }
+  };
+
+
+ 
+const [post, setPost] = useState(null);
+  function updatePost(event) {
+  const network = event.target.options[event.target.selectedIndex].dataset.network;
+  axios
+    .get(`/decoderplans/${network}`, { 
+    })
+    .then((response) => {
+      setPost(response.data);
+    });
+}
+
+   const loading = true; 
+  if (!CATEGORY_OPTION) return <SkeletonProductItem  sx={{ width: 40 }} />;
+  
+  return (
+    <Page>
+      
+    <RootStyle>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
+      <Stack spacing={2.5}>
+       
+      <Stack direction="row" justifyContent="space-between">
+          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
+            Decoder Subscription Plan
+          </Typography>
+        </Stack>
+
+        <Stack spacing={3} mt={5}>
+        <TextField type="number"  onKeyUp={getamount} name="number" id="number" fullWidth label="Decoder Number" />
+          </Stack>
+          <input name="customer" id="customername" hidden/>
+       
+          <Stack spacing={3} mt={5}>
+            
+        <select 
+          
+        name="decoder" onChange={updatePost} label="Decoder">
+                  <option selected disabled>Select Decoder</option>
+                  {CATEGORY_OPTION.map((category) => (
+                    <option  data-network={category.symbol}  key={category.id} value={category.symbol}>
+                          {category.name}
+                    </option>
+                   ))}
+        </select>
+      
+        
+        {(() => {
+                if (!post ) {
+                  return (
+                    <SkeletonInputLoader  sx={{ width: 40 }} />
+                  )
+                } if (post.status != null ) {
+                  return (
+                   
+                    <Stack spacing={3} mt={5}>
+                    <RHFSelect onChange={getamount}  name="plan" label="Subscription Plans">
+                              <option selected disabled>Select Plan</option>
+                              {post.data.plan.map((category) => (
+                                <option  data-cost={category.cost} data-decoder={category.code}  key={category.id} value={category.plan}>
+                                      {category.name}
+                                </option>
+                              ))}
+                    </RHFSelect>
+                    </Stack>
+                  )
+                }
+                 
+                 
+              })()}
+ 
+  
+        </Stack>
+        
+        <Divider sx={{ borderStyle: 'dashed' }} />
+         <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="h6" component="p">
+            Total Amount
+          </Typography>
+          <Typography variant="h6" component="p">
+          {general.cur_sym}<a id="total">0.00</a>
+          </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="h6" component="p">
+            Customer
+          </Typography>
+          <Typography variant="h6" component="p">
+          <a id="customer">:</a>
+          </Typography>
+        </Stack> 
+      </Stack>
+
+     
+ 
+      <LoadingButton type="submit"  fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }} loading={isSubmitting}>
+              {'Buy TV Subscription Plan'}
+             
+      </LoadingButton>
+      </FormProvider>
+    </RootStyle>
+    </Page>
+  );
+}
