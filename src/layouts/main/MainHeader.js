@@ -8,7 +8,7 @@ import useResponsive from '../../hooks/useResponsive';
 // utils
 import cssStyles from '../../utils/cssStyles';
 // config
-import { HEADER } from '../../config';
+import { HEADER,PATH_AFTER_LOGIN } from '../../config';
 // components
 import Logo from '../../components/Logo';
 import Label from '../../components/Label';
@@ -77,7 +77,7 @@ export default function MainHeader() {
           <Logo />
 
           <Label color="info" sx={{ ml: 1 }}>
-            v3.3.0
+            v1.0
           </Label>
           <Box sx={{ flexGrow: 1 }} />
 
@@ -85,11 +85,10 @@ export default function MainHeader() {
 
           <Button
             variant="contained"
-            target="_blank"
             rel="noopener"
-            href="https://material-ui.com/store/items/minimal-dashboard/"
+            href={PATH_AFTER_LOGIN}
           >
-            Purchase Now
+            Account
           </Button>
 
           {!isDesktop && <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
