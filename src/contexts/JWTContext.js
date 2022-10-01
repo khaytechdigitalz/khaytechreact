@@ -133,20 +133,24 @@ function AuthProvider({ children }) {
     });
   };
 
-  const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
+  const register = async (email, password, firstname, username, mobile, lastname) => {
+    const response = await axios.post('/register', {
       email,
       password,
-      firstName,
-      lastName,
+      firstname,
+      lastname,
+      username,
+      mobile,
     });
-    const { accessToken, user, general } = response.data;
-
+    const { accessToken, user, general } = response.data.data;
+    console.log('Register Process');
+    console.log(response.data);
     window.localStorage.setItem('accessToken', accessToken);
     dispatch({
       type: 'REGISTER',
       payload: {
         user,
+        general,
       },
     });
   };

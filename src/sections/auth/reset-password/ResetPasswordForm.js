@@ -4,12 +4,14 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 // @mui
+import { useSnackbar } from 'notistack';
 import { Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
+import axios from '../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -27,20 +29,44 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
 
   const methods = useForm({
     resolver: yupResolver(ResetPasswordSchema),
-    defaultValues: { email: 'demo@minimals.cc' },
+    defaultValues: { email: '' },
   });
 
+
+  const { enqueueSnackbar } = useSnackbar();
+ 
   const {
+    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data) => {
+ 
+
+  const onSubmit = async (data, formState) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       if (isMountedRef.current) {
-        onSent();
-        onGetEmail(data.email);
+
+        axios.post('/password/email', { 
+          email: data.email, 
+         })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          if(res.data.code === 200)
+        {
+          enqueueSnackbar(res.data.message);
+          onSent();
+          onGetEmail(data.email);
+        }
+        else
+        {
+          enqueueSnackbar(res.data.message, {variant:'error'});
+        }
+
+        })
+
       }
     } catch (error) {
       console.error(error);

@@ -23,16 +23,20 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name required'),
-    lastName: Yup.string().required('Last name required'),
+    firstname: Yup.string().required('First name required'),
+    lastname: Yup.string().required('Last name required'),
+    username: Yup.string().required('Username required'),
+    mobile: Yup.string().required('Phone Number required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
 
   const defaultValues = {
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
+    mobile: '',
+    username: '',
     password: '',
   };
 
@@ -51,7 +55,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     try {
-      await register(data.email, data.password, data.firstName, data.lastName);
+      await register(data.email,data.mobile, data.username, data.password, data.firstname, data.lastname);
     } catch (error) {
       console.error(error);
       reset();
@@ -67,12 +71,20 @@ export default function RegisterForm() {
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First name" />
-          <RHFTextField name="lastName" label="Last name" />
+          <RHFTextField name="firstname" label="First name" />
+          <RHFTextField name="lastname" label="Last name" />
         </Stack>
 
-        <RHFTextField name="email" label="Email address" />
 
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <RHFTextField name="email" label="Email address" />
+          <RHFTextField name="mobile" label="Phone Number" />
+        </Stack>
+
+        
+
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <RHFTextField name="username" label="Username" />
         <RHFTextField
           name="password"
           label="Password"
@@ -87,6 +99,9 @@ export default function RegisterForm() {
             ),
           }}
         />
+        </Stack>
+
+        
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
           Register
