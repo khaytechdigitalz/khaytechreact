@@ -26,14 +26,14 @@ export default function EcommerceProductCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="Account Verification">
+    <Page title="KYC Verification">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={'Account Verification' }
+          heading={'KYC Verification' }
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
            
-            { name: 'Account Verification' },
+            { name: 'KYC Verification' },
           ]}
         />
 

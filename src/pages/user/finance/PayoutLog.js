@@ -148,26 +148,7 @@ export default function EcommerceProductList() {
         <CardHeader title="Payout Log" sx={{ mb: 3 }} />
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
-              {selected.length > 0 && (
-                <TableSelectedActions
-                  dense={dense}
-                  numSelected={selected.length}
-                  rowCount={tableData.length}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
-                  actions={
-                    <Tooltip title="Delete">
-                      <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                        <Iconify icon={'eva:trash-2-outline'} />
-                      </IconButton>
-                    </Tooltip>
-                  }
-                />
-              )}
+               
 
               <Table size={dense ? 'small' : 'medium'}>
                 <TableHeadCustom

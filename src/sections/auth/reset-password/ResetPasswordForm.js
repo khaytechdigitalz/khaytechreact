@@ -57,8 +57,6 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
           if(res.data.code === 200)
         {
           enqueueSnackbar(res.data.message);
-          onSent();
-          onGetEmail(data.email);
         }
         else
         {

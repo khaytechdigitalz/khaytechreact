@@ -6,6 +6,8 @@ import { PATH_DASHBOARD } from './routes/paths';
 
 export const HOST_API = process.env.REACT_APP_HOST_API_KEY || '';
 export const HOST_URL = process.env.REACT_APP_HOST|| '';
+export const STACK_SECRET = process.env.PAYSTACK_SKEY|| '';
+export const STACK_PUBLIC = process.env.PAYSTACK_PKEY|| '';
 
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

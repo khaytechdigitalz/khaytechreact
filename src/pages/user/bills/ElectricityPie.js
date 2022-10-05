@@ -53,8 +53,6 @@ export default function AirtimePie() {
   const ChartObject = JSON.parse(chart);
   const keys = Object.keys(ChartObject);
   const values = Object.values(ChartObject);
-  
-  console.log(values);
   const CHART_DATA = values;
   const chartOptions = merge(BaseOptionChart(), {
     colors: [

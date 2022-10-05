@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
+import {Link as RouterLink } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
  // @mui
 import { useTheme } from '@mui/material/styles';
-import { TableRow, TableCell, Typography, Stack,  } from '@mui/material';
+import { TableRow, TableCell, Typography, Stack, Button  } from '@mui/material';
 // utils
 import { fDate } from '../../../utils/formatTime';
 import { fCurrency } from '../../../utils/formatNumber';
@@ -14,24 +15,21 @@ import Avatar from '../../../components/Avatar';
 import { HOST_URL } from '../../../config';
 import useAuth from '../../../hooks/useAuth';
 
+import { PATH_DASHBOARD } from '../../../routes/paths';
 // ----------------------------------------------------------------------
 
-AirtimeLogRows.propTypes = {
+ELectricityLogRows.propTypes = {
   row: PropTypes.object.isRequired,
+  onViewRow: PropTypes.func,
   selected: PropTypes.bool,
 };
 
-export default function AirtimeLogRows({ row, selected }) {
+export default function ELectricityLogRows({ row, selected,onViewRow }) {
   const theme = useTheme();
   const { general } = useAuth();
 
-  const { network, amount, api, type, trx, created_at, phone, status } = row;
-  const app = JSON.stringify(api);
-  const response = JSON.parse(app);
-  const values = Object.values(response);
-  const value1 = JSON.stringify(values);
-  const value2 = JSON.parse(value1);
- 
+  const { network, amount, api, type, accountname, trx, created_at, phone, status } = row;
+  
    
   const location = "assets/images/bills/";
   const png = ".jpg";
@@ -56,42 +54,21 @@ export default function AirtimeLogRows({ row, selected }) {
       </TableCell>
 
       <TableCell align="left">{trx} </TableCell>
-      <TableCell> 
-     
-        <Stack>
-          <Typography variant="subtitle2" noWrap>
-          {values}
-          </Typography>
-         {values.response_description}
-        </Stack>
-      </TableCell>
+      
 
       <TableCell align="left">{fDate(created_at)}</TableCell>
     
  
       <TableCell  >{general.cur_sym}{fCurrency(amount)}</TableCell>
-      <TableCell >{phone}</TableCell>
-      <TableCell >
-      <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={
-            (status !== '1' && 'error') || 'success'
-          }
-          sx={{ textTransform: 'capitalize' }} >
-           {(() => { 
-                if (status !== '1') {
-                  return (
-                    <div>Not Successful</div>
-                  )
-                } if (status === '1') {
-                  return (
-                    <div>Successful</div>
-                  )
-                }
-                
-                 
-              })()}
-        </Label>
+      <TableCell >{phone}<br/><small>{accountname}</small></TableCell>
+      <TableCell > 
+        <Button size="small" variant="contained" sx={{ mt: 5, mb: 3 }}
+        component={RouterLink} to={`token/${row.trx}`}
+        >
+              {'Print Token'}
+        </Button>
+  
+ 
       </TableCell>
 
       

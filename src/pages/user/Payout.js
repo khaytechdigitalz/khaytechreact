@@ -20,7 +20,7 @@ import {
 
 // ----------------------------------------------------------------------
 
-export default function Payout() {
+export default function RequestFund() {
    const dispatch = useDispatch();
   const isDesktop = useResponsive('up', 'md');
  

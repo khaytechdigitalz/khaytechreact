@@ -56,19 +56,9 @@ export default function SavingsLogRows({ row, selected, onSelectRow, onViewRow, 
      
         <Stack>
           <Typography variant="subtitle2" noWrap>
-          {(() => {
-                if (!plan) {
-                  return (
-                    <div>None</div>
-                  )
-                  }
-                if (plan) {
-                  return (
-                    <div>{plan.name}</div>
-                  )
-                }
-                 
-              })()}
+          {
+            (!plan  && '') || plan.name
+          }
           </Typography>
  
         </Stack>

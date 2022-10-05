@@ -3,8 +3,9 @@ import { useState } from 'react';
 import Slider from 'react-slick';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Typography, Stack, MenuItem, IconButton } from '@mui/material';
+import { Box, Typography, Stack, MenuItem, IconButton, Button, Label } from '@mui/material';
 // utils
+import { useSnackbar } from 'notistack';
 import { fCurrency } from '../../../utils/formatNumber';
 // _mock_
 import { _bankingCreditCard } from '../../../_mock';
@@ -14,6 +15,7 @@ import Iconify from '../../../components/Iconify';
 import MenuPopover from '../../../components/MenuPopover';
 import { CarouselDots } from '../../../components/carousel';
 import useAuth from '../../../hooks/useAuth';
+import axios from '../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -58,9 +60,6 @@ const shadowStyle = {
 
 export default function CurrentBalance({balance}) {
   const theme = useTheme();
- 
-  
-
   const settings = {
     dots: true,
     arrows: false,
@@ -150,8 +149,8 @@ function CardItem({ card }) {
             <Typography sx={{ typography: 'subtitle1' }}> {user?.firstname} {user?.lastname}</Typography>
           </div>
           <div>
-            <Typography sx={{ mb: 1, typography: 'caption', textAlign: 'right', opacity: 0.48 }}>Date Registered</Typography>
-            <Typography sx={{ typography: 'subtitle1',textAlign: 'right' }}>{user?.created_at.toString().split('T')[0]}</Typography>
+            <Typography sx={{ mb: 1, typography: 'caption', textAlign: 'right', opacity: 0.48 }}>Account Number</Typography>
+            <Typography sx={{ typography: 'subtitle1',textAlign: 'right' }}>{user?.account_number}</Typography>
           </div>
         </Stack>
       </CardItemStyle>
@@ -177,32 +176,56 @@ function MoreMenuButton() {
     width: 20,
     height: 20,
   };
+  const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuth();
+  const generatenuban = async (event, formState) => {
+    try { 
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const form = document.querySelector("form");
+      const formData = new FormData(form);
 
-  return (
-    <>
-      <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpen}>
-        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
-      </IconButton>
+      axios.post('/user/generate_nuban', formData,{ 
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+       })
+      .then(res => { 
+        if(res.data.code === 200)
+        {
+          enqueueSnackbar(res.data.message);
+        }
+        else
+        {
+          enqueueSnackbar(res.data.message, {variant:'error'});
+        }
+       
+      })
 
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        arrow="right-top"
-        sx={{
-          mt: -0.5,
-          width: 'auto',
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
-        }}
-      > 
+    } catch (error) {
+      console.error(error);
+    }
 
-        <MenuItem onClick={handleClose}>
-          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Fund
-        </MenuItem>
-      </MenuPopover>
-    </>
-  );
+  }; 
+  
+    if (user.account_number === null) {
+      return (
+        <>
+          <Button color="primary" 
+          onClick={generatenuban} 
+           variant="contained">
+              Generate Nuban
+          </Button>
+        </>
+      );
+    }
+    if (user.account_number !== null) {
+      return (
+        <>
+           
+        </>
+      );
+    }
+     
+
+  
 }

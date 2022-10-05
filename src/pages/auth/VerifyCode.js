@@ -1,8 +1,10 @@
-import { Link as RouterLink } from 'react-router-dom';
+import {useNavigate,  Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Button, Link, Container, Typography } from '@mui/material';
 // layouts
+import { useSnackbar } from 'notistack';
+
 import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // routes
 import { PATH_AUTH } from '../../routes/paths';
@@ -10,7 +12,8 @@ import { PATH_AUTH } from '../../routes/paths';
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
 // sections
-import { VerifyCodeForm } from '../../sections/auth/verify-code';
+import { VerifyCodeForm } from './forms/verify-code';
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +27,39 @@ const RootStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function VerifyCode() {
+  const resetemail = window.localStorage.getItem('resetemail');
+  const navigate = useNavigate();
+  if(resetemail == null)
+  {
+    window.location.href = PATH_AUTH.login;
+    navigate(PATH_AUTH.login);
+  }
+  const { enqueueSnackbar } = useSnackbar();
+
+  const resendmail = async (data) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      axios.post('/resend-code', { 
+        email: resetemail, 
+       })
+      .then(res => {
+        console.log(res.data);
+        if(res.data.code === 200)
+      {
+        enqueueSnackbar(res.data.message);
+        }
+      else
+      {
+        enqueueSnackbar(res.data.message, {variant:'error'});
+      }
+
+      })
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Page title="Verify" sx={{ height: 1 }}>
       <RootStyle>
@@ -31,21 +67,13 @@ export default function VerifyCode() {
 
         <Container>
           <Box sx={{ maxWidth: 480, mx: 'auto' }}>
-            <Button
-              size="small"
-              component={RouterLink}
-              to={PATH_AUTH.login}
-              startIcon={<Iconify icon={'eva:arrow-ios-back-fill'} width={20} height={20} />}
-              sx={{ mb: 3 }}
-            >
-              Back
-            </Button>
+           
 
             <Typography variant="h3" paragraph>
               Please check your email!
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below box to verify
+              We have emailed a 6-digit confirmation code to {resetemail}, please enter the code in box below to verify
               your email.
             </Typography>
 
@@ -55,7 +83,7 @@ export default function VerifyCode() {
 
             <Typography variant="body2" align="center">
               Don’t have a code? &nbsp;
-              <Link variant="subtitle2" underline="none" onClick={() => {}}>
+              <Link variant="subtitle2" href="#" underline="none" onClick={resendmail}>
                 Resend code
               </Link>
             </Typography>

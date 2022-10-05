@@ -14,3 +14,5 @@ export { default as SavingsInput } from './SavingsInput';
 export { default as SavingsPie } from './SavingsPie';
 export { default as SavingsLog } from './SavingsLog';
 export { default as SavingsLogRows} from './SavingsLogRows';
+export { default as BankInput} from './BankInput';
+export { default as BankTransfer} from './BankTransfer';

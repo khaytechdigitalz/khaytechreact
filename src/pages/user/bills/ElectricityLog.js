@@ -56,16 +56,15 @@ import { fCurrency } from '../../../utils/formatNumber';
 const TABLE_HEAD = [
   { id: 'name', label: 'Provider', align: 'left' },
   { id: 'trx', label: 'TRX ID', align: 'left' },
-  { id: 'token', label: 'Details', align: 'left' },
   { id: 'createdate', label: 'Date', align: 'left' },
   { id: 'amount', label: 'Amount' },
-  { id: 'meter', label: 'Meter  Numberr'},
-  { id: 'status', label: 'Status', width: 180 },
-];
+  { id: 'customer', label: 'Customer'},
+  { id: 'token', label: 'Details', align: 'left' },
+ ];
 
 // ----------------------------------------------------------------------
 
-export default function AirtimeLog() {
+export default function ElectricityLog() {
   const theme = useTheme();
 
   const {
@@ -144,7 +143,7 @@ export default function AirtimeLog() {
   return (
     
     <Card>
-    <CardHeader title="Electricity Bills Transaction History" sx={{ mb: 3 }} />
+    <CardHeader title="WAEC Pin Vending History" sx={{ mb: 3 }} />
     <Scrollbar>
 
             <TableContainer sx={{ minWidth: 700 }}>

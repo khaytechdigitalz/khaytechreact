@@ -15,8 +15,9 @@ export const PATH_AUTH = {
   register: path(ROOTS_AUTH, '/register'),
   loginUnprotected: path(ROOTS_AUTH, '/login-unprotected'),
   registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
-  verify: path(ROOTS_AUTH, '/verify'),
   resetPassword: path(ROOTS_AUTH, '/reset-password'),
+  verify: path(ROOTS_AUTH, '/verify'),
+  newpassword: path(ROOTS_AUTH, '/newpassword'),
 };
 
 export const PATH_PAGE = {
@@ -39,17 +40,24 @@ export const PATH_DASHBOARD = {
   dashboard: {
     dashboard: path(ROOTS_DASHBOARD, '/home'),
     account: path(ROOTS_DASHBOARD, '/settings'),
-    transfer: path(ROOTS_DASHBOARD, '/transfer'),
-    verification: path(ROOTS_DASHBOARD, '/verification'),
+    kyc: path(ROOTS_DASHBOARD, '/kyc'),
+    bvn: path(ROOTS_DASHBOARD, '/bvn'),
     deposit: path(ROOTS_DASHBOARD, '/deposit'),
     depositlog: path(ROOTS_DASHBOARD, '/deposits'),
-    payout: path(ROOTS_DASHBOARD, '/payout'),
     savings: path(ROOTS_DASHBOARD, '/savings'),
     airtime: path(ROOTS_DASHBOARD, '/airtime'),
     internet: path(ROOTS_DASHBOARD, '/internet'),
     cabletv: path(ROOTS_DASHBOARD, '/cabletv'),
     electricity: path(ROOTS_DASHBOARD, '/electricity'),
     referral: path(ROOTS_DASHBOARD, '/referral'),
+    requestfund: path(ROOTS_DASHBOARD, '/requestfund'),
+    waec: path(ROOTS_DASHBOARD, '/waec'),
+  },
+
+  transfer: {
+    transfer: path(ROOTS_DASHBOARD, '/user/transfer'),
+    bank: path(ROOTS_DASHBOARD, '/bank/transfer'),
+    payout: path(ROOTS_DASHBOARD, '/other/transfer'),
   },
  
 

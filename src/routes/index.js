@@ -51,6 +51,7 @@ export default function Router() {
         { path: 'register-unprotected', element: <Register /> },
         { path: 'reset-password', element: <ResetPassword /> },
         { path: 'verify', element: <VerifyCode /> },
+        { path: 'newpassword', element: <NewPassword /> },
       ],
     },
 
@@ -66,17 +67,22 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'home', element: <Dashboard /> },
         { path: 'settings', element: <Settings /> },
-        { path: 'transfer', element: <Transfer /> },
-        { path: 'verification', element: <Verification /> },
+        { path: 'user/transfer', element: <Transfer /> },
+        { path: 'kyc', element: <KYC /> },
+        { path: 'bvn', element: <BVN /> },
         { path: 'deposit', element: <Deposit /> },
         { path: 'deposits', element: <Deposits /> },
-        { path: 'payout', element: <Payout /> },
+        { path: 'other/transfer', element: <Payout /> },
+        { path: 'bank/transfer', element: <Bank /> },
         { path: 'savings', element: <Savings /> },
         { path: 'airtime', element: <Airtime /> },
         { path: 'internet', element: <Internet /> },
         { path: 'cabletv', element: <CableTV /> },
         { path: 'electricity', element: <Electricity /> },
+        { path: 'electricity/token/:id', element: <Token /> },
+        { path: 'waec', element: <Waec /> },
         { path: 'referral', element: <Referral /> },
+        { path: 'requestfund', element: <RequestFund /> },
         { path: 'app', element: <GeneralApp /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
@@ -186,21 +192,27 @@ const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword')));
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
+const NewPassword = Loadable(lazy(() => import('../pages/auth/NewPassword')));
 
 // DASHBOARD
 const Dashboard = Loadable(lazy(() => import('../pages/user/Dashboard')));
 const Settings = Loadable(lazy(() => import('../pages/user/Settings')));
 const Transfer = Loadable(lazy(() => import('../pages/user/Transfer')));
-const Verification = Loadable(lazy(() => import('../pages/user/Verification')));
+const KYC = Loadable(lazy(() => import('../pages/user/KYC')));
+const BVN = Loadable(lazy(() => import('../pages/user/BVN')));
 const Deposit = Loadable(lazy(() => import('../pages/user/Deposit')));
 const Deposits = Loadable(lazy(() => import('../pages/user/DepositLog')));
 const Payout = Loadable(lazy(() => import('../pages/user/Payout')));
+const Bank = Loadable(lazy(() => import('../pages/user/Bank')));
 const Savings = Loadable(lazy(() => import('../pages/user/Savings')));
 const Airtime = Loadable(lazy(() => import('../pages/user/Airtime')));
 const Internet = Loadable(lazy(() => import('../pages/user/Internet')));
 const CableTV = Loadable(lazy(() => import('../pages/user/Cabletv')));
 const Electricity = Loadable(lazy(() => import('../pages/user/Electricity')));
+const Token = Loadable(lazy(() => import('../pages/user/bills/Token')));
 const Referral = Loadable(lazy(() => import('../pages/user/Referral')));
+const RequestFund = Loadable(lazy(() => import('../pages/user/RequestFund')));
+const Waec = Loadable(lazy(() => import('../pages/user/Waec')));
 
 // GENERAL
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));

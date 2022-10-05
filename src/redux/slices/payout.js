@@ -104,7 +104,6 @@ export function getProducts() {
       const response = await axios.get('/user/withdraw/history');
       dispatch(slice.actions.getProductsSuccess(response.data.data.withdrawals));
       console.log('gotten');
-      console.log(response.data.data.methods);
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

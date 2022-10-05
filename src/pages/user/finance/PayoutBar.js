@@ -24,8 +24,6 @@ export default function AppDebitCredit() {
   if (!post) return null;
   const payout = JSON.stringify(post.data.data.barchart);
   const PayoutObject = JSON.parse(payout);
-
-
   const payoutchart = Object.values(PayoutObject);
  
 
@@ -35,7 +33,7 @@ const CHART_DATA = [
   {
     year: thisyear,
     data: [
-      { name: 'Payour', data: payoutchart },
+      { name: 'Payouts', data: payoutchart },
     ],
   },
    
@@ -56,7 +54,7 @@ const CHART_DATA = [
   return (
     <Card>
       <CardHeader
-        title="Transaction Chart"
+        title="Successful Payout Chart"
         subheader={thisyear}
         action={
           <TextField

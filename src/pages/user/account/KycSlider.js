@@ -2,7 +2,7 @@
 import { styled } from '@mui/material/styles';
 import { Typography,  Card, CardContent } from '@mui/material';
 //
-import { MaintenanceIllustration } from '../../../assets';
+import { UploadIllustration } from '../../../assets';
 import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
@@ -44,7 +44,7 @@ export default function KycSlider() {
 
        </CardContent>
 
-      <MaintenanceIllustration
+      <UploadIllustration
         sx={{
           p: 3,
           width: 260,

@@ -35,7 +35,7 @@ export default function PayoutLogRows({ row, selected, onSelectRow, onViewRow, o
   const { user,general } = useAuth();
   const location = "assets/images/withdraw/method/";
 
-  const { sent, amount, method, trx, created_at, charge, status } = row;
+  const { amount, method, trx, created_at, charge, status } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -50,8 +50,8 @@ export default function PayoutLogRows({ row, selected, onSelectRow, onViewRow, o
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
-      <Image alt={method.name} src={HOST_URL+location+method.image} sx={{ width: 30, height: 30, borderRadius: 1.5, flexShrink: 0 }} />
-
+         #
+     
       </TableCell>
 
       <TableCell>
@@ -59,19 +59,10 @@ export default function PayoutLogRows({ row, selected, onSelectRow, onViewRow, o
 
         <Stack>
           <Typography variant="subtitle2" noWrap>
-          {(() => {
-                if (!method) {
-                  return (
-                    <div>None</div>
-                  )
-                  }
-                if (method) {
-                  return (
-                    <div>{method.name}</div>
-                  )
-                }
-                 
-              })()}
+          {
+            (!method  && '') || method.name
+          }
+         
             
           </Typography>
  

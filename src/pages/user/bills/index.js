@@ -14,3 +14,6 @@ export { default as ElectricityInput} from './ElectricityInput';
 export { default as ElectricityPie} from './ElectricityPie';
 export { default as ElectricityLog } from './ElectricityLog';
 export { default as ElectricityLogRows} from './ElectricityLogRows';
+export { default as WaecInput} from './WaecInput';
+export { default as WaecLog } from './WaecLog';
+export { default as WaecLogRows} from './WaecLogRows';
