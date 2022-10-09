@@ -16,10 +16,24 @@ import {
 } from '@mui/material';
 import axios from '../../../utils/axios';
 
+import {
+  SkeletonProductItem,
+} from '../../../components/skeleton';
+import {
+  TableNoData,
+  TableSkeleton,
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSelectedActions,
+} from '../../../components/table';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
+import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
+
 // _mock_
 // components
+import Page from '../../../components/Page';
+
 import Label from '../../../components/Label';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
@@ -40,11 +54,13 @@ export default function AppNewTRX() {
      
     });
   }, []);
-  if (!post) return null;
+  if (!post) return <SkeletonProductItem  sx={{ width: 40 }} />;
+ 
   const results = JSON.stringify(post.data.data.userTRX);
   const rep = (Object.values(results));
    const personObject = JSON.parse(results);
-    
+   const isNotFound = (!personObject.length );
+
   return (
     
     <Card>
@@ -98,11 +114,17 @@ export default function AppNewTRX() {
                 </TableRow>
               ))}
             </TableBody>
+
+            <TableEmptyRows height={1} emptyRows={emptyRows(12, 4, 5)} />
+
+          <TableNoData isNotFound={isNotFound} />
           </Table>
 
           
         </TableContainer>
       </Scrollbar>
+
+
 
       <Divider />
 

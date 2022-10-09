@@ -2,7 +2,7 @@
 import { styled } from '@mui/material/styles';
 import { Typography,  Card, CardContent } from '@mui/material';
 //
-import { UploadIllustration } from '../../../assets';
+import { UploadIllustration ,  SeverErrorIllustration } from '../../../assets';
 import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
@@ -35,22 +35,26 @@ export default function BvnSlider() {
         }}
       >
         <Typography gutterBottom variant="h4">
-        {user?.bvn_verify !== 1 ? 'BVN Not Verified !!!' : 'BVN Verified !' }
+        {user?.bvn_verify !== 1 ? 'Bank Account Not Verified !!!' : 'Bank Account Verified !' }
         </Typography>
 
-        <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
-        {user?.kyc !== 1 ? 'You BVN has not been verified yet. Please enter your BVN below and click the verify button to verify you BVN' : 'You BVN has been verified. You account is now ppen to promotional offers and freebies. ' }
-        </Typography>
 
        </CardContent>
-
-      <UploadIllustration
+       {user?.bvn_verify !== 1 ? <SeverErrorIllustration
         sx={{
           p: 3,
           width: 260,
           margin: { xs: 'auto', md: 'inherit' }
         }}
-      />
+      /> : 
+      <UploadIllustration
+      sx={{
+        p: 3,
+        width: 260,
+        margin: { xs: 'auto', md: 'inherit' }
+      }}
+    /> }
+      
     </RootStyle>
   );
 }

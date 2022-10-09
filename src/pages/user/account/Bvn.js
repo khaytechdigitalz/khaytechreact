@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
- import { useMemo } from 'react';
+ import { useState, useEffect, useMemo } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,9 +19,16 @@ import {
 } from '../../../components/hook-form';
 import axios from '../../../utils/axios';
 
+
+import {
+  SkeletonInputLoader,
+} from '../../../components/skeleton';
+
 import { 
   BvnSlider, 
   } from '.';
+  import useAuth from '../../../hooks/useAuth';
+
 // ----------------------------------------------------------------------
 
  
@@ -41,10 +48,12 @@ Kyc.propTypes = {
 
 export default function Kyc({ currentProduct }) {
  
+  const { user, general } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
   const forminput = Yup.object().shape({
-    bvn: Yup.string().required('Enter Bank Verification')
+    account_number: Yup.string().required('Enter Account Number'),
+    account_bank: Yup.string().required('Select Bank')
    });
 
   const defaultValues = useMemo(
@@ -66,6 +75,23 @@ export default function Kyc({ currentProduct }) {
     formState: { isSubmitting },
   } = methods;
 
+  const [post, setPost] = useState(null);
+
+  useEffect(() => {
+    axios.get('/banklist').then((response) => {
+      setPost(response);
+      console.log(response);
+     
+    });
+  }, []);
+  if (!post) return <SkeletonInputLoader  sx={{ width: 40 }} />;
+ 
+  const results = JSON.stringify(post.data.data);
+  const CATEGORY_OPTION = JSON.parse(results);
+
+
+  const bank = JSON.parse(user.bank_details);  
+  const bankv = Object.entries(bank);
     
   const onSubmit = async (event, formState) => {
     try { 
@@ -77,7 +103,8 @@ export default function Kyc({ currentProduct }) {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        bvn: formState.bvn
+        account_bank: formState.account_bank,
+        account_number: formState.account_number
        })
       .then(res => { 
         if(res.data.code === 200)
@@ -102,25 +129,35 @@ export default function Kyc({ currentProduct }) {
 
          
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
-         
-
       <Grid container spacing={3}>
 
          <Grid item xs={12} md={12}>
             <BvnSlider />
           </Grid>
-
-          
-
+ 
         <Grid item xs={12} md={6}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <RHFTextField name="bvn" label="Bank Verification Number" />
+              <RHFTextField name="account_number" label="Account Number" />
             </Stack>
+            <Typography variant="caption" component="p" sx={{ color: 'red' }}>
+          <b>Note:</b> The name on your bank account must be the same name you used used when you signedup  on {general.sitename}
+          </Typography> 
+            <Stack spacing={3} mt={5}>
+               <RHFSelect name="account_bank" label="Bank" >
+                  <option selected disabled>Please Select Bank</option>
+                  {CATEGORY_OPTION.map((category) => (
+                    <option data-code={category.code} key={category.id} value={category.code}>
+                          {category.name}
+                    </option>
+                   ))}
+            </RHFSelect>
+
+        </Stack>
           </Card>
           <br/>
           <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-              {'Validate BVN'}
+              {'Validate Bank'}
             </LoadingButton>
         </Grid>
         
@@ -134,31 +171,16 @@ export default function Kyc({ currentProduct }) {
 
       <CardContent>
         <Stack spacing={2}>
+        {bankv.map((row,index) => (
         <Stack direction="row" justifyContent="space-between">
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Firstname
+            
+            {(/^./, row[0].toUpperCase())}
             </Typography>
-            <Typography variant="subtitle2">John</Typography>
-          </Stack> 
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Lastname
-            </Typography>
-            <Typography variant="subtitle2">John</Typography>
+            <Typography variant="subtitle2">{row[1] || ''}</Typography>
           </Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Address
-            </Typography>
-            <Typography variant="subtitle2">Ireposun Street, Akure</Typography>
-          </Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Gender
-            </Typography>
-            <Typography variant="subtitle2">Male</Typography>
-          </Stack>
- 
+           ))}
+         
         </Stack>
       </CardContent>
     </Card>

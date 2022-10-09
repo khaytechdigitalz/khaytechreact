@@ -6,6 +6,7 @@ import useResponsive from '../hooks/useResponsive';
 // components
 import Page from '../components/Page';
 // sections
+
 import { PaymentSummary, PaymentMethods, PaymentBillingAddress } from '../sections/payment';
 
 // ----------------------------------------------------------------------

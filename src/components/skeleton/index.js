@@ -8,3 +8,4 @@ export { default as SkeletonMailSidebarItem } from './SkeletonMailSidebarItem';
 export { default as SkeletonConversationItem } from './SkeletonConversationItem';
 export { default as SkeletonFormColumn } from './SkeletonFormColumn';
 export { default as SkeletonInputLoader } from './SkeletonInputLoader';
+export { default as SkeletonPDF } from './SkeletonPDF';

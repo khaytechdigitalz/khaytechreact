@@ -67,11 +67,16 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'home', element: <Dashboard /> },
         { path: 'settings', element: <Settings /> },
+        { path: 'security', element: <Security/> },
+        { path: 'convert/airtime/manual', element: <AirtimeManual /> },
+        { path: 'convert/airtime/automatic', element: <AirtimeAutomatic /> },
         { path: 'user/transfer', element: <Transfer /> },
         { path: 'kyc', element: <KYC /> },
         { path: 'bvn', element: <BVN /> },
         { path: 'deposit', element: <Deposit /> },
+        { path: 'deposit/:id', element: <DepositPreview /> },
         { path: 'deposits', element: <Deposits /> },
+        { path: 'ecard', element: <Ecard /> },
         { path: 'other/transfer', element: <Payout /> },
         { path: 'bank/transfer', element: <Bank /> },
         { path: 'savings', element: <Savings /> },
@@ -197,11 +202,14 @@ const NewPassword = Loadable(lazy(() => import('../pages/auth/NewPassword')));
 // DASHBOARD
 const Dashboard = Loadable(lazy(() => import('../pages/user/Dashboard')));
 const Settings = Loadable(lazy(() => import('../pages/user/Settings')));
+const Security = Loadable(lazy(() => import('../pages/user/Security')));
 const Transfer = Loadable(lazy(() => import('../pages/user/Transfer')));
 const KYC = Loadable(lazy(() => import('../pages/user/KYC')));
 const BVN = Loadable(lazy(() => import('../pages/user/BVN')));
 const Deposit = Loadable(lazy(() => import('../pages/user/Deposit')));
+const DepositPreview = Loadable(lazy(() => import('../pages/user/finance/DepositPreview')));
 const Deposits = Loadable(lazy(() => import('../pages/user/DepositLog')));
+const Ecard = Loadable(lazy(() => import('../pages/user/Ecard')));
 const Payout = Loadable(lazy(() => import('../pages/user/Payout')));
 const Bank = Loadable(lazy(() => import('../pages/user/Bank')));
 const Savings = Loadable(lazy(() => import('../pages/user/Savings')));
@@ -213,6 +221,8 @@ const Token = Loadable(lazy(() => import('../pages/user/bills/Token')));
 const Referral = Loadable(lazy(() => import('../pages/user/Referral')));
 const RequestFund = Loadable(lazy(() => import('../pages/user/RequestFund')));
 const Waec = Loadable(lazy(() => import('../pages/user/Waec')));
+const AirtimeAutomatic = Loadable(lazy(() => import('../pages/user/Airtime-Auto')));
+const AirtimeManual = Loadable(lazy(() => import('../pages/user/Airtime-Manual')));
 
 // GENERAL
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));

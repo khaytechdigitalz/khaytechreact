@@ -26,7 +26,6 @@ import {
 
 
   import {
-    SkeletonProductItem,
     SkeletonInputLoader,
   } from '../../../components/skeleton';
   
@@ -122,7 +121,8 @@ export default function PaymentSummary() {
      
     });
   }, []);
-  if (!post) return null;
+  if (!post) return <SkeletonInputLoader  sx={{ width: 40 }} />;
+ 
   const results = JSON.stringify(post.data.data);
   const CATEGORY_OPTION = JSON.parse(results);
   const getgateway = async (event, formState) => {
@@ -146,7 +146,6 @@ export default function PaymentSummary() {
         else
         {
           enqueueSnackbar(res.data.message, {variant:'error'});
-          console.log(res.data.data.message);
         }
        
       })

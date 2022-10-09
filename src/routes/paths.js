@@ -40,10 +40,12 @@ export const PATH_DASHBOARD = {
   dashboard: {
     dashboard: path(ROOTS_DASHBOARD, '/home'),
     account: path(ROOTS_DASHBOARD, '/settings'),
+    security: path(ROOTS_DASHBOARD, '/security'),
     kyc: path(ROOTS_DASHBOARD, '/kyc'),
     bvn: path(ROOTS_DASHBOARD, '/bvn'),
     deposit: path(ROOTS_DASHBOARD, '/deposit'),
-    depositlog: path(ROOTS_DASHBOARD, '/deposits'),
+    ecard: path(ROOTS_DASHBOARD, '/ecard'),
+    depositlog: path(ROOTS_DASHBOARD, '/deposit/log'),
     savings: path(ROOTS_DASHBOARD, '/savings'),
     airtime: path(ROOTS_DASHBOARD, '/airtime'),
     internet: path(ROOTS_DASHBOARD, '/internet'),
@@ -58,6 +60,12 @@ export const PATH_DASHBOARD = {
     transfer: path(ROOTS_DASHBOARD, '/user/transfer'),
     bank: path(ROOTS_DASHBOARD, '/bank/transfer'),
     payout: path(ROOTS_DASHBOARD, '/other/transfer'),
+  },
+
+
+  conversion: {
+    manual: path(ROOTS_DASHBOARD, '/convert/airtime/manual'),
+    automatic: path(ROOTS_DASHBOARD, '/convert/airtime/automatic'),
   },
  
 

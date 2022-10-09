@@ -28,6 +28,11 @@ import { fCurrency } from '../../utils/formatNumber';
 // _mock_
 // components
  import useAuth from '../../hooks/useAuth';
+ 
+import {
+  SkeletonProductItem,
+  SkeletonInputLoader,
+} from '../../components/skeleton';
 
 import { FormProvider, RHFTextField } from '../../components/hook-form';
 import axios from '../../utils/axios';
@@ -105,7 +110,7 @@ export default function Transfer() {
         <Grid container spacing={3}>
         <Grid item xs={12} md={12}>
       <RootStyle>
-        <CardHeader title="Quick Transfer" />
+        <CardHeader title="User Fund Transfer" />
         <Box sx={{ p: 3 }}>
           
 
@@ -220,6 +225,8 @@ ConfirmTransferDialog.propTypes = {
 function ConfirmTransferDialog({ open, amount, autoWidth, contactInfo, onClose, onBlur, onChange }) {
   const defaultValues = {
     amount: '',
+    trxpin: '',
+    username: '',
   }; 
   const methods = useForm({
     defaultValues,
@@ -239,6 +246,7 @@ function ConfirmTransferDialog({ open, amount, autoWidth, contactInfo, onClose, 
        await new Promise((resolve) => setTimeout(resolve, 500));
       axios.post('/user/usertransfer', { 
         amount: formState.amount,
+        trxpin: formState.trxpin,
         username: formState.username,
        })
       .then(res => { 
@@ -307,9 +315,10 @@ function ConfirmTransferDialog({ open, amount, autoWidth, contactInfo, onClose, 
           disabled
           disableUnderline={false}
           sx={{ justifyContent: 'flex-end' }}
-        />
-        <RHFTextField name="amount" placeholder="Confirm Amount" />
-        <RHFTextField name="username" onKeyUp={handleKeyUp} fullWidth multiline rows={2} placeholder="Enter Recipient's Username" />
+          />
+          <RHFTextField name="amount" type="number" placeholder="Confirm Amount" />
+          <RHFTextField name="trxpin" type="password" placeholder="Transaction Pin" />
+         <RHFTextField name="username" onKeyUp={handleKeyUp} placeholder="Enter Recipient's Username" />
        </Stack>
       <DialogActions>
         <LoadingButton type="submit" variant="contained" disabled={amount === 0}  loading={isSubmitting}>

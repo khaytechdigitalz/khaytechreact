@@ -23,13 +23,14 @@ import { fCurrency } from '../../../utils/formatNumber';
 import Label from '../../../components/Label';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
- 
+import useAuth from '../../../hooks/useAuth';
+
 // ----------------------------------------------------------------------
 
 export default function AppNewTRX() {
   const theme = useTheme();
   const [post, setPost] = useState(null);
-  
+  const { user,general } = useAuth();
 
   useEffect(() => {
     axios.post('/user/loginchart').then((response) => {

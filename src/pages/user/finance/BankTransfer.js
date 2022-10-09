@@ -43,7 +43,7 @@ export default function AppNewTRX() {
   if (!post) return null;
   const results = JSON.stringify(post.data.data.bankTRX);
   const rep = (Object.values(results));
-   const personObject = JSON.parse(results);
+  const personObject = JSON.parse(results);
     
   return (
     

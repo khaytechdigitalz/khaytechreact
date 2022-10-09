@@ -149,8 +149,8 @@ export default function AccountGeneral() {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-            <RHFTextField name="firstname" label="Name" />
-              <RHFTextField name="lastname"  label="Name" />
+              <RHFTextField name="firstname" disabled label="Firstname" />
+              <RHFTextField name="lastname" disabled label="Lastname" />
               <RHFTextField name="email"   disabled   focus label="Email Address" />
 
               <RHFTextField name="mobile"  disabled   focus label="Phone Number" />

@@ -1,5 +1,6 @@
 // @mui
 import { useState, useEffect, useRef,React, useMemo } from 'react';
+import { useNavigate} from "react-router-dom";
 
 import * as Yup from 'yup';
 import { styled } from '@mui/material/styles';
@@ -77,6 +78,7 @@ export default function PaymentSummary() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
+  const navigate = useNavigate();
   
   const onSubmit = async (event, formState) => {
     try { 
@@ -96,7 +98,9 @@ export default function PaymentSummary() {
         if(res.data.code === 200)
         {
           enqueueSnackbar(res.data.message);
-        }
+          navigate(`${res.data.data.ref}`, { replace: true });
+          console.log(res.data.data.ref);
+          }
         else
         {
           enqueueSnackbar(res.data.message, {variant:'error'});
@@ -174,7 +178,7 @@ export default function PaymentSummary() {
         <input id="currency" hidden name="currency"/>
         <Stack spacing={3} mt={5}>
         <RHFSelect name="method_code" label="Payment Gateway" onChange={getgateway}>
-          
+                  <option selected disabled>Select Gateway</option>
                   {CATEGORY_OPTION.map((category) => (
                     <option data-min={category.min_amount} data-currency={category.currency} data-max={category.max_amount}  data-percent={category.percent_charge}  data-fixed={category.fixed_charge} key={category.id} value={category.method_code}>
                           {category.name}

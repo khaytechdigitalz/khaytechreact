@@ -17,6 +17,7 @@ import {
   AccountSocialLinks,
   AccountNotifications,
   AccountChangePassword,
+  AccountChangePin,
 } from './account';
 
 // ----------------------------------------------------------------------
@@ -43,11 +44,7 @@ export default function UserAccount() {
       icon: <Iconify icon={'eva:share-fill'} width={20} height={20} />,
       component: <AccountSocialLinks />,
     },
-    {
-      value: 'change_password',
-      icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
-      component: <AccountChangePassword />,
-    },
+  
   ];
 
   return (
