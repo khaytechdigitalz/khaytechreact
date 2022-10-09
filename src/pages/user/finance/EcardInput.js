@@ -89,16 +89,18 @@ export default function PaymentSummary() {
         trxpin: formState.trxpin, 
        })
       .then(res => { 
+        // Notification Starts;
         if(res.data.code === 200)
-        {
-          enqueueSnackbar(res.data.message);
-          navigate(`${res.data.data.ref}`, { replace: true });
-          console.log(res.data.data.ref);
+        { 
+          enqueueSnackbar(res.data.message, {variant:'success'});
           }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
+         enqueueSnackbar(res.data.message, {variant:'error'}); 
+          if(res.data.error.length > 0){
+            for (let i = 0; i < res.data.error.length; i+=1) {
+              enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+              }
+          }
+        // Notification Ends;
        
       })
       reset();

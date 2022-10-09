@@ -1,34 +1,32 @@
-// @mui
-import { useState, useEffect, React } from 'react';
+ // @mui
+import { useState, useEffect,React } from 'react';
+import { useNavigate} from "react-router-dom";
 import * as Yup from 'yup';
- import { styled, alpha } from '@mui/material/styles';
-
+import { styled } from '@mui/material/styles';
 import { Divider, Typography, Stack,TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-
+// components
 import { useSnackbar } from 'notistack';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// components
+
+
+import {
+  FormProvider,
+   RHFSelect,
+  } from '../../../components/hook-form';
+  import axios from '../../../utils/axios';
+
+  import useAuth from '../../../hooks/useAuth';
+  import Page from '../../../components/Page';
+
+
 import {
   SkeletonProductItem,
   SkeletonInputLoader,
 } from '../../../components/skeleton';
 
-import Iconify from '../../../components/Iconify';
-
-import {
-  FormProvider,
-   RHFSelect,
-   RHFTextField,
-  } from '../../../components/hook-form';
-  import axios from '../../../utils/axios';
-
-  import { fCurrency } from '../../../utils/formatNumber';
-  import useAuth from '../../../hooks/useAuth';
-  import Page from '../../../components/Page';
- 
   // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -36,8 +34,8 @@ const RootStyle = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.neutral,
   borderRadius: Number(theme.shape.borderRadius) * 2,
 }));
- 
 
+ 
 // ----------------------------------------------------------------------
 
 export default function AirtimeInput() {
@@ -49,7 +47,7 @@ export default function AirtimeInput() {
     firstname: Yup.string().required('First Name is required'),
     lastname: Yup.string().required('Last Name is required'),
   });
-
+ 
   const defaultValues = {
     firstname: user?.firstname || '',
     lastname: user?.lastname || '',
@@ -69,34 +67,32 @@ export default function AirtimeInput() {
     resolver: yupResolver(UpdateUserSchema),
     defaultValues,
   });
-
-
   const {
-    setValue,
-    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-  
-  const onSubmit = async (event, formState) => {
+  const navigate = useNavigate();
+
+  const onSubmit = async (formState) => {
     try { 
       await new Promise((resolve) => setTimeout(resolve, 500));
       const form = document.querySelector("form");
       const formData = new FormData(form);
     
-      axios.post('user/buywaecpin', formData,{ 
+      axios.post('user/convertairtime/auto', formData,{ 
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        phone: formState.phone,
-        variant: formState.variant, 
-        amount: formState.amount, 
+        amount: formState.amount,
+        network: formState.network,
+        phone: formState.phone, 
        })
       .then(res => { 
         // Notification Starts;
         if(res.data.code === 200)
         { 
           enqueueSnackbar(res.data.message, {variant:'success'});
+          navigate(`${res.data.ref}`, { replace: true });
          }
          enqueueSnackbar(res.data.message, {variant:'error'}); 
           if(res.data.error.length > 0){
@@ -105,7 +101,7 @@ export default function AirtimeInput() {
               }
           }
         // Notification Ends;
-       
+          
       })
      // reset();
      } catch (error) {
@@ -113,81 +109,94 @@ export default function AirtimeInput() {
     }
   };
  
-   
   const [post, setPost] = useState(null);
   const {general} = useAuth();
 
   useEffect(() => {
-    axios.get('/waec_forms').then((response) => {
+    axios.get('/networks').then((response) => {
       setPost(response);
       console.log(response);
      
     });
   }, []);
   if (!post) return null;
-  const results = JSON.stringify(post.data.data.forms);
+  const results = JSON.stringify(post.data.data.phone);
+  const discounted = JSON.stringify(post.data.data.conversion);
   const CATEGORY_OPTION = JSON.parse(results);
+  const gettotal = (event) => {
+    try {
+     const fee = event.target.options[event.target.selectedIndex].dataset.conversion;
+     const amount = document.getElementById('amount').value;
+     const charge = fee/100*amount;
+     document.getElementById("fee").innerHTML = charge;
+     document.getElementById("total").innerHTML = amount-charge;
+     } catch (error) {
+      console.error(error);
+    }
+  }; 
  
-  const getamount = (event) => {
-    const amount = event.target.options[event.target.selectedIndex].dataset.amount;
-    document.getElementById("total").innerHTML = amount;
-    document.getElementById("amount").value = amount;
-     
-  };
-
+ 
  
   if (!CATEGORY_OPTION) return <SkeletonProductItem  sx={{ width: 40 }} />;
   
+  
   return (
     <Page>
-      
     <RootStyle>
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
       <Stack spacing={2.5}>
-       
-      <Stack direction="row" justifyContent="space-between">
-          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
-            WAEC PIN Vending
-          </Typography>
-        </Stack>
-         
-          <Stack spacing={3} mt={5}>
-        <TextField type="number"  name="phone" id="phone" fullWidth label="Phone Number" />
+     
+        <Stack spacing={3} mt={5}> 
+        <TextField type="number" name="phone" id="phone" fullWidth label="Enter Your Phone Number" />
           </Stack>
-          <input name="amount" id="amount" hidden/>
+
           <Stack spacing={3} mt={5}>
-            
-        <RHFSelect name="variant" onChange={getamount} label="Form Type">
-                  <option selected disabled>Select Form</option>
+        <TextField type="number" name="amount"  onKeyUp={gettotal} id="amount" fullWidth label="Enter Amount To Convert" />
+          </Stack>
+        <Stack spacing={3} mt={5}>
+        <RHFSelect name="network" onChange={gettotal}  label="Select Airtime Network">
+                  <option selected disabled>Select Network</option>
                   {CATEGORY_OPTION.map((category) => (
-                    <option data-amount={category.variation_amount}  key={category.id} value={category.variation_code}>
+                    <option  data-conversion={category.conversion}  key={category.id} value={category.symbol}>
                           {category.name}
                     </option>
                    ))}
         </RHFSelect>
-      
-         
+        <Stack spacing={3} mt={5}>
+        <TextField type="password" name="pin" id="pin" fullWidth label="Airtime Share Pin" />
+        <Typography variant="caption" sx={{ color: 'primary.main' }}>
+          This is your share and sell pin for the Phone Number you entered above.
+        </Typography> 
+          </Stack>
+
         </Stack>
- 
-        
+       
         <Divider sx={{ borderStyle: 'dashed' }} />
-         
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
+         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" component="p">
-            Total
+            Total Amount
           </Typography>
           <Typography variant="h6" component="p">
-         {general.cur_sym} <a id="total">0.00</a>
+          {general.cur_sym}<a id="total">0.00</a>
           </Typography>
         </Stack> 
       </Stack>
-
-     
  
       <LoadingButton type="submit"  fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }} loading={isSubmitting}>
-              {'Buy Form'}
-             
+              {'Convert Airtime'}
+              <Typography variant="subtitle2" component="p" sx={{ color: 'text.white' }}>
+              &nbsp;&nbsp;&nbsp;(Fee:  {general.cur_sym}<a id="fee">0.0</a> )
+              </Typography>  
       </LoadingButton>
+      <Stack direction="row" justifyContent="space-between">
+          <Typography variant="caption" component="p" sx={{ color: 'primary.main' }}>
+          <b>Airtime will be automatically deducted once process is completed successfully
+          You do not have to manually transfer airtime to us.
+          Your E-wallet will be funded immediately request is successfully completed.</b>
+          </Typography> 
+          
+        </Stack>
+      
       </FormProvider>
     </RootStyle>
     </Page>

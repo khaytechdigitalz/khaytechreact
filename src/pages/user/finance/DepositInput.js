@@ -63,20 +63,12 @@ export default function PaymentSummary() {
      defaultValues,
   });
 
-  const {
-    reset,
-    watch,
+  const { 
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  const values = watch();
-
-  useEffect(() => {
-       reset(defaultValues);
-   
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  
 
   const navigate = useNavigate();
   
@@ -95,19 +87,21 @@ export default function PaymentSummary() {
         method_code: formState.method_code, 
        })
       .then(res => { 
-        if(res.data.code === 200)
-        {
-          enqueueSnackbar(res.data.message);
-          navigate(`${res.data.data.ref}`, { replace: true });
-          console.log(res.data.data.ref);
-          }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
+         // Notification Starts;
+         if(res.data.code === 200)
+         { 
+           enqueueSnackbar(res.data.message, {variant:'success'});
+           }
+          enqueueSnackbar(res.data.message, {variant:'error'}); 
+           if(res.data.error.length > 0){
+             for (let i = 0; i < res.data.error.length; i+=1) {
+               enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+               }
+           }
+         // Notification Ends;
        
       })
-      reset();
+      // reset();
      } catch (error) {
       console.error(error);
     }
@@ -231,15 +225,7 @@ export default function PaymentSummary() {
       </LoadingButton>
  
      
-      <Stack alignItems="center" spacing={1}>
-        <Stack direction="row" alignItems="center" spacing={1.5}>
-          <Iconify icon={'eva:shield-fill'} sx={{ width: 20, height: 20, color: 'primary.main' }} />
-          <Typography variant="subtitle2">Secure online payment</Typography>
-        </Stack>
-        <Typography variant="caption" sx={{ color: 'text.secondary', textAlign: 'center' }}>
-          This is a secure 128-bit SSL encrypted payment
-        </Typography>
-      </Stack>
+      
       </FormProvider>
     </RootStyle>
     </Page>

@@ -104,7 +104,8 @@ export default function Kyc({ currentProduct }) {
           "Content-Type": "multipart/form-data",
         },
         account_bank: formState.account_bank,
-        account_number: formState.account_number
+        account_number: formState.account_number,
+        bvn: formState.bvn,
        })
       .then(res => { 
         if(res.data.code === 200)
@@ -138,6 +139,10 @@ export default function Kyc({ currentProduct }) {
         <Grid item xs={12} md={6}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
+              <RHFTextField name="bvn" label="Enter BVN" />
+            </Stack>
+            <br/>
+             <Stack spacing={3}>
               <RHFTextField name="account_number" label="Account Number" />
             </Stack>
             <Typography variant="caption" component="p" sx={{ color: 'red' }}>

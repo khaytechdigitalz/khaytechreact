@@ -1,11 +1,9 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
-import { Link as RouterLink } from 'react-router-dom';
-
 // @mui
 import { useState,useEffect } from 'react';
 
-import { Card, CardHeader,Button, Box, TextField , Link ,Divider} from '@mui/material';
+import { Card, CardHeader, Box, TextField } from '@mui/material';
 // components
 import { BaseOptionChart } from '../../../components/chart';
 import axios from '../../../utils/axios';
@@ -13,8 +11,6 @@ import axios from '../../../utils/axios';
 import {
   SkeletonPost,
 } from '../../../components/skeleton';
-import Iconify from '../../../components/Iconify';
-
 // ----------------------------------------------------------------------
 
 export default function AppDebitCredit() {
@@ -24,13 +20,13 @@ export default function AppDebitCredit() {
   
 
   useEffect(() => {
-    axios.get('/user/depositchart').then((response) => {
+    axios.get('/user/airtimeconchart').then((response) => {
       setPost(response);     
     });
   }, []);
   if (!post) return <SkeletonPost  sx={{ width: 40 }} />;
 
-  const credit = JSON.stringify(post.data.data.bar);
+  const credit = JSON.stringify(post.data.data.autobar);
   const CreditObject = JSON.parse(credit);
   const creditchart = Object.values(CreditObject);
  
@@ -40,7 +36,7 @@ const CHART_DATA = [
   {
     year: thisyear,
     data: [
-      { name: 'Successful Deposit', data: creditchart },
+      { name: 'Successful Conversion', data: creditchart },
     ],
   },
    
@@ -61,7 +57,7 @@ const CHART_DATA = [
   return (
     <Card>
       <CardHeader
-        title="Successful Deposit Chart"
+        title="Successful Transaction Chart"
         action={
           <TextField
             select
@@ -105,15 +101,6 @@ const CHART_DATA = [
           )}
         </Box>
       ))}
-
-<Divider />
-
-<Box sx={{ textAlign: 'right' }}>
-
-<Button component={RouterLink} to="../deposits" variant="contained" sx={{ mt: 5, mb: 3 }}>
-              {'View Deposits'}
-</Button> 
-</Box>
     </Card>
   );
 }

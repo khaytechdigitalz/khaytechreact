@@ -14,8 +14,9 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import useResponsive from '../../hooks/useResponsive';
 
 import {
-  SavingsInput,SavingsLog,SavingsPie
-} from './finance';
+  AutoInput,AutoLog,AutoPie
+,AutoBar
+} from './conversion';
 
 
 // ----------------------------------------------------------------------
@@ -31,14 +32,14 @@ export default function Savings() {
   }, [dispatch]);
 
   return (
-    <Page title="Payout">
+    <Page title="Automatic Airtime Conversion">
          <Container>
          <HeaderBreadcrumbs
-          heading={'Savings Plan' }
+          heading={'Automatic Conversion' }
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
            
-            { name: 'Savings Plan' },
+            { name: 'Automatic Conversion' },
           ]}
         />
         
@@ -46,17 +47,18 @@ export default function Savings() {
 
           <Grid container spacing={isDesktop ? 3 : 5}>
              <Grid item xs={12} md={6}>
-              <SavingsInput />
+              <AutoInput />
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <SavingsPie />
-            </Grid>
- 
-
+              <AutoPie />
+            </Grid> 
+            <Grid item xs={12} md={12}>
+              <AutoBar />
+            </Grid> 
 
             <Grid item xs={12} md={12} lg={12}>
-            <SavingsLog />
+            <AutoLog />
             </Grid>
 
           </Grid>

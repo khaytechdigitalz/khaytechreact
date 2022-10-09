@@ -15,7 +15,7 @@ import {
   TableContainer,
 } from '@mui/material';
 // utils
-import { fDate } from '../../../utils/formatTime';
+import { fDateTime } from '../../../utils/formatTime';
 import { fCurrency } from '../../../utils/formatNumber';
 // _mock_
 import { _ecommerceBestSalesman } from '../../../_mock';
@@ -48,15 +48,14 @@ export default function EcommerceBestSalesman() {
 
 
   useEffect(() => {
-    axios.get('/user/manualconversion').then((response) => {
+    axios.get('/user/airtimeconversion').then((response) => {
       setPost(response);
       console.log(response);
      
     });
   }, []);
   if (!post) return <SkeletonPost  sx={{ width: 40 }} />;
-  const results = JSON.stringify(post.data.data.cards);
-  console.log(results);
+  const results = JSON.stringify(post.data.data.manual);
   const rep = (Object.values(results));
   const personObject = JSON.parse(results);
   const isNotFound = (!personObject.length );
@@ -88,12 +87,7 @@ export default function EcommerceBestSalesman() {
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Avatar alt={row.network} src={HOST_URL+location+row.network+png} />
-                      <Box>
-                        <Typography variant="subtitle2">{(/^./, row.network.toUpperCase())}</Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Airtime
-                        </Typography>
-                      </Box>
+                     
                     </Box>
                   </TableCell> 
                   <TableCell>
@@ -146,7 +140,7 @@ export default function EcommerceBestSalesman() {
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                        <Box>
-                        <Typography variant="subtitle2"> {fDate(row.created_at)}</Typography>
+                        <Typography variant="subtitle2"> {fDateTime(row.created_at)}</Typography>
                       </Box>
                     </Box>
                   </TableCell> 
@@ -155,7 +149,7 @@ export default function EcommerceBestSalesman() {
                     <Label
                       variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                       color={
-                        (row.status === 'active' && 'success') || 'error'
+                        (row.status === 'success' && 'success') || 'error'
                       }
                     >
                       {row.status}

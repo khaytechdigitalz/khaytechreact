@@ -7,6 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Stack, IconButton, InputAdornment, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
+
+import {useParams} from 'react-router-dom';
 import useAuth from '../../../../hooks/useAuth';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 // components
@@ -31,6 +33,12 @@ export default function RegisterForm() {
     password: Yup.string().required('Password is required'),
   });
 
+  const params = useParams();
+  const urlstr = window.location.href;
+  const url = new URL(urlstr);
+  const searchparams = url.searchParams; 
+  const refid =  searchparams.get('ref');
+
   const defaultValues = {
     firstname: '',
     lastname: '',
@@ -38,6 +46,7 @@ export default function RegisterForm() {
     mobile: '',
     username: '',
     password: '',
+    reference: refid,
   };
 
   const methods = useForm({
@@ -47,7 +56,6 @@ export default function RegisterForm() {
 
   const {
     reset,
-
     setError,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -55,7 +63,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     try {
-      await register(data.email,data.mobile, data.username, data.password, data.firstname, data.lastname);
+      await register(data.email, data.password,data.firstname, data.username,  data.mobile, data.lastname,  data.reference);
     } catch (error) {
       console.error(error);
       reset();
@@ -74,6 +82,7 @@ export default function RegisterForm() {
           <RHFTextField name="firstname" label="First name" />
           <RHFTextField name="lastname" label="Last name" />
         </Stack>
+        <input value={refid} hidden readOnly name="reference"/>
 
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>

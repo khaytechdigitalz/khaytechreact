@@ -69,7 +69,9 @@ export default function Router() {
         { path: 'settings', element: <Settings /> },
         { path: 'security', element: <Security/> },
         { path: 'convert/airtime/manual', element: <AirtimeManual /> },
+        { path: 'convert/airtime/manual/:id', element: <AirtimeManualPreview /> },
         { path: 'convert/airtime/automatic', element: <AirtimeAutomatic /> },
+        { path: 'convert/airtime/automatic/:id', element: <AirtimeAutoPreview /> },
         { path: 'user/transfer', element: <Transfer /> },
         { path: 'kyc', element: <KYC /> },
         { path: 'bvn', element: <BVN /> },
@@ -223,6 +225,8 @@ const RequestFund = Loadable(lazy(() => import('../pages/user/RequestFund')));
 const Waec = Loadable(lazy(() => import('../pages/user/Waec')));
 const AirtimeAutomatic = Loadable(lazy(() => import('../pages/user/Airtime-Auto')));
 const AirtimeManual = Loadable(lazy(() => import('../pages/user/Airtime-Manual')));
+const AirtimeManualPreview = Loadable(lazy(() => import('../pages/user/conversion/ManualPreview')));
+const AirtimeAutoPreview = Loadable(lazy(() => import('../pages/user/conversion/AutoPreview')));
 
 // GENERAL
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));

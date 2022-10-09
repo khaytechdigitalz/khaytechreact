@@ -49,14 +49,18 @@ export default function AccountChangePassword() {
         password_confirmation: formState.password_confirmation, 
        })
       .then(res => { 
+        // Notification Starts;
         if(res.data.code === 200)
-        {
-          enqueueSnackbar(res.data.message);
-        }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
+        { 
+          enqueueSnackbar(res.data.message, {variant:'success'});
+         }
+         enqueueSnackbar(res.data.message, {variant:'error'}); 
+          if(res.data.error.length > 0){
+            for (let i = 0; i < res.data.error.length; i+=1) {
+              enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+              }
+          }
+        // Notification Ends;
        
       })
       reset();

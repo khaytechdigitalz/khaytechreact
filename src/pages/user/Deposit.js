@@ -42,10 +42,10 @@ export default function Deposit() {
           
 
           <Grid container spacing={isDesktop ? 3 : 5}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
               <DepositInput />
             </Grid>
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12} md={8} lg={8}>
             <DepositRecent />
           </Grid>
  

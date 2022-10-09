@@ -57,7 +57,7 @@ const CHART_DATA = [
   return (
     <Card>
       <CardHeader
-        title="Transaction Chart"
+        title="Successful Transaction Chart"
         action={
           <TextField
             select

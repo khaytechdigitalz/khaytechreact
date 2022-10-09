@@ -34,7 +34,9 @@ const ContentStyle = styled(Card)(({ theme }) => ({
 export default function InviteFriends() {
   const { general,user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
- 
+  const host = window.location.origin;
+  const baseurl =PATH_AUTH.register;
+  const endpoint =`/?ref=${user.username}`;
   const copylink = async () => {
 
     const copyText = document.getElementById("referralURL");
@@ -77,7 +79,7 @@ export default function InviteFriends() {
           <OutlinedInput
            name="email"
            id="referralURL"
-           value={PATH_AUTH.register}
+           value={host+baseurl+endpoint}
             size="small"
             placeholder="Email"
             sx={{
@@ -95,7 +97,8 @@ export default function InviteFriends() {
           <Button onClick={copylink} color="warning" variant="contained">
           Copy
           </Button>
-         
+          {PATH_AUTH.signup876}
+          
         </Stack>
        </ContentStyle>
     </div>

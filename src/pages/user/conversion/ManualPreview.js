@@ -18,7 +18,8 @@ import {
   TableContainer,
   Container,
   Stack,
-  Switch,
+  Alert,
+  Avatar
 } from '@mui/material';
 // utils
 import { LoadingButton } from '@mui/lab';
@@ -79,7 +80,7 @@ DepositPreview.propTypes = {
 
 
 export default function DepositPreview() {
-   
+    
   const isDesktop = useResponsive('up', 'md');
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
@@ -88,7 +89,7 @@ export default function DepositPreview() {
   const [post, setPost] = React.useState(null);
   const params = useParams();
   const trx = params.id;
-  const url = '/user/deposit/confirm/';
+  const url = '/user/airtime-convert/confirm/';
   React.useEffect(() => {
     axios.get(url+trx).then((response) => {
       setPost(response);     
@@ -96,27 +97,6 @@ export default function DepositPreview() {
   }, []);
   const data = post; 
   const isNotFound = (!data );
-
-  const config = {
-    public_key: "FLWPUBK_TEST-5ea2b80ca78e6a9922ed8a8fc64a5d18-X",
-    tx_ref: Date.now(),
-    currency: "NGN",
-    amount: 100,
-    payment_options: "card,mobilemoney",
-    customer: {
-      email: "herveralive@gmail.com",
-      phonenumber: "+250786007267",
-      name: "Herve Nkurikiyimfura"
-    },
-
-    customizations: {
-      title: "SMS",
-      description: "Payment for items in cart",
-      logo: "https://avatars.githubusercontent.com/u/35837984?s=200&v=4"
-    }
-  };
-
-  const handleFlutterPayment = useFlutterwave(config);
  
 
   if (!data) return <SkeletonProductItem  sx={{ width: 40 }} />;
@@ -124,144 +104,116 @@ export default function DepositPreview() {
   const handlePayment = async (event, formState) => {
   const gateway = data.data.data.name;
   await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // PAYSTACK OPERATION STARTS*/
-  if(gateway === 'Paystack')
-  {
-    const verify = '/ipn/paystack';
-    const verifyurl = HOST_URL+verify;
-    const paystack = new PaystackPop();
-    paystack.newTransaction({
-    key: data.data.data.key,
-    email: data.data.data.email,
-    amount: data.data.data.amount*100,
-  
-     onSuccess: (transaction) => { 
-      const message = transaction.message;
-      const trans = transaction.reference;
-      const refid = data.data.data.ref;
-      enqueueSnackbar(message);
-      console.log(trans);
-      try { 
-      const form = document.querySelector("form");
-      axios.post('/ipn/paystack',{ 
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        reference: refid,
-        paystacktrxref: trans,
-        })
-      .then(res => { 
-        if(res.data.code === 200)
-        {
-          enqueueSnackbar(res.data.message);
-          navigate(`../deposits`, { replace: true });
-        }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
+  try { 
+    const form = document.querySelector("form");
+    axios.post('/user/process/manual-airtime',{ 
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      reference: data.data.data.trx,
       })
-      
-       } catch (error) {
-        console.error(error);
-      }
-     // console.log(transaction);
-    },
-    onCancel: () => {
-      enqueueSnackbar('Canceled', {variant:'error'});
-    }
-    });
-      }
-    // PAYSTACK OPERATION ENDS*/
-     
-   
-    // FLUTTERWAVE OPERATION STARTS*/
-    if(gateway === 'Flutterwave')
-    {
-      handleFlutterPayment({
-        callback: (response) => {
-          console.log(response);
-          enqueueSnackbar(response.data.status);
-          closePaymentModal();
-        },
-        onClose: () => {
-          console.log("You close me ooo");
-          enqueueSnackbar('Failed Process', {variant:'error'});
+    .then(res => { 
+       // Notification Starts;
+       if(res.data.code === 200)
+       { 
+         enqueueSnackbar(res.data.message, {variant:'success'});
+         navigate(`../convert/airtime/manual`, { replace: true });
         }
-      });
-    }
-   // FLUTTERWAVE OPERATION ENDS*/
+        enqueueSnackbar(res.data.message, {variant:'error'}); 
+         if(res.data.error.length > 0){
+           for (let i = 0; i < res.data.error.length; i+=1) {
+             enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+             }
+         }
+       // Notification Ends;
+       
+    })
+    
+     } catch (error) {
+      console.error(error);
+    }  
 
 };
 
  
  
+  const location = "assets/images/bills/";
+  const png = ".jpg";
   return (
     <>
 
 <Page title="Payment">
          <Container>
          <HeaderBreadcrumbs
-          heading="Deposit"
+          heading="Manual Conversion"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Preview Deposit' },
+            { name: 'Preview Transaction' },
           ]}
           />
          
           <Grid container spacing={isDesktop ? 3 : 5}>
              
             <Grid item xs={12} md={12}>
+              
             <RootStyle>
+            <Alert severity="error">Kindly transfer the sum of {general.cur_sym} {fCurrency(data.data.data.amount)} to the phone number below and click on the complete button once process has been completed<br/><b>Please do not call this number</b></Alert>
 
-      <Typography variant="subtitle1" sx={{ mb: 5, color: 'red' }}>
-       {data.data.data.message}  
-      </Typography>
-
+         <br/>
+      <Alert severity="info">{data.data.note}</Alert>
+      <br/>
+      
       <Stack spacing={2.5}>
+      <Stack direction="row" justifyContent="space-between">
+                    
+           <Avatar alt='image' src={HOST_URL+location+data.data.data.network+png} />
+          
+         </Stack>
+
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
-            Subscription
-          </Typography>
+            Phone Number
+          </Typography> 
+                    
           <Label color="primary" variant="filled">
-          {data.data.data.name}
+          {data.data.data.beneficiary}
           </Label>
         </Stack>
-
         <Stack direction="row" justifyContent="space-between">
           <Typography component="p" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-            TRX Ref Code
+            Transaction Number
           </Typography>
           <Label color="info" variant="filled">
-          {data.data.data.ref}
+          {data.data.data.trx}
           </Label>
         </Stack>
-
-        <Stack direction="row" justifyContent="flex-end">
-          <Typography sx={{ color: 'text.secondary' }}>{data.data.data.currency}</Typography>
-          <Typography variant="h5" sx={{ mx: 1 }}>
-           {fCurrency(data.data.data.amount)}
+        <Stack direction="row" justifyContent="space-between">
+          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
+           Airtime Amount
+          </Typography>
+           <Typography variant="h5" sx={{ mx: 1 }}>
+          {general.cur_sym} {fCurrency(data.data.data.amount)}
           </Typography> 
         </Stack>
+ 
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" component="p">
-            Total Billed
+           Airtime Value
           </Typography>
           <Typography variant="h6" component="p">
-          {fCurrency(data.data.data.amount)}<small>{data.data.data.currency}</small>
+          {general.cur_sym}{fCurrency(data.data.data.receive)}
           </Typography>
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
       </Stack>
 
-      <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>
-        * Plus applicable taxes
-      </Typography>
+      <Typography variant="caption" sx={{ color: 'red', mt: 1 }}>
+            * Transaction charge for this conversion is {general.cur_sym} {fCurrency(data.data.data.charge)}
+          </Typography>
       
       <LoadingButton onClick={handlePayment} fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }}>
        Make Payment
@@ -270,12 +222,12 @@ export default function DepositPreview() {
 
       <Stack alignItems="center" spacing={1}>
         <Stack direction="row" alignItems="center" spacing={1.5}>
-          <Iconify icon={'eva:shield-fill'} sx={{ width: 20, height: 20, color: 'primary.main' }} />
-          <Typography variant="subtitle2">Secure Payment System</Typography>
+          <Iconify icon={'eva:alert-triangle-fill'} sx={{ width: 20, height: 20, color: 'primary.main' }} />
+          <Typography variant="caption" sx={{ color: 'primary.main', mt: 1 }}>
+          Terms & Condition: {general.sitename} will not be liable to any loss arising from sending airtime to number other than {data.data.data.beneficiary}
+          </Typography>
         </Stack>
-        <Typography variant="caption" sx={{ color: 'text.secondary', textAlign: 'center' }}>
-          This is a secure 128-bit SSL encrypted payment
-        </Typography>
+        
       </Stack>
 
                   

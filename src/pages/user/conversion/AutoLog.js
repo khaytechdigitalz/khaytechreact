@@ -48,32 +48,36 @@ export default function EcommerceBestSalesman() {
 
 
   useEffect(() => {
-    axios.get('/user/withdraw/history').then((response) => {
+    axios.get('/user/airtimeconversion').then((response) => {
       setPost(response);
       console.log(response);
      
     });
   }, []);
   if (!post) return <SkeletonPost  sx={{ width: 40 }} />;
-  const results = JSON.stringify(post.data.data.withdrawals);
+  const results = JSON.stringify(post.data.data.automatic);
   const rep = (Object.values(results));
   const personObject = JSON.parse(results);
   const isNotFound = (!personObject.length );
-   
+  
+  const location = "assets/images/bills/";
+  const png = ".jpg";
  return (
     <Card>
 
-      <CardHeader title="Payout History" sx={{ mb: 3 }} />
+      <CardHeader title="Automatic Airtime Conversion" sx={{ mb: 3 }} />
       <Scrollbar>
         <TableContainer>
           <Table>
              <TableHead>
               <TableRow>
-                <TableCell>Plan </TableCell>
+                <TableCell>Network </TableCell>
                 <TableCell>Amount </TableCell>
-                <TableCell> Date </TableCell>
-                <TableCell>Fees </TableCell>
+                <TableCell>Sender </TableCell>
+                <TableCell>Beneficiary </TableCell>
+                <TableCell>Type </TableCell>
                 <TableCell>Trx </TableCell>
+                <TableCell>Date </TableCell>
                  <TableCell align="right">Status</TableCell>
               </TableRow>
             </TableHead>
@@ -82,7 +86,8 @@ export default function EcommerceBestSalesman() {
                 <TableRow key={row.id}>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      {row.method.name}
+                      <Avatar alt={row.network} src={HOST_URL+location+row.network+png} />
+                     
                     </Box>
                   </TableCell> 
                   <TableCell>
@@ -93,29 +98,49 @@ export default function EcommerceBestSalesman() {
                     </Box>
                   </TableCell> 
 
-
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                        <Box>
-                        <Typography variant="subtitle2"> {fDateTime(row.created_at)}</Typography>
-                      </Box>
-                    </Box>
-                  </TableCell> 
- 
-                  <TableCell>
-                    <Box>
-                       <Box>
-                        <Typography variant="subtitle2"> {general.cur_sym}{fCurrency(row.charge)}</Typography>
+                        <Typography variant="subtitle2"> {row.sender}</Typography>
                       </Box>
                     </Box>
                   </TableCell> 
 
-                   
+                  <TableCell>
+                    <Box>
+                       <Box>
+                        <Typography variant="subtitle2"> {row.beneficiary}</Typography>
+                      </Box>
+                    </Box>
+                  </TableCell> 
+
+                  <TableCell>
+                    <Box>
+                       <Box>
+                       <Label
+                      variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                      color={
+                        (row.type === 'manual' && 'info') || 'primary'
+                      }
+                    >
+                      {row.type}
+                    </Label>
+                      </Box>
+                    </Box>
+                  </TableCell> 
 
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                        <Box>
                         <Typography variant="subtitle2"> {row.trx}</Typography>
+                      </Box>
+                    </Box>
+                  </TableCell> 
+
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Box>
+                        <Typography variant="subtitle2"> {fDateTime(row.created_at)}</Typography>
                       </Box>
                     </Box>
                   </TableCell> 

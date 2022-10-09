@@ -1,6 +1,6 @@
-// @mui
+ // @mui
 import { useState, useEffect,React } from 'react';
-
+import { useNavigate} from "react-router-dom";
 import * as Yup from 'yup';
 import { styled } from '@mui/material/styles';
 import { Divider, Typography, Stack,TextField } from '@mui/material';
@@ -71,6 +71,8 @@ export default function AirtimeInput() {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+  const navigate = useNavigate();
+
   const onSubmit = async (formState) => {
     try { 
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -86,15 +88,20 @@ export default function AirtimeInput() {
         phone: formState.phone, 
        })
       .then(res => { 
+        // Notification Starts;
         if(res.data.code === 200)
         { 
           enqueueSnackbar(res.data.message, {variant:'success'});
+          navigate(`${res.data.ref}`, { replace: true });
          }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
-       
+         enqueueSnackbar(res.data.message, {variant:'error'}); 
+          if(res.data.error.length > 0){
+            for (let i = 0; i < res.data.error.length; i+=1) {
+              enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+              }
+          }
+        // Notification Ends;
+          
       })
      // reset();
      } catch (error) {

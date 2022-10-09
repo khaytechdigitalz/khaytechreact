@@ -221,7 +221,11 @@ function MoreMenuButton() {
     if (user.account_number !== null) {
       return (
         <>
-           
+          <Button color="primary" 
+          onClick={generatenuban} 
+           variant="contained">
+              Generate Nuban
+          </Button>
         </>
       );
     }

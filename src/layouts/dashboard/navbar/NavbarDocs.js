@@ -24,7 +24,7 @@ export default function NavbarDocs() {
           Hi, {user?.username}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Need help?
+          Wanna Build?
           <br /> Please check our docs
         </Typography>
       </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Avatar, Typography, ListItemText, ListItemAvatar, MenuItem } from '@mui/material';
@@ -12,6 +12,7 @@ import Scrollbar from '../../../components/Scrollbar';
 import MenuPopover from '../../../components/MenuPopover';
 import BadgeStatus from '../../../components/BadgeStatus';
 import { IconButtonAnimate } from '../../../components/animate';
+import axios from '../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +30,21 @@ export default function ContactsPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+  const [post, setPost] = useState(null);
+
+
+  useEffect(() => {
+    axios.get('/user/contacts').then((response) => {
+      setPost(response);
+      console.log(response);
+     
+    });
+  }, []);
+  if (!post) return null;
+  const results = JSON.stringify(post.data.contacts);
+  const rep = (Object.values(results));
+  const personObject = JSON.parse(results);
+  const isNotFound = (!personObject.length );
 
   return (
     <>
@@ -62,22 +78,22 @@ export default function ContactsPopover() {
         }}
       >
         <Typography variant="h6" sx={{ p: 1.5 }}>
-          Contacts <Typography component="span">({_contacts.length})</Typography>
+         My Contacts <Typography component="span">({personObject.length})</Typography>
         </Typography>
 
-        <Scrollbar sx={{ height: ITEM_HEIGHT * 6 }}>
-          {_contacts.map((contact) => (
+        <Scrollbar sx={{ height: ITEM_HEIGHT * 4 }}>
+          {personObject.map((contact) => (
             <MenuItem key={contact.id}>
               <ListItemAvatar sx={{ position: 'relative' }}>
-                <Avatar src={contact.avatar} />
-                <BadgeStatus status={contact.status} sx={{ position: 'absolute', right: 1, bottom: 1 }} />
+                <Avatar src={contact.user.username} />
+                <BadgeStatus status={contact.username} sx={{ position: 'absolute', right: 1, bottom: 1 }} />
               </ListItemAvatar>
-
+             
               <ListItemText
                 primaryTypographyProps={{ typography: 'subtitle2', mb: 0.25 }}
                 secondaryTypographyProps={{ typography: 'caption' }}
-                primary={contact.name}
-                secondary={contact.status === 'offline' && fToNow(contact.lastActivity)}
+                primary={contact.user.username}
+                secondary={contact.status === 1 && fToNow(contact.created_at)}
               />
             </MenuItem>
           ))}

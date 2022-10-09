@@ -97,14 +97,18 @@ export default function AirtimeInput() {
         phone: formState.phone, 
        })
       .then(res => { 
+        // Notification Starts;
         if(res.data.code === 200)
-        {
-          enqueueSnackbar(res.data.message);
-        }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
+        { 
+          enqueueSnackbar(res.data.message, {variant:'success'});
+         }
+         enqueueSnackbar(res.data.message, {variant:'error'}); 
+          if(res.data.error.length > 0){
+            for (let i = 0; i < res.data.error.length; i+=1) {
+              enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+              }
+          }
+        // Notification Ends;
        
       })
      // reset();
@@ -152,8 +156,6 @@ function updatePost(event) {
 }
 
    const loading = true; 
-  if (!CATEGORY_OPTION) return <SkeletonProductItem  sx={{ width: 40 }} />;
-  
   return (
     <Page>
       
@@ -186,7 +188,7 @@ function updatePost(event) {
         {(() => {
                 if (!post ) {
                   return (
-                    <SkeletonInputLoader  sx={{ width: 40 }} />
+                   null
                   )
                 } if (post.status != null ) {
                   return (

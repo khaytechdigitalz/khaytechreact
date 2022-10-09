@@ -25,6 +25,12 @@ import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import useAuth from '../../../hooks/useAuth';
 
+import {
+  TableNoData,
+  TableSkeleton,
+  TableEmptyRows,
+} from '../../../components/table';
+import useTable, { emptyRows } from '../../../hooks/useTable';
 // ----------------------------------------------------------------------
 
 export default function AppNewTRX() {
@@ -42,8 +48,8 @@ export default function AppNewTRX() {
   if (!post) return null;
   const results = JSON.stringify(post.data.data.userTRX);
   const rep = (Object.values(results));
-   const personObject = JSON.parse(results);
-    
+  const personObject = JSON.parse(results);
+  const isNotFound = (!personObject.length );
   return (
     
     <Card>
@@ -107,6 +113,11 @@ export default function AppNewTRX() {
                 </TableRow>
               ))}
             </TableBody>
+
+
+          <TableEmptyRows height={1} emptyRows={emptyRows(12, 4, 5)} />
+
+          <TableNoData isNotFound={isNotFound} />
           </Table>
 
           

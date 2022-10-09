@@ -1,255 +1,153 @@
-import { paramCase } from 'change-case';
-import { useState, useEffect } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
-
 // @mui
+import { useState,useEffect } from 'react';
+import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Card,
   Table,
-  Button,
-  Switch,
-  Tooltip,
-  Typography,
-  TableBody,
-  Container,
-  IconButton,
-  TableContainer,
-  TableCell,
-  TableRow,
   Avatar,
-  TablePagination,
-  FormControlLabel,
-  CardHeader
+  TableRow,
+  TableBody,
+  TableCell,
+  TableHead,
+  CardHeader,
+  Typography,
+  TableContainer,
 } from '@mui/material';
-// redux
-import { useDispatch, useSelector } from '../../../redux/store';
-import { getProducts } from '../../../redux/slices/savings';
-// routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
-// hooks
-import useSettings from '../../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
+// utils
+import { fDateTime } from '../../../utils/formatTime';
+import { fCurrency } from '../../../utils/formatNumber';
+// _mock_
+import { _ecommerceBestSalesman } from '../../../_mock';
 // components
-import Page from '../../../components/Page';
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import Image from '../../../components/Image';
 import Label from '../../../components/Label';
- import {
+import Image from '../../../components/Image';
+import Scrollbar from '../../../components/Scrollbar';
+import axios from '../../../utils/axios';
+import useAuth from '../../../hooks/useAuth';
+
+
+import {
   TableNoData,
   TableSkeleton,
   TableEmptyRows,
-  TableHeadCustom,
-  TableSelectedActions,
 } from '../../../components/table';
-// sections
+import useTable, { emptyRows } from '../../../hooks/useTable';
 
-import { SavingsLogRows } from '.';
-import axios from '../../../utils/axios';
-import { fCurrency } from '../../../utils/formatNumber';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Plan', align: 'left' },
-  { id: 'trx', label: 'TRX ID', align: 'left' },
-  { id: 'createdat', label: 'Date Started', align: 'left' },
-  { id: 'amount', label: 'Amount' },
-  { id: 'interest', label: 'Interest'},
-  { id: 'status', label: 'Status', width: 180 },
-];
+import {
+  SkeletonPost,
+} from '../../../components/skeleton';
+import { HOST_URL } from '../../../config';
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceProductList() {
+export default function EcommerceBestSalesman() {
   const theme = useTheme();
+  const [post, setPost] = useState(null);
+  const {general } = useAuth();
 
-  const {
-    dense,
-    page,
-    order,
-    orderBy,
-    rowsPerPage,
-    setPage,
-    
-    selected,
-    setSelected,
-    onSelectRow,
-    onSelectAllRows,
-    //
-    onSort,
-    onChangeDense,
-    onChangePage,
-    onChangeRowsPerPage,
-  } = useTable({
-    defaultOrderBy: 'created_at',
-  });
-
-  const { themeStretch } = useSettings();
-
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-
-  const { products, isLoading } = useSelector((state) => state.product);
-
-  const [tableData, setTableData] = useState([]);
-
-  const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    axios.get('/user/savingslog').then((response) => {
+      setPost(response);
+      console.log(response);
+     
+    });
+  }, []);
+  if (!post) return <SkeletonPost  sx={{ width: 40 }} />;
+  const results = JSON.stringify(post.data.data.savings);
+  const rep = (Object.values(results));
+  const personObject = JSON.parse(results);
+  const isNotFound = (!personObject.length );
+   
+ return (
+    <Card>
 
-  useEffect(() => {
-    if (products.length) {
-      setTableData(products);
-    }
-  }, [products]);
-
-  const handleFilterName = (filterName) => {
-    setFilterName(filterName);
-    setPage(0);
-  };
-
-  const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
-    setSelected([]);
-    setTableData(deleteRow);
-  };
-
-  const handleDeleteRows = (selected) => {
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
-    setSelected([]);
-    setTableData(deleteRows);
-  };
-
-  const handleEditRow = (id) => {
-    navigate(PATH_DASHBOARD.eCommerce.edit(paramCase(id)));
-  };
- 
-
-  const dataFiltered = applySortFilter({
-    tableData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-  });
-
-  const denseHeight = dense ? 60 : 80;
-
-  const isNotFound = (!dataFiltered.length && !!filterName) || (!isLoading && !dataFiltered.length);
-  return (
-         
-        <Card>
-        <CardHeader title="Savings Log" sx={{ mb: 3 }} />
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              {selected.length > 0 && (
-                <TableSelectedActions
-                  dense={dense}
-                  numSelected={selected.length}
-                  rowCount={tableData.length}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
-                  actions={
-                    <Tooltip title="Delete">
-                      <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                        <Iconify icon={'eva:trash-2-outline'} />
-                      </IconButton>
-                    </Tooltip>
-                  }
-                />
-              )}
-
-              <Table size={dense ? 'small' : 'medium'}>
-                <TableHeadCustom
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={tableData.length}
-                  numSelected={selected.length}
-                  onSort={onSort}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
-                />
-                <TableBody>
-                  {(isLoading ? [...Array(rowsPerPage)] : dataFiltered)
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) =>
-                      row ? (
-                        <SavingsLogRows
-                          key={row.id}
-                          row={row}
-                          selected={selected.includes(row.id)}
-                          onSelectRow={() => onSelectRow(row.id)}
-                          onDeleteRow={() => handleDeleteRow(row.id)}
-                          onEditRow={() => handleEditRow(row.name)}
-                        />
-                      ) : (
-                        !isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />
-                      )
-                    )}
+      <CardHeader title="Savings History" sx={{ mb: 3 }} />
+      <Scrollbar>
+        <TableContainer>
+          <Table>
+             <TableHead>
+              <TableRow>
+                <TableCell>Plan </TableCell>
+                <TableCell>Amount </TableCell>
+                <TableCell>Date Created</TableCell>
+                <TableCell>Next Return </TableCell>
+                <TableCell>Total Return </TableCell>
+                <TableCell>Trx </TableCell>
+                 <TableCell align="right">Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {personObject.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      {row.plan.name}
+                    </Box>
+                  </TableCell> 
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Box>
+                        <Typography variant="subtitle2"> {general.cur_sym}{fCurrency(row.amount)}</Typography>
+                      </Box>
+                    </Box>
+                  </TableCell> 
 
 
-                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Box>
+                        <Typography variant="subtitle2"> {fDateTime(row.created_at)}</Typography>
+                      </Box>
+                    </Box>
+                  </TableCell> 
 
-                  <TableNoData isNotFound={isNotFound} />
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Box>
+                        <Typography variant="subtitle2">  {fDateTime(row.next_return_date)}</Typography>
+                      </Box>
+                    </Box>
+                  </TableCell> 
 
-                </TableBody>
-              </Table>
+                  <TableCell>
+                    <Box>
+                       <Box>
+                        <Typography variant="subtitle2"> {general.cur_sym}{fCurrency(row.total_interest)}</Typography>
+                      </Box>
+                    </Box>
+                  </TableCell> 
 
-              
-            </TableContainer>
-          </Scrollbar>
+                   
 
-          <Box sx={{ position: 'relative' }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={dataFiltered.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Box>
+                        <Typography variant="subtitle2"> {row.trx}</Typography>
+                      </Box>
+                    </Box>
+                  </TableCell> 
+                  
+                  <TableCell align="right">
+                    <Label
+                      variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                      color={
+                        (row.status === 'Completed' && 'success') || 'primary'
+                      }
+                    >
+                      {row.status}
+                    </Label>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableEmptyRows height={1} emptyRows={emptyRows(12, 4, 5)} />
 
-            <FormControlLabel
-              control={<Switch checked={dense} onChange={onChangeDense} />}
-              label="Dense"
-              sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-            />
-          </Box>
-        </Card>
-    );
-}
-
-// ----------------------------------------------------------------------
-
-function applySortFilter({ tableData, comparator, filterName }) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  tableData = stabilizedThis.map((el) => el[0]);
-
-  if (filterName) {
-    tableData = tableData.filter((item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
-  }
-
-  return tableData;
+          <TableNoData isNotFound={isNotFound} />
+          </Table>
+        </TableContainer>
+      </Scrollbar>
+    </Card>
+  );
 }
