@@ -74,7 +74,7 @@ export default function AppNewTRX() {
               <TableRow>
                 <TableCell>TRX ID</TableCell>
                 <TableCell >Details</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell>Amount</TableCell>
                 <TableCell>Status</TableCell>
                  
               </TableRow>
@@ -112,12 +112,13 @@ export default function AppNewTRX() {
                   
                 </TableRow>
               ))}
-            </TableBody>
-
 
           <TableEmptyRows height={1} emptyRows={emptyRows(12, 4, 5)} />
 
-          <TableNoData isNotFound={isNotFound} />
+         <TableNoData isNotFound={isNotFound} />
+            </TableBody>
+
+
           </Table>
 
           

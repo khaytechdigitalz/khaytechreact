@@ -1,6 +1,6 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography,  Card, CardContent } from '@mui/material';
+import { Typography,  Card, CardContent, Alert } from '@mui/material';
 //
 import { UploadIllustration ,  SeverErrorIllustration } from '../../../assets';
 import useAuth from '../../../hooks/useAuth';
@@ -35,8 +35,14 @@ export default function BvnSlider() {
         }}
       >
         <Typography gutterBottom variant="h4">
-        {user?.bvn_verify !== 1 ? 'Bank Account Not Verified !!!' : 'Bank Account Verified !' }
+        Bank Verification
         </Typography>
+       
+        {user?.bvn_verify !== 1 ? 
+         <Alert severity="error">Bank Account Not Verified</Alert>
+        : 
+        <Alert severity="success">Bank Account Verified</Alert>
+        }
 
 
        </CardContent>

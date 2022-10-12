@@ -22,7 +22,7 @@ import axios from '../../../utils/axios';
 export default function AccountGeneral() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const { user } = useAuth();
+  const { user,avatar } = useAuth();
 
   const UpdateUserSchema = Yup.object().shape({
     firstname: Yup.string().required('First Name is required'),
@@ -104,7 +104,7 @@ export default function AccountGeneral() {
     },
     [setValue]
   );
-
+  const slash = '/';
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
       

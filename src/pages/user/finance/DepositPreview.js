@@ -19,9 +19,11 @@ import {
   Container,
   Stack,
   Switch,
+  Alert,
 } from '@mui/material';
 // utils
 import { LoadingButton } from '@mui/lab';
+import { useForm } from 'react-hook-form';
 
 import PaystackPop from '@paystack/inline-js';
 import {
@@ -62,6 +64,8 @@ import useAuth from '../../../hooks/useAuth';
 import useTable, { emptyRows } from '../../../hooks/useTable';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { HOST_URL } from '../../../config';
+import { FormProvider, RHFTextField,RHFSwitch, RHFCheckbox,RHFSelect } from '../../../components/hook-form';
+
 
 // ----------------------------------------------------------------------
 
@@ -96,6 +100,7 @@ export default function DepositPreview() {
   }, []);
   const data = post; 
   const isNotFound = (!data );
+ 
 
   const config = {
     public_key: "FLWPUBK_TEST-5ea2b80ca78e6a9922ed8a8fc64a5d18-X",
@@ -118,11 +123,26 @@ export default function DepositPreview() {
 
   const handleFlutterPayment = useFlutterwave(config);
  
+ 
+const defaultValues = {
+  amount: '', 
+}; 
+const methods = useForm({
+  defaultValues,
+});
+
+const {
+  reset,
+  handleSubmit,
+  formState: { isSubmitting },
+} = methods;
+ 
 
   if (!data) return <SkeletonProductItem  sx={{ width: 40 }} />;
-
+  const inputform = JSON.stringify(data);
   const handlePayment = async (event, formState) => {
   const gateway = data.data.data.name;
+
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   // PAYSTACK OPERATION STARTS*/
@@ -141,8 +161,7 @@ export default function DepositPreview() {
       const trans = transaction.reference;
       const refid = data.data.data.ref;
       enqueueSnackbar(message);
-      console.log(trans);
-      try { 
+       try { 
       const form = document.querySelector("form");
       axios.post('/ipn/paystack',{ 
         headers: {
@@ -193,10 +212,143 @@ export default function DepositPreview() {
     }
    // FLUTTERWAVE OPERATION ENDS*/
 
-};
+   
+    // ECARD OPERATION STARTS*/
+    if(gateway === 'Ecard')
+    {
+      try { 
+        const pan = document.getElementById("cardnumber").value;
+        const pin = document.getElementById("cardpin").value;
+        axios.post('/ipn/charge/ecard',{ 
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          reference: data.data.data.ref,
+          cardnumber: pan,
+          cardpin: pin,
+          })
+        .then(res => { 
+        // Notification Starts;
+         if(res.data.code === 200)
+         { 
+           enqueueSnackbar(res.data.message, {variant:'success'});
+           navigate(`../deposits`, { replace: true });
+          }
+          enqueueSnackbar(res.data.message, {variant:'error'}); 
+           if(res.data.error.length > 0){
+             for (let i = 0; i < res.data.error.length; i+=1) {
+               enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+               }
+           }
+         // Notification Ends;
+        })
+        reset();
+        } catch (error) {
+          console.error(error);
+        }
+    }
+   // ECARD OPERATION ENDS*/
+    // IRTIMEMANUAL OPERATION STARTS*/
+    if(gateway === 'AirtimeManual')
+    {
+      try { 
+        const senderphone = document.getElementById("sender").value;
+        const receiverphone = document.getElementById("receiver").value;
+        const provider = document.getElementById("network").value;
+        axios.post('/ipn/airtimemanual',{ 
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          reference: data.data.data.ref,
+          sender: senderphone,
+          receiver: receiverphone,
+          network: provider,
+          })
+        .then(res => { 
+        // Notification Starts;
+         if(res.data.code === 200)
+         { 
+           enqueueSnackbar(res.data.message, {variant:'success'});
+           navigate(`../deposits`, { replace: true });
+          }
+          enqueueSnackbar(res.data.message, {variant:'error'}); 
+           if(res.data.error.length > 0){
+             for (let i = 0; i < res.data.error.length; i+=1) {
+               enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+               }
+           }
+         // Notification Ends;
+        })
+        reset();
+        } catch (error) {
+          console.error(error);
+        }
+    }
+   // IRTIMEMANUAL OPERATION ENDS*/
+   
 
- 
- 
+};
+  const getnetworks = (event) => { 
+  const provider = event.target.options[event.target.selectedIndex].dataset.network;
+  try { 
+    document.getElementById("phonenumber").innerHTML = "*******";
+
+    document.getElementById("receiver").value = null;
+
+    document.getElementById("network").value = null;
+    document.getElementById("info").innerHTML = `Please select your prefered Network service provider and enter the phone number you will be sending the Airtime from. Please make airtime transfer to the generated phone number. You account will be credited with the airtime value once payment has been confirmed on our server.`;
+
+    axios.post('/ipn/getphone',{ 
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      network: provider
+      })
+    .then(res => { 
+    // Notification Starts;
+     if(res.data.code === 200)
+     { 
+       enqueueSnackbar(res.data.message, {variant:'success'});
+       document.getElementById("phonenumber").innerHTML = `${res.data.phone}`;
+       document.getElementById("receiver").value = res.data.phone;
+       document.getElementById("info").innerHTML = `${res.data.info}`;
+       document.getElementById("network").value = provider;
+
+      }
+  
+      enqueueSnackbar(res.data.message, {variant:'error'}); 
+       if(res.data.error.length > 0){
+         for (let i = 0; i < res.data.error.length; i+=1) {
+           enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+           }
+       }
+     // Notification Ends;
+    })
+    reset();
+    } catch (error) {
+      console.error(error);
+    }
+  
+  }; 
+  const NETWORK_OPTION = [
+    {
+      "name": "Airtel",
+      "symbol": "airtel"
+  },
+  {
+      "name": "Globacom",
+      "symbol": "glo"
+  },
+  {
+      "name": "MTN",
+      "symbol": "mtn"
+  },
+  {
+      "name": "9mobile",
+      "symbol": "9mobile"
+  }
+]; 
+  
   return (
     <>
 
@@ -209,11 +361,9 @@ export default function DepositPreview() {
             { name: 'Preview Deposit' },
           ]}
           />
-         
-          <Grid container spacing={isDesktop ? 3 : 5}>
-             
-            <Grid item xs={12} md={12}>
-            <RootStyle>
+           <Grid container spacing={isDesktop ? 3 : 5}>
+           <Grid item xs={12} md={12}>
+          <RootStyle>
 
       <Typography variant="subtitle1" sx={{ mb: 5, color: 'red' }}>
        {data.data.data.message}  
@@ -249,7 +399,7 @@ export default function DepositPreview() {
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" component="p">
-            Total Billed
+            Total Amount
           </Typography>
           <Typography variant="h6" component="p">
           {fCurrency(data.data.data.amount)}<small>{data.data.data.currency}</small>
@@ -258,14 +408,72 @@ export default function DepositPreview() {
 
         <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
       </Stack>
-
+      
       <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>
         * Plus applicable taxes
       </Typography>
-      
+
+      {(() => {
+                if (data.data.data.name === 'Ecard') {
+                  return (
+                    <FormProvider methods={methods} >
+       
+                    <Stack spacing={3} sx={{ p: 3, pb: 0 }}>
+                      
+                        <RHFTextField name="card" id="cardnumber" type="number" fullWidth label="Card Number" />
+                        <RHFTextField name="trxpin" id="cardpin" type="password" fullWidth  label="Card Pin" />
+                        
+                     </Stack>
+                     </FormProvider>
+                  )
+                }
+
+                if (data.data.data.name === 'AirtimeManual') {
+                  return (
+                    <FormProvider methods={methods} >
+       
+                    <Stack spacing={3} >
+                        <Alert severity="info"  id="info">Please select your prefered Network service provider and enter the phone number you will be sending the Airtime from. Please make airtime transfer to the generated 
+                        phone number. You account will be credited with the airtime value once payment has been confirmed on our server.</Alert>
+                        <RHFTextField name="phone" id="sender" type="number" fullWidth label="Phone Number" />
+                        
+                        <RHFSelect onChange={getnetworks}  name="network" label="Internet Plans">
+                              <option selected disabled>Select Network</option>
+                              {NETWORK_OPTION.map((category) => (
+                                <option  data-network={category.symbol}  key={category.id} value={category.network}>
+                                      {category.name}
+                                </option>
+                              ))}
+                        </RHFSelect>
+                        
+                        <Divider sx={{ borderStyle: 'dashed' }} />
+
+                        <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Typography variant="h6" component="p">
+                          Phone Number
+                        </Typography>
+                        <Typography variant="h6" component="p">
+                        <a id="phonenumber">*******</a>
+                        <input id="receiver" hidden/>
+                        <input id="network" hidden />
+                        </Typography>
+                        </Stack>
+                        
+                     </Stack>
+                     </FormProvider>
+                  )
+                }
+            
+       })()}
+
+    
+       
       <LoadingButton onClick={handlePayment} fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }}>
        Make Payment
       </LoadingButton> 
+       
+   
+      
        
 
       <Stack alignItems="center" spacing={1}>

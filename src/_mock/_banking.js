@@ -9,7 +9,7 @@ export const _bankingContacts = [...Array(5)].map((_, index) => ({
   avatar: _mock.image.avatar(index + 4),
 }));
 
-export const _bankingQuickTransfer = [...Array(12)].map((_, index) => ({
+export const _bankingQuickTransfer = [...Array(2)].map((_, index) => ({
   id: _mock.id(index),
   name: _mock.name.fullName(index),
   email: _mock.email(index),

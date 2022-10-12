@@ -1,5 +1,6 @@
 
 export { default as AppNewTransfer } from './AppNewTransfer';
+export { default as AppNewTransferBar } from './AppNewTransferBar';
 export { default as DepositInput } from './DepositInput';
 export { default as DepositLog } from './DepositLog';
 export { default as DepositLogRows } from './DepositLogRows';
@@ -17,5 +18,6 @@ export { default as SavingsPie } from './SavingsPie';
 export { default as SavingsLog } from './SavingsLog';
  export { default as BankInput} from './BankInput';
 export { default as BankTransfer} from './BankTransfer';
+export { default as BankTransferBar} from './BankTransferBar';
 export { default as EcardInput} from './EcardInput';
 export { default as EcardRecent} from './EcardRecent';

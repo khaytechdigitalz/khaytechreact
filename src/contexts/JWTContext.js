@@ -11,27 +11,36 @@ const initialState = {
   isInitialized: false,
   user: null,
   general: null,
+  host: null,
+  image: null,
+  avatar: null,
+  sitelogo: null,
 };
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user, general } = action.payload;
+    const { isAuthenticated, user, general,host,image, avatar,sitelogo } = action.payload;
     return {
       ...state,
       isAuthenticated,
       isInitialized: true,
       user,
+      host,
+      image,
       general,
+      avatar,
+      sitelogo,
     };
   },
   LOGIN: (state, action) => {
-    const { user, general } = action.payload;
+    const { user, general,sitelogo } = action.payload;
 
     return {
       ...state,
       isAuthenticated: true,
       user,
       general,
+      sitelogo,
     };
   },
   LOGOUT: (state) => ({
@@ -79,16 +88,17 @@ function AuthProvider({ children }) {
           setSession(accessToken);
 
           const response = await axios.get('/user/dashboard');
-          const { user } = response.data.data;
-          const { general } = response.data.data;
-          console.log(response.data.data);
-
+          const { user,host,general,image, avatar,sitelogo } = response.data.data;
           dispatch({
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: true,
               user,
               general,
+              image,
+              host,
+              avatar,
+              sitelogo
             },
           });
         } else {
@@ -120,15 +130,16 @@ function AuthProvider({ children }) {
       username,
       password,
     });
-    const { accessToken, user, general } = response.data.data;
-    console.log('Login Process');
-    console.log(response.data);
+    const { accessToken, user, general, image, host,sitelogo } = response.data.data;
     setSession(accessToken);
     dispatch({
       type: 'LOGIN',
       payload: {
         user,
         general,
+        image,
+        host,
+        sitelogo,
       },
     });
   };
@@ -144,8 +155,6 @@ function AuthProvider({ children }) {
       reference,
     });
     const { accessToken, user, general } = response.data.data;
-    console.log('Register Process');
-    console.log(response.data);
     window.localStorage.setItem('accessToken', accessToken);
     dispatch({
       type: 'REGISTER',

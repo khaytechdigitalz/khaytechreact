@@ -108,14 +108,18 @@ export default function Kyc({ currentProduct }) {
         bvn: formState.bvn,
        })
       .then(res => { 
-        if(res.data.code === 200)
-        {
-          enqueueSnackbar(res.data.message);
-        }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
+         // Notification Starts;
+         if(res.data.code === 200)
+         { 
+           enqueueSnackbar(res.data.message, {variant:'success'});
+          }
+          enqueueSnackbar(res.data.message, {variant:'error'}); 
+           if(res.data.error.length > 0){
+             for (let i = 0; i < res.data.error.length; i+=1) {
+               enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+               }
+           }
+         // Notification Ends;
        
       })
       reset();
@@ -145,9 +149,7 @@ export default function Kyc({ currentProduct }) {
              <Stack spacing={3}>
               <RHFTextField name="account_number" label="Account Number" />
             </Stack>
-            <Typography variant="caption" component="p" sx={{ color: 'red' }}>
-          <b>Note:</b> The name on your bank account must be the same name you used used when you signedup  on {general.sitename}
-          </Typography> 
+           
             <Stack spacing={3} mt={5}>
                <RHFSelect name="account_bank" label="Bank" >
                   <option selected disabled>Please Select Bank</option>
@@ -156,14 +158,17 @@ export default function Kyc({ currentProduct }) {
                           {category.name}
                     </option>
                    ))}
-            </RHFSelect>
-
-        </Stack>
+                 </RHFSelect>
+            </Stack>
+            <Typography variant="caption" component="p" sx={{ color: 'red' }}>
+          <b>Please Note:</b> The name on your bank account must be the same name you used used when you registerd your account on {general.sitename}<br/>
+          Validating your BVN cost {general.cur_sym}{general.bvn_fee} per successful validation.
+          </Typography> 
           </Card>
           <br/>
           <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
               {'Validate Bank'}
-            </LoadingButton>
+          </LoadingButton>
         </Grid>
         
 
@@ -171,7 +176,7 @@ export default function Kyc({ currentProduct }) {
           <Stack spacing={3}>
           <Card sx={{ mb: 3 }}>
       <CardHeader
-        title="Account Summary"
+        title="Bank Account Summary"
       />
 
       <CardContent>

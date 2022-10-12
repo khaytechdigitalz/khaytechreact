@@ -58,16 +58,16 @@ const navConfig = [
     { title: 'E-Cards', path: PATH_DASHBOARD.dashboard.ecard, icon: <Iconify icon={'eva:credit-card-fill'} width={24} height={24} />  },
     { title: 'Fund Lock', path: PATH_DASHBOARD.dashboard.savings, icon:  <Iconify icon={'eva:lock-outline'} width={24} height={24} />  },
     { title: 'Request Fund', path: PATH_DASHBOARD.dashboard.requestfund, icon:  ICONS.ecommerce  },
+    { title: 'Withdraw Fund', path: PATH_DASHBOARD.transfer.payout, icon: ICONS.banking   },
     
     // FUND TRANSFER
     {
       title: 'Transfer',
       path: PATH_DASHBOARD.transfer.root,
-      icon: ICONS.banking,
+      icon: <Iconify icon={'fa6-solid:money-bill-transfer'} width={24} height={24} />,
       children: [
         { title: 'User to User', path: PATH_DASHBOARD.transfer.transfer },
         { title: 'Bank Transfer', path: PATH_DASHBOARD.transfer.bank },
-        { title: 'Other Transfer', path: PATH_DASHBOARD.transfer.payout },
       ],
     },
     // Convert Airtime TRANSFER

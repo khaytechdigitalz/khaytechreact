@@ -14,7 +14,7 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import useResponsive from '../../hooks/useResponsive';
 
 import {
-  BankInput,BankTransfer
+  BankInput,BankTransfer,BankTransferBar
 } from './finance';
 
 
@@ -45,8 +45,12 @@ export default function Bank() {
           
 
           <Grid container spacing={isDesktop ? 3 : 5}>
-             <Grid item xs={12} md={12}>
+             <Grid item xs={12} md={5}>
               <BankInput />
+            </Grid>
+
+            <Grid item xs={12} md={7}>
+              <BankTransferBar />
             </Grid>
 
             

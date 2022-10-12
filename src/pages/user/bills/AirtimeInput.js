@@ -130,7 +130,6 @@ export default function AirtimeInput() {
   
   const gettotal = () => {
     try {
-      
      const amount = document.getElementById('amount').value;
      const discount = DISCOUNT/100*amount;
      document.getElementById("discount").innerHTML = discount;

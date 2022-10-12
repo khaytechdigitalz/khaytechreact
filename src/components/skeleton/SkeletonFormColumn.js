@@ -8,14 +8,14 @@ export default function SkeletonKanbanColumn() {
     <Box
       sx={{
         display: 'grid',
-        gap: 3,
+        gap: 3, 
         gridTemplateColumns: 'repeat(4, 1fr)',
       }}
     >
       {[...Array(1)].map((_, index) => (
         <Paper variant="outlined" key={index} sx={{ p: 2.5, width: 310 }}>
           <Stack spacing={2}>
-            <Skeleton variant="rectangular" sx={{ paddingTop: '75%', borderRadius: 1.5 }} />
+            <Skeleton variant="rectangular" width="100%"sx={{ paddingTop: '75%', borderRadius: 1.5 }} />
             {index === 0 && (
               <Skeleton variant="rectangular" sx={{ paddingTop: '25%', borderRadius: 1.5 }} />
             )}

@@ -7,16 +7,24 @@ import {
   Table,
   Button,
   Divider,
-   TableRow,
+  TableRow,
   TableBody,
   TableCell,
   TableHead,
   CardHeader,
-   TableContainer,
+  TableContainer,
 } from '@mui/material';
 import axios from '../../../utils/axios';
 
+import {
+  TableNoData,
+  TableSkeleton,
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSelectedActions,
+} from '../../../components/table';
 // utils
+import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
 import { fCurrency } from '../../../utils/formatNumber';
 // _mock_
 // components
@@ -44,7 +52,8 @@ export default function AppNewTRX() {
   const results = JSON.stringify(post.data.data.bankTRX);
   const rep = (Object.values(results));
   const personObject = JSON.parse(results);
-    
+  const isNotFound = (!personObject.length );
+
   return (
     
     <Card>
@@ -102,19 +111,16 @@ export default function AppNewTRX() {
                 </TableRow>
               ))}
             </TableBody>
+
+            <TableEmptyRows height={1} emptyRows={emptyRows(12, 4, 5)} />
+
+            <TableNoData isNotFound={isNotFound} />
           </Table>
 
           
         </TableContainer>
       </Scrollbar>
-
-      <Divider />
-
-      <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
-          View All
-        </Button>
-      </Box>
+ 
     </Card>
   );
 }
