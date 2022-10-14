@@ -60,6 +60,7 @@ const shadowStyle = {
 
 export default function CurrentBalance({balance}) {
   const theme = useTheme();
+  const { user } = useAuth();
   const settings = {
     dots: true,
     arrows: false,
@@ -69,11 +70,29 @@ export default function CurrentBalance({balance}) {
     ...CarouselDots({ position: 'absolute', right: 16, bottom: 16 }),
   };
 
+  const CATEGORY_OPTION = [
+    {
+      "name": "Main Balance",
+      "balance": user.balance,
+      "icon":"/icons/deposit.png"
+  },
+  {
+    "name": "Referal Bonus",
+    "balance": user.ref_bonus,
+    "icon":"/icons/round.png"
+  },
+  {
+      "name": "Pending Balance",
+      "balance": user.hold_balance,
+      "icon":"/icons/timer.png"
+  }
+];
+
   return (
     <RootStyle>
       <Box sx={{ position: 'relative', zIndex: 9 }}>
         <Slider {...settings}>
-          {_bankingCreditCard.map((card) => (
+          {CATEGORY_OPTION.map((card) => (
             <CardItem key={card.id} card={card} />
           ))}
         </Slider>
@@ -96,18 +115,17 @@ export default function CurrentBalance({balance}) {
 // ----------------------------------------------------------------------
 
 CardItem.propTypes = {
-
   card: PropTypes.shape({
     balance: PropTypes.number,
-    cardHolder: PropTypes.string,
-    cardNumber: PropTypes.string,
+    name: PropTypes.string,
+    icon: PropTypes.string,
     cardType: PropTypes.string,
     cardValid: PropTypes.string,
   }),
 };
 
 function CardItem({ card }) {
-  const { cardType, balance,  cardHolder, cardNumber, cardValid } = card;
+  const { cardType, balance,  cardHolder, icon, name } = card;
   const [showCurrency, setShowCurrency] = useState(true);
   const { user } = useAuth();
   const {general} = useAuth();
@@ -121,25 +139,22 @@ function CardItem({ card }) {
         <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 9 }}>
           <MoreMenuButton />
         </Box>
-
         <div>
-          <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>Current Balance</Typography>
+          <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>{name}</Typography>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography sx={{ typography: 'h3' }}>{general.cur_sym }{showCurrency ? '****' : fCurrency(user.balance)}</Typography>
+            <Typography sx={{ typography: 'h3' }}>{general.cur_sym }{showCurrency ? '****' : fCurrency(balance)}</Typography>
             <IconButton color="inherit" onClick={onToggleShowCurrency} sx={{ opacity: 0.48 }}>
               <Iconify icon={showCurrency ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
             </IconButton>
           </Stack>
         </div>
-        
-
         <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
           <Image
             disabledEffect
             visibleByDefault
             alt="credit-card"
-            src={`/icons/ic_banking.svg`}
-            sx={{ height: 44 }}
+            src={icon}
+            sx={{ height: 80 }}
           />
          </Stack>
 
@@ -222,6 +237,7 @@ function MoreMenuButton() {
       return (
         <>
           <Button color="primary" 
+          disabled
           onClick={generatenuban} 
            variant="contained">
               Generate Nuban

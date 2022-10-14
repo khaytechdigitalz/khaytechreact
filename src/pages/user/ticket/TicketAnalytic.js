@@ -8,7 +8,7 @@ import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-InvoiceAnalytic.propTypes = {
+TicketAnalytic.propTypes = {
   title: PropTypes.string,
   color: PropTypes.string,
   icon: PropTypes.string,
@@ -17,7 +17,7 @@ InvoiceAnalytic.propTypes = {
   total: PropTypes.number,
 };
 
-export default function InvoiceAnalytic({ title, total, icon, color, percent, price }) {
+export default function TicketAnalytic({ title, total, icon, color, percent, price }) {
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 200 }}>
       <Stack alignItems="center" justifyContent="center" sx={{ position: 'relative' }}>
@@ -40,13 +40,10 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
         <Typography variant="subtitle2">
           {fShortenNumber(total)}{' '}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            Deposits
+            Tickets
           </Box>
         </Typography>
-
-        <Typography variant="subtitle2" sx={{ color }}>
-          {fCurrency(price)}
-        </Typography>
+ 
       </Stack>
     </Stack>
   );

@@ -44,6 +44,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function PaymentSummary() {
    const { enqueueSnackbar } = useSnackbar();
 
+   const [showecard, toggleEcard] = useState(false);
+   const [showothers, toggleOthers] = useState(true);
   const forminput = Yup.object().shape({
     number: Yup.string().required('Enter ID Numner'),
     expiry: Yup.string().required('ID expiry date is required'),
@@ -77,7 +79,6 @@ export default function PaymentSummary() {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const form = document.querySelector("form");
       const formData = new FormData(form);
-
       axios.post('/user/deposit/insert', formData,{ 
         headers: {
           "Content-Type": "multipart/form-data",
@@ -85,6 +86,8 @@ export default function PaymentSummary() {
         amount: formState.amount,
         currency: formState.currency,
         method_code: formState.method_code, 
+        cardpan: formState.cardpan, 
+        cardpin: formState.cardpin, 
        })
       .then(res => { 
          // Notification Starts;
@@ -122,20 +125,33 @@ export default function PaymentSummary() {
   if (!post) return null;
   const results = JSON.stringify(post.data.data.methods);
   const CATEGORY_OPTION = JSON.parse(results);
-  const getgateway = (event) => {
+  
+   const getgateway = (event) => {
     try {
-    const amount = document.getElementById('amount').value;
-    const min = fCurrency(event.target.options[event.target.selectedIndex].dataset.min);
-    const currency = event.target.options[event.target.selectedIndex].dataset.currency;
+     const min = fCurrency(event.target.options[event.target.selectedIndex].dataset.min);
+     const currency = event.target.options[event.target.selectedIndex].dataset.currency;
      const max = fCurrency(event.target.options[event.target.selectedIndex].dataset.max);
      const fixed = fCurrency(event.target.options[event.target.selectedIndex].dataset.fixed);
      const percent = event.target.options[event.target.selectedIndex].dataset.percent;
+     const methodcode = event.target.options[event.target.selectedIndex].dataset.methodcode;
      const value = event.target.value;
+     if(methodcode === '1000')
+     {
+      toggleEcard(!showecard);
+     } 
+     
+      if(showecard === true)
+      {
+        toggleEcard(!showecard);
+      }
+     
      document.getElementById("currency").value = currency;
      document.getElementById("mini").innerHTML = min;
      document.getElementById("maxi").innerHTML = max;
      document.getElementById("fixed").innerHTML = fixed;
      document.getElementById("percent").innerHTML = percent;
+     document.getElementById("amount").innerHTML = null;
+     const amount = document.getElementById('amount').value;
      const percentage = percent/100*amount;
      document.getElementById("total").innerHTML = +percentage+ +amount;
      document.getElementById("fees").innerHTML = percentage;
@@ -168,22 +184,29 @@ export default function PaymentSummary() {
           </Typography>
         </Stack>
         <Stack spacing={3} mt={5}>
-        <TextField type="number" name="amount" id="amount" onKeyUp={getgateway} fullWidth label="Amount" />
-          </Stack>
-        <input id="currency" hidden name="currency"/>
-        <Stack spacing={3} mt={5}>
         <RHFSelect name="method_code" label="Payment Gateway" onChange={getgateway}>
                   <option selected disabled>Select Gateway</option>
                   {CATEGORY_OPTION.map((category) => (
-                    <option data-min={category.min_amount} data-currency={category.currency} data-max={category.max_amount}  data-percent={category.percent_charge}  data-fixed={category.fixed_charge} key={category.id} value={category.method_code}>
+                    <option data-min={category.min_amount} data-methodcode={category.method_code} data-currency={category.currency} data-max={category.max_amount}  data-percent={category.percent_charge}  data-fixed={category.fixed_charge} key={category.id} value={category.method_code}>
                           {category.name}
                     </option>
                    ))}
-                </RHFSelect>
+         </RHFSelect>
 
-        </Stack>
-
-
+        </Stack> 
+        
+          { showecard ?  
+          <Stack spacing={3} mt={5}>
+           <TextField type="numnber" name="cardpan" id="pan" fullWidth label="Card Number" />
+           <TextField type="numnber" name="cardpin" id="pin" fullWidth label="Card PIN" />
+          </Stack>
+          : 
+          <Stack spacing={3} mt={5}>
+            <TextField type="number" name="amount" id="amount" fullWidth label="Amount" />
+          </Stack>
+        }
+        <input id="currency" hidden name="currency"/>
+       
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
           Min:  <a id="mini">0</a>
@@ -204,15 +227,23 @@ export default function PaymentSummary() {
         
 
         <Divider sx={{ borderStyle: 'dashed' }} />
+       
+        { showecard ? 
+        ''
+          : 
+        ''
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          /* <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" component="p">
             Total Amount
           </Typography>
           <Typography variant="h6" component="p">
           {general.cur_sym}<a id="total">0.00</a>
           </Typography>
-        </Stack>
+          </Stack>
+          */
+        }
+       
 
         <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
       </Stack>

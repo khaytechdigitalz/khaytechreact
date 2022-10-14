@@ -40,6 +40,11 @@ export const PATH_DASHBOARD = {
   dashboard: {
     dashboard: path(ROOTS_DASHBOARD, '/home'),
     account: path(ROOTS_DASHBOARD, '/settings'),
+    tickets: path(ROOTS_DASHBOARD, '/tickets'),
+    ticket: {
+    view: (id) => path(ROOTS_DASHBOARD, `/ticket/view/${id}`),
+    },
+    createticket: path(ROOTS_DASHBOARD, '/tickets/new'),
     security: path(ROOTS_DASHBOARD, '/security'),
     kyc: path(ROOTS_DASHBOARD, '/kyc'),
     bvn: path(ROOTS_DASHBOARD, '/bvn'),

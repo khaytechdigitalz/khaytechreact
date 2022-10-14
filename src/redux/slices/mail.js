@@ -85,8 +85,8 @@ export function getMails(params) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/mail/mails', { params });
-      dispatch(slice.actions.getMailsSuccess(response.data.mails));
+      const response = await axios.get('/user/mails', { params });
+      dispatch(slice.actions.getMailsSuccess(response.data.data.supports));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { noCase } from 'change-case';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {Link as RouterLink } from 'react-router-dom';
+
 // @mui
 import {
   Box,
@@ -25,16 +27,32 @@ import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
+import axios from '../../../utils/axios';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
+
+
+
   const [notifications, setNotifications] = useState(_notifications);
 
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
   const [open, setOpen] = useState(null);
 
+  const [post, setPost] = useState(null);
+  useEffect(() => {
+    axios.get(`/user/notifications`).then((response) => {
+      setPost(response);
+      console.log(response);
+     
+    });
+  }, []);
+  if (!post) return null;
+  const results = JSON.stringify(post.data.data.notifications);
+  const CATEGORY_OPTION = JSON.parse(results); 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -55,7 +73,7 @@ export default function NotificationsPopover() {
   return (
     <>
       <IconButtonAnimate color={open ? 'primary' : 'default'} onClick={handleOpen} sx={{ width: 40, height: 40 }}>
-        <Badge badgeContent={totalUnRead} color="error">
+        <Badge badgeContent={CATEGORY_OPTION.length} color="error">
           <Iconify icon="eva:bell-fill" width={20} height={20} />
         </Badge>
       </IconButtonAnimate>
@@ -70,11 +88,11 @@ export default function NotificationsPopover() {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
+              You have {CATEGORY_OPTION.length} unread messages
             </Typography>
           </Box>
 
-          {totalUnRead > 0 && (
+          {CATEGORY_OPTION.length > 0 && (
             <Tooltip title=" Mark all as read">
               <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
                 <Iconify icon="eva:done-all-fill" width={20} height={20} />
@@ -86,37 +104,23 @@ export default function NotificationsPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                New
-              </ListSubheader>
-            }
-          >
-            {notifications.slice(0, 2).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+          <List>
+            {CATEGORY_OPTION.map((notification) => (
+              <NotificationItem key={notification.id} notification={notification}
+              
+              />
             ))}
           </List>
 
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                Before that
-              </ListSubheader>
-            }
-          >
-            {notifications.slice(2, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
-            ))}
-          </List>
+          
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
+          <Button fullWidth disableRipple
+           component={RouterLink} to={`tickets`}
+          >
             View All
           </Button>
         </Box>
@@ -169,7 +173,7 @@ function NotificationItem({ notification }) {
             }}
           >
             <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
-            {fToNow(notification.createdAt)}
+            {fToNow(notification.created_at)}
           </Typography>
         }
       />
@@ -182,59 +186,16 @@ function NotificationItem({ notification }) {
 function renderContent(notification) {
   const title = (
     <Typography variant="subtitle2">
-      {notification.title}
-      <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-        &nbsp; {noCase(notification.description)}
+      {notification.ticket}
+      <br/>
+      <Typography variant="body2" sx={{ color: 'text.secondary' }} component={RouterLink} to={PATH_DASHBOARD.dashboard.ticket.view(notification.ticket)}>
+        &nbsp; {noCase(notification.subject)}
       </Typography>
     </Typography>
   );
-
-  if (notification.type === 'order_placed') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_package.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'order_shipped') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_shipping.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'mail') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_mail.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'chat_message') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_chat.svg"
-        />
-      ),
-      title,
-    };
-  }
+ 
   return {
-    avatar: notification.avatar ? <img alt={notification.title} src={notification.avatar} /> : null,
+    avatar: notification.avatar ? <img alt={notification.subject} src='/images/email.svg' /> : <img alt={notification.subject} src='/images/email.svg' />,
     title,
   };
 }

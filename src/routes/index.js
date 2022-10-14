@@ -67,6 +67,14 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'home', element: <Dashboard /> },
         { path: 'settings', element: <Settings /> },
+        { path: 'tickets', element: <TIcket /> },
+        { path: 'tickets/new', element: <NewTicket /> },
+        {
+          path: 'ticket/view',
+          children: [
+            { path: ':id', element: <TicketDetails /> },
+          ],
+        },
         { path: 'security', element: <Security/> },
         { path: 'convert/airtime/manual', element: <AirtimeManual /> },
         { path: 'convert/airtime/manual/:id', element: <AirtimeManualPreview /> },
@@ -204,6 +212,9 @@ const NewPassword = Loadable(lazy(() => import('../pages/auth/NewPassword')));
 // DASHBOARD
 const Dashboard = Loadable(lazy(() => import('../pages/user/Dashboard')));
 const Settings = Loadable(lazy(() => import('../pages/user/Settings')));
+const TIcket = Loadable(lazy(() => import('../pages/user/Tickets')));
+const NewTicket = Loadable(lazy(() => import('../pages/user/ticket/TicketNew')));
+const TicketDetails = Loadable(lazy(() => import('../pages/user/ticket/TicketDetails')));
 const Security = Loadable(lazy(() => import('../pages/user/Security')));
 const Transfer = Loadable(lazy(() => import('../pages/user/Transfer')));
 const KYC = Loadable(lazy(() => import('../pages/user/KYC')));

@@ -37,7 +37,7 @@ export default function DepositLogFilter({
       <TextField
         fullWidth
         select
-        label="Deposit type"
+        label="Ticket type"
         value={filterService}
         onChange={onFilterService}
         SelectProps={{
@@ -64,19 +64,24 @@ export default function DepositLogFilter({
           >
            {(() => {
               
-                if (option === '1') {
+                if (option === 1) {
                   return (
-                    <a>Successful</a>
+                    <a>Answered</a>
                   )
                 }
-                if (option === '2') {
+                if (option === 0) {
                   return (
-                    <a>Pending</a>
+                    <a>Open</a>
                   )
                 }
-                if (option === '3') {
+                if (option === 3) {
                   return (
-                    <a>Declined</a>
+                    <a>Closed</a>
+                  )
+                }
+                if (option === 2) {
+                  return (
+                    <a>Replied</a>
                   )
                 }
                 if (option === 'all') {
@@ -126,7 +131,7 @@ export default function DepositLogFilter({
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search by transaction number..."
+        placeholder="Search by Ticket number..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

@@ -53,11 +53,11 @@ export default function InviteFriends() {
       <Image
         visibleByDefault
         disabledEffect
-        src="/images/invite.png"
+        src="/icons/umbrella.png"
         sx={{
           left: 40,
           zIndex: 9,
-          width: 140,
+          width: 190,
           position: 'relative',
           filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.24))',
         }}

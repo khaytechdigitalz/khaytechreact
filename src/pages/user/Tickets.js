@@ -40,31 +40,29 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
 // sections
 
-import { getDeposit } from '../../redux/slices/deposit';
+import { getDeposit } from '../../redux/slices/tickets';
 import { useDispatch, useSelector } from '../../redux/store';
-import {DepositAnalytic, DepositLogRows, DepositLogFilter } from './finance';
+import {TicketAnalytic, TicketLogRows, TicketLogFilter } from './ticket';
 
 // ----------------------------------------------------------------------
 
 const SERVICE_OPTIONS = [
   'all',
-  '1',
-  '2',
-  '3',
+  0,
+  1,
+  2,
+  3,
 ];
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Gateway', align: 'left' },
-  { id: 'created_at', label: 'Date', align: 'left' },
-  { id: 'amount', label: 'Amount', align: 'left' },
-  { id: 'charge', label: 'Fee', align: 'center', width: 140 },
+  { id: 'subject', label: 'Subject', align: 'left' },
+  { id: 'date', label: 'Date', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },
-  { id: '' },
-];
+ ];
 
 // ----------------------------------------------------------------------
 
-export default function InvoiceList() {
+export default function TicketList() {
   const theme = useTheme();
   const { themeStretch } = useSettings();
 
@@ -143,8 +141,8 @@ export default function InvoiceList() {
     navigate(PATH_DASHBOARD.invoice.edit(id));
   };
 
-  const handleViewRow = (id) => {
-    navigate(PATH_DASHBOARD.invoice.view(id));
+  const handleViewRow = (ticket) => {
+    navigate(PATH_DASHBOARD.dashboard.ticket.view(ticket));
   };
 
   const dataFiltered = applySortFilter({
@@ -171,36 +169,36 @@ export default function InvoiceList() {
   const getTotalPriceByStatus = (status) =>
     sumBy(
       tableData.filter((item) => item.status === status),
-      'price'
+      'totalPrice'
     );
 
   const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
   const TABS = [
     { value: 'all', label: 'All', color: 'info', count: tableData.length },
-    { value: '1', label: 'Success', color: 'success', count: getLengthByStatus('1') },
-    { value: '2', label: 'Pending', color: 'warning', count: getLengthByStatus('2') },
-    { value: '3', label: 'Declined', color: 'error', count: getLengthByStatus('3') },
+    { value: 3, label: 'Closed', color: 'success', count: getLengthByStatus(3) },
+    { value: 1, label: 'Answered', color: 'primary', count: getLengthByStatus(1) },
+    { value: 0, label: 'Open', color: 'error', count: getLengthByStatus(0) },
   ];
 
 
   return (
-    <Page title="Deposit: List">
+    <Page title="Support Tickets">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Deposit List"
+          heading="Support Tickets"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Deposit' },
+            { name: 'Support Tickets' },
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.dashboard.deposit}
+              to={PATH_DASHBOARD.dashboard.createticket}
               startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              New Deposit
+             >
+              Create Tickets
             </Button>
           }
         />
@@ -212,36 +210,32 @@ export default function InvoiceList() {
               divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
               sx={{ py: 2 }}
             >
-              <DepositAnalytic
+              <TicketAnalytic
                 title="Total"
                 total={tableData.length}
                 percent={100}
-                price={sumBy(tableData, 'amount')}
-                icon="ic:round-receipt"
+                 icon="ic:round-receipt"
                 color={theme.palette.info.main}
               />
-              <DepositAnalytic
-                title="Successful"
-                total={getLengthByStatus(1)}
-                percent={getPercentByStatus(1)}
-                price={getTotalPriceByStatus(1)}
-                icon="eva:checkmark-circle-2-fill"
-                color={theme.palette.success.main}
-              />
-              <DepositAnalytic
-                title="Pending"
-                total={getLengthByStatus(2)}
-                percent={getPercentByStatus(2)}
-                price={getTotalPriceByStatus(2)}
-                icon="eva:clock-fill"
-                color={theme.palette.warning.main}
-              />
-              <DepositAnalytic
-                title="Declined"
+              <TicketAnalytic
+                title="Closed"
                 total={getLengthByStatus(3)}
                 percent={getPercentByStatus(3)}
-                price={getTotalPriceByStatus(3)}
-                icon="eva:alert-triangle-fill"
+                 icon="eva:checkmark-circle-2-fill"
+                color={theme.palette.success.main}
+              />
+              <TicketAnalytic
+                title="Answered"
+                total={getLengthByStatus(1)}
+                percent={getPercentByStatus(1)}
+                 icon="eva:clock-fill"
+                color={theme.palette.warning.main}
+              />
+              <TicketAnalytic
+                title="Open"
+                total={getLengthByStatus(0)}
+                percent={getPercentByStatus(0)}
+                 icon="eva:alert-triangle-fill"
                 color={theme.palette.error.main}
               />
              
@@ -274,7 +268,7 @@ export default function InvoiceList() {
 
           <Divider />
 
-          <DepositLogFilter
+          <TicketLogFilter
             filterName={filterName}
             filterService={filterService}
             filterStartDate={filterStartDate}
@@ -351,12 +345,12 @@ export default function InvoiceList() {
 
                 <TableBody>
                   {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <DepositLogRows
+                    <TicketLogRows
                       key={row.id}
                       row={row}
                       selected={selected.includes(row.id)}
                       onSelectRow={() => onSelectRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
+                      onViewRow={() => handleViewRow(row.ticket)}
                       onEditRow={() => handleEditRow(row.id)}
                       onDeleteRow={() => handleDeleteRow(row.id)}
                     />
@@ -417,8 +411,8 @@ function applySortFilter({
   if (filterName) {
     tableData = tableData.filter(
       (item) =>
-        item.trx.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.trx.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+        item.subject.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.ticket.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 

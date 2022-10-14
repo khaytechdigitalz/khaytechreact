@@ -36,6 +36,8 @@ const navConfig = [
       { title: 'Settings', path: PATH_DASHBOARD.dashboard.account, icon:  <Iconify icon={'eva:settings-2-outline'} width={24} height={24} />  },
       { title: 'Security', path: PATH_DASHBOARD.dashboard.security, icon:  <Iconify icon={'ion:finger-print-sharp'} width={24} height={24} />  },
       { title: 'Referral', path: PATH_DASHBOARD.dashboard.referral, icon:  <Iconify icon={'dashicons:buddicons-buddypress-logo'} width={24} height={24} /> },
+      { title: 'Tickets', path: PATH_DASHBOARD.dashboard.tickets, icon: ICONS.mail },
+
      
       // FUND TRANSFER
      {

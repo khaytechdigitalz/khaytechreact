@@ -220,11 +220,11 @@ export default function PaymentSummary() {
         <TextField type="number" name="amount" id="amount" onKeyUp={getgateway} fullWidth label="Amount" />
           </Stack>
           { show ? null
-          : 
+           : 
            <Stack spacing={3} mt={5}>
            <TextField type="numnber" name="account_number" id="account" fullWidth label="Account Number" />
           </Stack>
-            }
+          }
          
          { show ? null
           : 

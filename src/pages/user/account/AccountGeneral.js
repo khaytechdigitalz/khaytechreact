@@ -112,7 +112,7 @@ export default function AccountGeneral() {
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <RHFUploadAvatar
-              name="imaged"
+              name="image"
               accept="image/*"
                maxSize={3145728}
               onDrop={handleDrop}

@@ -32,16 +32,7 @@ export default function Dashboard() {
           <Grid item xs={12} md={12}>
             <CurrentBalance  displayName={user?.username}/>
           </Grid>
- 
-          <Grid item xs={12} md={6}>
-            <Widget title="Bonus Wallet Balance" currency={general?.cur_sym} total={user?.ref_bonus}  icon={<OrderCompleteIllustration />} />
-          </Grid>
- 
-
-          <Grid item xs={12} md={6}>
-            <Widget title="Pending Balance" currency={general?.cur_sym} total={user?.hold_balance}  icon={<MaintenanceIllustration />} />
-          </Grid>
-
+  
           <Grid item xs={12} md={4}>
               <InviteFriends />
            </Grid>

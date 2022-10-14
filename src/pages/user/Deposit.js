@@ -31,7 +31,7 @@ export default function Deposit() {
     <Page title="Payment">
          <Container>
          <HeaderBreadcrumbs
-          heading={'Ecard Deposit' }
+          heading={'Wallet Deposit' }
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
            

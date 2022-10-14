@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+ 
 import {useParams, useNavigate} from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 // @mui
@@ -83,7 +84,7 @@ DepositPreview.propTypes = {
 
 
 export default function DepositPreview() {
-   
+  const { sitelogo} = useAuth();
   const isDesktop = useResponsive('up', 'md');
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
@@ -92,6 +93,7 @@ export default function DepositPreview() {
   const [post, setPost] = React.useState(null);
   const params = useParams();
   const trx = params.id;
+ 
   const url = '/user/deposit/confirm/';
   React.useEffect(() => {
     axios.get(url+trx).then((response) => {
@@ -100,24 +102,23 @@ export default function DepositPreview() {
   }, []);
   const data = post; 
   const isNotFound = (!data );
- 
+  const [deposit, getDeposit] = React.useState(true);
 
   const config = {
-    public_key: "FLWPUBK_TEST-5ea2b80ca78e6a9922ed8a8fc64a5d18-X",
-    tx_ref: Date.now(),
-    currency: "NGN",
-    amount: 100,
+    public_key: deposit.API_publicKey,
+    tx_ref: deposit.ref,
+    currency: deposit.currency,
+    amount: deposit.amount,
     payment_options: "card,mobilemoney",
     customer: {
-      email: "herveralive@gmail.com",
-      phonenumber: "+250786007267",
-      name: "Herve Nkurikiyimfura"
+      email: deposit.customer_email,
+      phonenumber: deposit.customer_phone
     },
 
     customizations: {
-      title: "SMS",
-      description: "Payment for items in cart",
-      logo: "https://avatars.githubusercontent.com/u/35837984?s=200&v=4"
+      title: general.sitename,
+      description: "Payment wallet funding",
+      logo: sitelogo
     }
   };
 
@@ -194,19 +195,44 @@ const {
       }
     // PAYSTACK OPERATION ENDS*/
      
-   
+
     // FLUTTERWAVE OPERATION STARTS*/
     if(gateway === 'Flutterwave')
     {
-      handleFlutterPayment({
+        getDeposit(data.data.data);
+        handleFlutterPayment({
         callback: (response) => {
-          console.log(response);
-          enqueueSnackbar(response.data.status);
           closePaymentModal();
+          console.log('Flutter Paid');
+          console.log(response);
+          try { 
+            const form = document.querySelector("form");
+            axios.post('/ipn/flutterwave',{ 
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              reference: data.data.data.ref,
+              })
+            .then(res => { 
+              if(res.data.code === 200)
+              {
+                enqueueSnackbar(res.data.message);
+                navigate(`../deposits`, { replace: true });
+              }
+              else
+              {
+                enqueueSnackbar(res.data.message, {variant:'error'});
+              }
+            })
+            
+             } catch (error) {
+              console.error(error);
+            }
+         
+          
         },
         onClose: () => {
-          console.log("You close me ooo");
-          enqueueSnackbar('Failed Process', {variant:'error'});
+          enqueueSnackbar('Process Canceled', {variant:'error'});
         }
       });
     }
@@ -248,7 +274,7 @@ const {
         }
     }
    // ECARD OPERATION ENDS*/
-    // IRTIMEMANUAL OPERATION STARTS*/
+    // AIRTIMEMANUAL OPERATION STARTS*/
     if(gateway === 'AirtimeManual')
     {
       try { 
@@ -284,7 +310,7 @@ const {
           console.error(error);
         }
     }
-   // IRTIMEMANUAL OPERATION ENDS*/
+   // AIRTIMEMANUAL OPERATION ENDS*/
    
 
 };
@@ -313,7 +339,6 @@ const {
        document.getElementById("receiver").value = res.data.phone;
        document.getElementById("info").innerHTML = `${res.data.info}`;
        document.getElementById("network").value = provider;
-
       }
   
       enqueueSnackbar(res.data.message, {variant:'error'}); 
@@ -347,7 +372,7 @@ const {
       "name": "9mobile",
       "symbol": "9mobile"
   }
-]; 
+];  
   
   return (
     <>
@@ -361,6 +386,7 @@ const {
             { name: 'Preview Deposit' },
           ]}
           />
+ 
            <Grid container spacing={isDesktop ? 3 : 5}>
            <Grid item xs={12} md={12}>
           <RootStyle>
@@ -466,7 +492,7 @@ const {
             
        })()}
 
-    
+     
        
       <LoadingButton onClick={handlePayment} fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }}>
        Make Payment

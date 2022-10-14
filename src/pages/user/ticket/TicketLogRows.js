@@ -35,7 +35,7 @@ export default function DepositLogRows({ row, selected, onSelectRow, onViewRow, 
   const { user,general } = useAuth();
   const location = "assets/images/gateway/";
 
-  const { sent, amount, gateway, trx, created_at, charge, status } = row;
+  const { sent, subject, name, ticket, created_at, charge, status } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -49,9 +49,8 @@ export default function DepositLogRows({ row, selected, onSelectRow, onViewRow, 
 
   return (
     <TableRow hover selected={selected}>
-      <TableCell padding="checkbox">
-      <Image alt={gateway.name} src={HOST_URL+location+gateway.image} sx={{ width: 30, height: 30, borderRadius: 1.5, flexShrink: 0 }} />
-
+      <TableCell >
+      {ticket}
       </TableCell>
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
@@ -59,39 +58,47 @@ export default function DepositLogRows({ row, selected, onSelectRow, onViewRow, 
 
         <Stack>
           <Typography variant="subtitle2" noWrap>
-            {gateway.name}
+            {name}
           </Typography>
 
           <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'text.disabled', cursor: 'pointer' }}>
-            {trx}
+            {subject}
           </Link>
         </Stack>
       </TableCell>
 
       <TableCell align="left">{fDate(created_at)}</TableCell>
 
-      <TableCell align="left">{general.cur_sym}{fCurrency(amount)}</TableCell>
-
-      <TableCell align="center">{general.cur_sym}{fCurrency(charge)}</TableCell>
- 
+     
 
       <TableCell align="left">
       <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
-            (status !== '1' && 'error') || 'success'
+            (status !== 3 && 'error') || 'success'
           }
           sx={{ textTransform: 'capitalize' }}
         >
            {(() => {
-                if (status !== '1') {
+                if (status === 0) {
                   return (
-                    <div>Incomplete</div>
+                    <div>Open </div>
                   )
                 }
-                if (status === '1') {
+                if (status === 1) {
                   return (
-                    <div>Successful</div>
+                    <div>Answered</div>
+                  )
+                }
+
+                if (status === 2) {
+                  return (
+                    <div>Replied</div>
+                  )
+                }
+                if (status === 3) {
+                  return (
+                    <div>Closed</div>
                   )
                 }
                  

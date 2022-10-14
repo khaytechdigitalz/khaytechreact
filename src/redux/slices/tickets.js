@@ -103,8 +103,8 @@ export function getDeposit() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/user/deposit/log');
-      dispatch(slice.actions.getProductsSuccess(response.data.data.deposit));
+      const response = await axios.get('/user/tickets');
+      dispatch(slice.actions.getProductsSuccess(response.data.data.supports));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
