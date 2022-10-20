@@ -48,14 +48,14 @@ export default function EcommerceBestSalesman() {
 
 
   useEffect(() => {
-    axios.get('/user/payout/history').then((response) => {
+    axios.get('/user/withdraw/history').then((response) => {
       setPost(response);
       console.log(response);
      
     });
   }, []);
   if (!post) return <SkeletonPost  sx={{ width: 40 }} />;
-  const results = JSON.stringify(post.data.data.payout);
+  const results = JSON.stringify(post.data.data.withdrawals);
   const rep = (Object.values(results));
   const personObject = JSON.parse(results);
   const isNotFound = (!personObject.length );
@@ -69,9 +69,7 @@ export default function EcommerceBestSalesman() {
           <Table>
              <TableHead>
               <TableRow>
-                <TableCell>Bank Name</TableCell>
-                <TableCell>Account Name </TableCell>
-                <TableCell>Account Number </TableCell>
+                <TableCell>Plan </TableCell>
                 <TableCell>Amount </TableCell>
                 <TableCell> Date </TableCell>
                 <TableCell>Fees </TableCell>
@@ -82,19 +80,9 @@ export default function EcommerceBestSalesman() {
             <TableBody>
               {personObject.map((row) => (
                 <TableRow key={row.id}>
-                <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {row.bank_name}
-                  </Box>
-                </TableCell> 
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      {row.account_name}
-                    </Box>
-                  </TableCell> 
-                  <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      {row.account_number}
+                      {row.method.name}
                     </Box>
                   </TableCell> 
                   <TableCell>

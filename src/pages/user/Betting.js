@@ -14,31 +14,29 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import useResponsive from '../../hooks/useResponsive';
 
 import {
-  PayoutInput,PayoutLog
-} from './finance';
-
-
+  BettingSelect,BettingLog
+} from './bills';
+ 
 // ----------------------------------------------------------------------
 
-export default function RequestFund() {
-   const dispatch = useDispatch();
+export default function Internet() {
+  const dispatch = useDispatch();
   const isDesktop = useResponsive('up', 'md');
- 
-
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
   return (
-    <Page title="Payout">
+    <Page title="Sport Betting">
          <Container>
          <HeaderBreadcrumbs
-          heading={'Request Payout' }
+          heading={'Sport Betting' }
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
            
-            { name: 'Request Payout' },
+            { name: 'Bills' },
+            { name: 'Sport Betting' },
           ]}
         />
         
@@ -46,15 +44,15 @@ export default function RequestFund() {
 
           <Grid container spacing={isDesktop ? 3 : 5}>
              <Grid item xs={12} md={12}>
-              <PayoutInput />
+              <BettingSelect />
             </Grid>
-
-            
+ 
 
             <Grid item xs={12} md={12} lg={12}>
-            <PayoutLog />
+            <BettingLog />
             </Grid>
 
+ 
           </Grid>
         </Container>
      </Page>

@@ -33,7 +33,7 @@ const handlers = {
     };
   },
   LOGIN: (state, action) => {
-    const { user, general,sitelogo } = action.payload;
+    const { user, general,sitelogo,host,image } = action.payload;
 
     return {
       ...state,
@@ -41,6 +41,8 @@ const handlers = {
       user,
       general,
       sitelogo,
+      host,
+      image,
     };
   },
   LOGOUT: (state) => ({

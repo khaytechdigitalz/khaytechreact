@@ -14,7 +14,7 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import useResponsive from '../../hooks/useResponsive';
 
 import {
-  PayoutInput,PayoutLog
+  WithdrawInput,WithdrawBar,WithdrawLog,WithdrawPie
 } from './finance';
 
 
@@ -31,14 +31,14 @@ export default function RequestFund() {
   }, [dispatch]);
 
   return (
-    <Page title="Payout">
+    <Page title="Withdraw">
          <Container>
          <HeaderBreadcrumbs
-          heading={'Request Payout' }
+          heading={'Request Withdrawal' }
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
            
-            { name: 'Request Payout' },
+            { name: 'Request Withdrawal' },
           ]}
         />
         
@@ -46,13 +46,20 @@ export default function RequestFund() {
 
           <Grid container spacing={isDesktop ? 3 : 5}>
              <Grid item xs={12} md={12}>
-              <PayoutInput />
+              <WithdrawInput />
             </Grid>
 
-            
+            <Grid item xs={12} md={5}>
+              <WithdrawPie />
+            </Grid>
+
+            <Grid item xs={12} md={7}>
+              <WithdrawBar />
+            </Grid>
+
 
             <Grid item xs={12} md={12} lg={12}>
-            <PayoutLog />
+            <WithdrawLog />
             </Grid>
 
           </Grid>

@@ -22,8 +22,8 @@ import { fCurrency } from '../../../utils/formatNumber';
 // _mock_
 
 import {
-  TableSkeleton,
-} from '../../../components/table';
+  SkeletonProductItem,
+} from '../../../components/skeleton';
 // components
 import Label from '../../../components/Label';
 import Iconify from '../../../components/Iconify';
@@ -45,7 +45,7 @@ export default function AppNewTRX() {
      
     });
   }, []);
-  if (!post) return <TableSkeleton  sx={{ width: 40 }} />;
+  if (!post) return <SkeletonProductItem  sx={{ width: 40 }} />;
   const results = JSON.stringify(post.data.data.transactions);
   const refers = JSON.stringify(post.data.data.ref);
   const personObject = JSON.parse(results);
@@ -53,63 +53,7 @@ export default function AppNewTRX() {
   return (
     
     <Card>
-        <CardHeader title="Referrals" sx={{ mb: 3 }} />
-       <Scrollbar>
-        <TableContainer sx={{ minWidth: 720 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>TRX</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell >Date</TableCell>
-                <TableCell>Status</TableCell>
-                 
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {ReferedObject.map((row) => (
-                <TableRow key={row.id}>
-                <TableCell>{row.username}</TableCell>
-                  <TableCell>{row.address.country}</TableCell>
-                  <TableCell>{fDate(row.created_at)}</TableCell>
-                   <TableCell>
-                  <Label
-                      variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                      color={
-                        (row.kyc !== 1 && 'warning') ||
-                        (row.status === 1 && 'error') ||
-                        'success'
-                      }
-                    >
-                    {(() => {
-                if (row.status !== '1') {
-                  return (
-                    <div>Not Verified</div>
-                  )
-                }
-                if (row.status === '1') {
-                  return (
-                    <div>Verified</div>
-                  )
-                }
-                 
-              })()}
-                    </Label>
-                  </TableCell>
-                  
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
-          
-        </TableContainer>
-
-        
-      </Scrollbar>
-
-      <Divider />
-
+      
       <CardHeader title="Referral Earnings" sx={{ mb: 3 }} />
        <Scrollbar>
         <TableContainer sx={{ minWidth: 720 }}>

@@ -87,6 +87,7 @@ export default function Router() {
         { path: 'deposit/:id', element: <DepositPreview /> },
         { path: 'deposits', element: <Deposits /> },
         { path: 'ecard', element: <Ecard /> },
+        { path: 'withdraw', element: <Withdraw /> },
         { path: 'other/transfer', element: <Payout /> },
         { path: 'bank/transfer', element: <Bank /> },
         { path: 'savings', element: <Savings /> },
@@ -96,6 +97,14 @@ export default function Router() {
         { path: 'electricity', element: <Electricity /> },
         { path: 'electricity/token/:id', element: <Token /> },
         { path: 'waec', element: <Waec /> },
+        { path: 'betting', element: <Betting /> },
+        {
+          path: 'betting/view',
+          children: [
+            { path: ':id', element: <BettingDetails /> },
+          ],
+        },
+
         { path: 'referral', element: <Referral /> },
         { path: 'requestfund', element: <RequestFund /> },
         { path: 'app', element: <GeneralApp /> },
@@ -224,6 +233,7 @@ const DepositPreview = Loadable(lazy(() => import('../pages/user/finance/Deposit
 const Deposits = Loadable(lazy(() => import('../pages/user/DepositLog')));
 const Ecard = Loadable(lazy(() => import('../pages/user/Ecard')));
 const Payout = Loadable(lazy(() => import('../pages/user/Payout')));
+const Withdraw = Loadable(lazy(() => import('../pages/user/Withdraw')));
 const Bank = Loadable(lazy(() => import('../pages/user/Bank')));
 const Savings = Loadable(lazy(() => import('../pages/user/Savings')));
 const Airtime = Loadable(lazy(() => import('../pages/user/Airtime')));
@@ -234,6 +244,8 @@ const Token = Loadable(lazy(() => import('../pages/user/bills/Token')));
 const Referral = Loadable(lazy(() => import('../pages/user/Referral')));
 const RequestFund = Loadable(lazy(() => import('../pages/user/RequestFund')));
 const Waec = Loadable(lazy(() => import('../pages/user/Waec')));
+const Betting = Loadable(lazy(() => import('../pages/user/Betting')));
+const BettingDetails = Loadable(lazy(() => import('../pages/user/bills/BettingInput')));
 const AirtimeAutomatic = Loadable(lazy(() => import('../pages/user/Airtime-Auto')));
 const AirtimeManual = Loadable(lazy(() => import('../pages/user/Airtime-Manual')));
 const AirtimeManualPreview = Loadable(lazy(() => import('../pages/user/conversion/ManualPreview')));

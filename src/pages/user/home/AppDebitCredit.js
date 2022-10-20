@@ -8,6 +8,9 @@ import { Card, CardHeader, Box, TextField } from '@mui/material';
 import { BaseOptionChart } from '../../../components/chart';
 import axios from '../../../utils/axios';
 
+import {
+  SkeletonProductItem,
+} from '../../../components/skeleton';
 // ----------------------------------------------------------------------
 
 export default function AppDebitCredit() {
@@ -21,7 +24,7 @@ export default function AppDebitCredit() {
       setPost(response);     
     });
   }, []);
-  if (!post) return null;
+  if (!post) return <SkeletonProductItem  sx={{ width: 40 }} />;
   const credit = JSON.stringify(post.data.data.credit);
   const debit = JSON.stringify(post.data.data.debit);
   const CreditObject = JSON.parse(credit);

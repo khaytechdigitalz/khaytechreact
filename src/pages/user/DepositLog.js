@@ -87,7 +87,7 @@ export default function InvoiceList() {
     onChangeDense,
     onChangePage,
     onChangeRowsPerPage,
-  } = useTable({ defaultOrderBy: 'created_at' });
+  } = useTable();
 
   const dispatch = useDispatch();
 

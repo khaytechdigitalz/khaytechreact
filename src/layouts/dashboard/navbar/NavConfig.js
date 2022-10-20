@@ -60,7 +60,8 @@ const navConfig = [
     { title: 'E-Cards', path: PATH_DASHBOARD.dashboard.ecard, icon: <Iconify icon={'eva:credit-card-fill'} width={24} height={24} />  },
     { title: 'Fund Lock', path: PATH_DASHBOARD.dashboard.savings, icon:  <Iconify icon={'eva:lock-outline'} width={24} height={24} />  },
     { title: 'Request Fund', path: PATH_DASHBOARD.dashboard.requestfund, icon:  ICONS.ecommerce  },
-    { title: 'Withdraw Fund', path: PATH_DASHBOARD.transfer.payout, icon: ICONS.banking   },
+  //  { title: 'Withdraw Fund', path: PATH_DASHBOARD.transfer.withdraw, icon: ICONS.banking   },
+    { title: 'Payout', path: PATH_DASHBOARD.transfer.payout, icon: ICONS.banking   },
     
     // FUND TRANSFER
     {
@@ -99,6 +100,7 @@ const navConfig = [
       { title: 'Cable TV', path: PATH_DASHBOARD.dashboard.cabletv, icon:  <Iconify icon={'eva:monitor-outline'} width={24} height={24} />  },
       { title: 'Electricity', path: PATH_DASHBOARD.dashboard.electricity, icon:  <Iconify icon={'eva:bulb-outline'} width={24} height={24} />  },
       { title: 'WAEC Pin', path: PATH_DASHBOARD.dashboard.waec, icon:  <Iconify icon={'dashicons:welcome-learn-more'} width={24} height={24} />  },
+      { title: 'Sport Betting', path: PATH_DASHBOARD.dashboard.betting, icon:  <Iconify icon={'emojione:pool-8-ball'} width={24} height={24} />  },
        
     ],
   },

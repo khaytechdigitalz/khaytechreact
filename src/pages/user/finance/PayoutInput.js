@@ -3,7 +3,7 @@ import { useState, useEffect,React,useMemo } from 'react';
 
 import * as Yup from 'yup';
 import { styled } from '@mui/material/styles';
-import { Divider, Typography, Stack,TextField } from '@mui/material';
+import { Divider, Typography, Stack,TextField,Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import { useSnackbar } from 'notistack';
@@ -83,23 +83,26 @@ export default function PaymentSummary() {
       const form = document.querySelector("form");
       const formData = new FormData(form);
 
-      axios.post('/user/withdraw/store', formData,{ 
+      axios.post('/user/payoutprocess', formData,{ 
         headers: {
           "Content-Type": "multipart/form-data",
         },
         amount: formState.amount,
-        description: formState.description,
-        method_code: formState.method_code, 
+        trxpin: formState.trxpin
        })
       .then(res => { 
-        if(res.data.code === 200)
-        {
-          enqueueSnackbar(res.data.message);
-        }
-        else
-        {
-          enqueueSnackbar(res.data.message, {variant:'error'});
-        }
+         // Notification Starts;
+         if(res.data.code === 200)
+         { 
+           enqueueSnackbar(res.data.message, {variant:'success'});
+           }
+           enqueueSnackbar(res.data.message, {variant:'error'}); 
+           if(res.data.error.length > 0){
+             for (let i = 0; i < res.data.error.length; i+=1) {
+               enqueueSnackbar(res.data.error[i], {variant:'warning'}); 
+               }
+           }
+         // Notification Ends;
        
       })
       reset();
@@ -109,45 +112,11 @@ export default function PaymentSummary() {
   };
 
    
-  const [post, setPost] = useState(null);
-  const {general} = useAuth();
+   const {general,user} = useAuth();
 
-  useEffect(() => {
-    axios.get('/user/withdraw/methods').then((response) => {
-      setPost(response);
-      console.log(response);
-     
-    });
-  }, []);
-  if (!post) return null;
-  const results = JSON.stringify(post.data.data.methods);
-  const CATEGORY_OPTION = JSON.parse(results);
-  const getgateway = (event) => {
-    try {
-    const amount = document.getElementById('amount').value;
-    const min = fCurrency(event.target.options[event.target.selectedIndex].dataset.min);
-    const currency = event.target.options[event.target.selectedIndex].dataset.currency;
-     const max = fCurrency(event.target.options[event.target.selectedIndex].dataset.max);
-     const fixed = fCurrency(event.target.options[event.target.selectedIndex].dataset.fixed);
-     const percent = event.target.options[event.target.selectedIndex].dataset.percent;
-     const description = event.target.options[event.target.selectedIndex].dataset.description;
-     const input = event.target.options[event.target.selectedIndex].dataset.input;
-     document.getElementById("currency").value = currency;
-     document.getElementById("mini").innerHTML = min;
-     document.getElementById("maxi").innerHTML = max;
-     document.getElementById("fixed").innerHTML = fixed;
-     document.getElementById("percent").innerHTML = percent;
-     document.getElementById("description").innerHTML = description;
-     const percentage = percent/100*amount;
-     document.getElementById("total").innerHTML = amount - percentage;
-     document.getElementById("fees").innerHTML = percentage;
-     document.getElementById("input").innerHTML = input;
-     } catch (error) {
-      console.error(error);
-    }
-  }; 
- 
- 
+   const bank = JSON.parse(user.bank_details);  
+   const bankv = Object.entries(bank);
+  
  
   
   
@@ -162,89 +131,40 @@ export default function PaymentSummary() {
           </Typography>
         </Stack>
         <Stack spacing={3} mt={5}>
-        <TextField type="number" name="amount" id="amount" onKeyUp={getgateway} fullWidth label="Amount" />
+        <TextField type="number" name="amount" id="amount" fullWidth label="Amount" />
           </Stack>
-        <input id="currency" hidden name="currency"/>
         <Stack spacing={3} mt={5}>
-        <RHFSelect name="method_code" label="Payment Gateway" onChange={getgateway}>
-                  <option selected disabled>Please Select Payment Method</option>
-                  {CATEGORY_OPTION.map((category) => (
-                    <option data-min={category.min_limit} data-input={category.user_data}  data-description={category.description} data-currency={category.currency} data-max={category.max_limit}  data-percent={category.percent_charge}  data-fixed={category.fixed_charge} key={category.id} value={category.id}>
-                          {category.name}
-                    </option>
-                   ))}
-                </RHFSelect>
-
-        </Stack>
+        <TextField type="text" name="trxpin" id="trxpin" fullWidth label="Transaction Pin" />
+          </Stack>
+         
         <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>
-       <a id="description" className="text-primary">.</a>
-      </Typography>
-
-        <Stack spacing={3} mt={5}>
-        <TextField type="text" name="description" id="description" fullWidth label="Account Details" />
-          </Stack>
+       <a id="description" className="text-primary">{null}</a>
+      </Typography> 
 
 
-        <Stack direction="row" justifyContent="space-between">
-          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
-          Min:  <a id="mini">0</a>
-          </Typography> 
-          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
-          Max: <a id="maxi">0</a>
-          </Typography> 
-        </Stack> 
-        <Stack direction="row" justifyContent="space-between">
-          <Typography component="p" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-         Fee {general.cur_sym}: <a id="fixed">0</a>
-          </Typography> 
-          <Typography component="p" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-         Fee %: <a id="percent">0</a>
-          </Typography>
-         </Stack>
-          
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="h6" component="p">
-            Payout Fee
-          </Typography>
-          <Typography variant="h6" component="p">
-          {general.cur_sym}<a id="fees">0.00</a>
-          </Typography>
         
-        </Stack>
-       
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="h6" component="p">
-            Total Amount
-          </Typography>
-          <Typography variant="h6" component="p">
-          {general.cur_sym}<a id="total">0.00</a>
-          </Typography>
-        </Stack>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
- 
+            
      
         <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+        {!!user.bank_details.code && <Alert severity="error">You have not setup you payout bank account details yet</Alert>}
       </Stack>
+      <Stack spacing={2}>
+        {bankv.map((row,index) => (
+        <Stack direction="row" justifyContent="space-between">
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {(/^./, row[0].toUpperCase())}
+            </Typography>
+            <Typography variant="subtitle2">{row[1] || ''}</Typography>
+          </Stack>
+           ))}
+         
+        </Stack>
 
      
  
-      <LoadingButton type="submit"  fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }} loading={isSubmitting}>
+      <LoadingButton disabled={!!user.bank_details.code} type="submit"  fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }} loading={isSubmitting}>
               {'Request Payout'}
-      </LoadingButton>
- 
-     
-      <Stack alignItems="center" spacing={1}>
-        <Stack direction="row" alignItems="center" spacing={1.5}>
-          <Iconify icon={'eva:shield-fill'} sx={{ width: 20, height: 20, color: 'primary.main' }} />
-          <Typography variant="subtitle2">Secure online payment</Typography>
-        </Stack>
-        <Typography variant="caption" sx={{ color: 'text.secondary', textAlign: 'center' }}>
-          This is a secure 128-bit SSL encrypted payment
-        </Typography>
-      </Stack>
+      </LoadingButton> 
       </FormProvider>
     </RootStyle>
     </Page>

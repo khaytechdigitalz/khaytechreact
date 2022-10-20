@@ -9,8 +9,11 @@ import { Card, CardHeader } from '@mui/material';
 import { fNumber } from '../../../utils/formatNumber';
 //
 import { BaseOptionChart } from '../../../components/chart';
-import axios from '../../../utils/axios';
+import axios from '../../../utils/axios'; 
 
+import {
+  SkeletonProductItem,
+} from '../../../components/skeleton';
 // ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 392;
@@ -43,7 +46,7 @@ export default function AppLoginSession() {
       setPost(response);     
     });
   }, []);
-  if (!post) return null; 
+  if (!post) return <SkeletonProductItem  sx={{ width: 40 }} />;
 
   const chart = JSON.stringify(post.data.data.os);
   const ChartObject = JSON.parse(chart);

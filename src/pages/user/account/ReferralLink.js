@@ -37,6 +37,7 @@ export default function InviteFriends() {
   const host = window.location.origin;
   const baseurl =PATH_AUTH.register;
   const endpoint =`/?ref=${user.username}`;
+
   const copylink = async () => {
 
     const copyText = document.getElementById("referralURL");
@@ -65,7 +66,7 @@ export default function InviteFriends() {
       <ContentStyle>
          <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">
-           Referral Balance. 
+           Referral Balance.  
           </Typography>
           <Typography variant="h2">{general?.cur_sym}{fCurrency(user?.ref_bonus)}</Typography>
         </Stack>

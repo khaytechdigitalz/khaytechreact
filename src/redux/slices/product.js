@@ -27,6 +27,8 @@ const initialState = {
     subtotal: 0,
     total: 0,
     discount: 0,
+    gettotal: 0,
+    getusername: 0,
     shipping: 0,
     billing: null,
   },
@@ -179,6 +181,22 @@ const slice = createSlice({
       state.checkout.total = state.checkout.subtotal - discount;
     },
 
+    applyUsername(state, action) {
+      const discount = action.payload;
+      state.checkout.discount = discount;
+      state.checkout.total = state.checkout.subtotal - discount;
+    },
+
+    GetTotal(state, action) {
+      const total = action.payload;
+      state.checkout.gettotal = total;
+    },
+
+    GetUsername(state, action) {
+      const username = action.payload;
+      state.checkout.getusername = username;
+    },
+
     applyShipping(state, action) {
       const shipping = action.payload;
       state.checkout.shipping = shipping;
@@ -202,6 +220,9 @@ export const {
   createBilling,
   applyShipping,
   applyDiscount,
+  applyUsername,
+  GetTotal,
+  GetUsername,
   increaseQuantity,
   decreaseQuantity,
   sortByProducts,

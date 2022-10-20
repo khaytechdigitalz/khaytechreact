@@ -48,14 +48,14 @@ export default function EcommerceBestSalesman() {
 
 
   useEffect(() => {
-    axios.get('/user/payout/history').then((response) => {
+    axios.get('/user/bettinglog').then((response) => {
       setPost(response);
       console.log(response);
      
     });
   }, []);
   if (!post) return <SkeletonPost  sx={{ width: 40 }} />;
-  const results = JSON.stringify(post.data.data.payout);
+  const results = JSON.stringify(post.data.data.bills);
   const rep = (Object.values(results));
   const personObject = JSON.parse(results);
   const isNotFound = (!personObject.length );
@@ -63,15 +63,14 @@ export default function EcommerceBestSalesman() {
  return (
     <Card>
 
-      <CardHeader title="Payout History" sx={{ mb: 3 }} />
+      <CardHeader title="Sport Betting Funding History" sx={{ mb: 3 }} />
       <Scrollbar>
         <TableContainer>
           <Table>
              <TableHead>
               <TableRow>
-                <TableCell>Bank Name</TableCell>
-                <TableCell>Account Name </TableCell>
-                <TableCell>Account Number </TableCell>
+                <TableCell>Company</TableCell>
+                <TableCell>Username </TableCell>
                 <TableCell>Amount </TableCell>
                 <TableCell> Date </TableCell>
                 <TableCell>Fees </TableCell>
@@ -84,19 +83,15 @@ export default function EcommerceBestSalesman() {
                 <TableRow key={row.id}>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {row.bank_name}
+                    {row.network}
                   </Box>
                 </TableCell> 
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      {row.account_name}
+                      {row.accountname}
                     </Box>
                   </TableCell> 
-                  <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      {row.account_number}
-                    </Box>
-                  </TableCell> 
+                  
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                        <Box>

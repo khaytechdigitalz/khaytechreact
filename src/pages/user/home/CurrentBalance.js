@@ -74,7 +74,7 @@ export default function CurrentBalance({balance}) {
     {
       "name": "Main Balance",
       "balance": user.balance,
-      "icon":"/icons/deposit.png"
+      "icon":"/icons/moneybag.png"
   },
   {
     "name": "Referal Bonus",

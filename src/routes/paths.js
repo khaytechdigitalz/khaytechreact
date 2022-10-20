@@ -59,11 +59,17 @@ export const PATH_DASHBOARD = {
     referral: path(ROOTS_DASHBOARD, '/referral'),
     requestfund: path(ROOTS_DASHBOARD, '/requestfund'),
     waec: path(ROOTS_DASHBOARD, '/waec'),
+    betting: path(ROOTS_DASHBOARD, '/betting'),
+    bettings: {
+      view: (id) => path(ROOTS_DASHBOARD, `/betting/view/${id}`),
+      },
+    
   },
 
   transfer: {
     transfer: path(ROOTS_DASHBOARD, '/user/transfer'),
     bank: path(ROOTS_DASHBOARD, '/bank/transfer'),
+    withdraw: path(ROOTS_DASHBOARD, '/withdraw'),
     payout: path(ROOTS_DASHBOARD, '/other/transfer'),
   },
 

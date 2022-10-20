@@ -30,6 +30,10 @@ import {
   TableSkeleton,
   TableEmptyRows,
 } from '../../../components/table';
+
+import {
+  SkeletonProductItem,
+} from '../../../components/skeleton';
 import useTable, { emptyRows } from '../../../hooks/useTable';
 // ----------------------------------------------------------------------
 
@@ -45,7 +49,7 @@ export default function AppNewTRX() {
      
     });
   }, []);
-  if (!post) return null;
+  if (!post) return <SkeletonProductItem  sx={{ width: 40 }} />;
   const results = JSON.stringify(post.data.data.userTRX);
   const rep = (Object.values(results));
   const personObject = JSON.parse(results);

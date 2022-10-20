@@ -146,6 +146,18 @@ const {
 
   await new Promise((resolve) => setTimeout(resolve, 500));
 
+    // REDIRECT OPERATION STARTS*/
+    if(gateway.redirect_url !== null)
+    {
+      try { 
+        window.location.replace(data.data.data.redirect_url)
+      
+        } 
+          catch (error) {
+          console.error(error);
+        }
+    }
+   // REDIRECT OPERATION ENDS*/
   // PAYSTACK OPERATION STARTS*/
   if(gateway === 'Paystack')
   {
@@ -274,6 +286,8 @@ const {
         }
     }
    // ECARD OPERATION ENDS*/
+   
+   
     // AIRTIMEMANUAL OPERATION STARTS*/
     if(gateway === 'AirtimeManual')
     {
@@ -398,7 +412,7 @@ const {
       <Stack spacing={2.5}>
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
-            Subscription
+            Payment Gateway 
           </Typography>
           <Label color="primary" variant="filled">
           {data.data.data.name}
@@ -425,7 +439,7 @@ const {
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" component="p">
-            Total Amount
+            Total Amount {}
           </Typography>
           <Typography variant="h6" component="p">
           {fCurrency(data.data.data.amount)}<small>{data.data.data.currency}</small>

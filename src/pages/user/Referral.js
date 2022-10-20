@@ -9,6 +9,7 @@ import Page from '../../components/Page';
 import { 
   ReferralLog, 
   ReferralLink,
+  ReferralFollowers,
   } from './account';
 
 import { OrderCompleteIllustration, MaintenanceIllustration } from '../../assets';
@@ -30,6 +31,9 @@ export default function Dashboard() {
            </Grid>
 
             
+          <Grid item xs={12} md={12}>
+              <ReferralFollowers /> 
+           </Grid>
           
           <Grid item xs={12} lg={12}>
             <ReferralLog />
