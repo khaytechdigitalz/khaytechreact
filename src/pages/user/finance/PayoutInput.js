@@ -113,13 +113,9 @@ export default function PaymentSummary() {
 
    
    const {general,user} = useAuth();
-
    const bank = JSON.parse(user.bank_details);  
    const bankv = Object.entries(bank);
-  
- 
-  
-  
+   
   return (
     <Page>
     <RootStyle>

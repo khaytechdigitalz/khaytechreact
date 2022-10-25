@@ -53,12 +53,14 @@ export default function AppLoginSession() {
   console.log(values);
   const CHART_DATA = values;
   const chartOptions = merge(BaseOptionChart(), {
+    /*
     colors: [
       theme.palette.primary.lighter,
       theme.palette.primary.light,
       theme.palette.primary.main,
       theme.palette.primary.dark,
     ],
+    */
     
     labels: keys,
     stroke: { colors: [theme.palette.background.paper] },
@@ -70,6 +72,33 @@ export default function AppLoginSession() {
         title: {
           formatter: (seriesName) => `${seriesName}`,
         },
+      },
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        colorStops: [
+          [
+            {
+              offset: 0,
+              color: theme.palette.primary.light,
+            },
+            {
+              offset: 100,
+              color: theme.palette.primary.main,
+            },
+          ],
+          [
+            {
+              offset: 0,
+              color: theme.palette.warning.light,
+            },
+            {
+              offset: 100,
+              color: theme.palette.warning.main,
+            },
+          ],
+        ],
       },
     },
     plotOptions: {
@@ -97,7 +126,7 @@ export default function AppLoginSession() {
         
       <CardHeader title="Payment Status" />
       <ChartWrapperStyle dir="ltr"> 
-        <ReactApexChart type="donut" series={CHART_DATA} options={chartOptions} height={280} />
+        <ReactApexChart type="radialBar" series={CHART_DATA} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );
