@@ -56,6 +56,7 @@ const navConfig = [
 {
   subheader: 'Finance',
   items: [
+    { title: 'Payment Link', path: PATH_DASHBOARD.dashboard.paymentlink, icon: <Iconify icon={'vaadin:money-deposit'} width={24} height={24} />  },
     { title: 'Deposit', path: PATH_DASHBOARD.dashboard.deposit, icon: <Iconify icon={'dashicons:money-alt'} width={24} height={24} />  },
     { title: 'E-Cards', path: PATH_DASHBOARD.dashboard.ecard, icon: <Iconify icon={'eva:credit-card-fill'} width={24} height={24} />  },
     { title: 'Fund Lock', path: PATH_DASHBOARD.dashboard.savings, icon:  <Iconify icon={'eva:lock-outline'} width={24} height={24} />  },

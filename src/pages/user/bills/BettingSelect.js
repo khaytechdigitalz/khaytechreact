@@ -12,7 +12,7 @@ import {
   TableSkeleton,
 } from '../../../components/table';
 import useAuth from '../../../hooks/useAuth';
- import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +23,6 @@ ProfileFollowers.propTypes = {
 export default function ProfileFollowers({ followers }) {
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     axios.get('/bettingcompany').then((response) => {
@@ -84,15 +83,14 @@ function FollowerCard({ follower,onViewRow }) {
            </Typography>
         </Box>
       </Box>
-     
       
-        <Button
+      <Button
         onClick={onViewRow} 
         size="small"
         variant={'outlined'}
         color={PRODUCT_CODE ? 'primary' : 'inherit'}
-       >
-         Select
+        >
+        Select
       </Button>
              
     </Card>

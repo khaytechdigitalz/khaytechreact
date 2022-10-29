@@ -83,6 +83,8 @@ export default function Router() {
         { path: 'user/transfer', element: <Transfer /> },
         { path: 'kyc', element: <KYC /> },
         { path: 'bvn', element: <BVN /> },
+        { path: 'paymentlink', element: <PaymentLink /> },
+        { path: 'paymentlink/:id', element: <PaymentLinkDetails /> },
         { path: 'deposit', element: <Deposit /> },
         { path: 'deposit/:id', element: <DepositPreview /> },
         { path: 'deposits', element: <Deposits /> },
@@ -202,6 +204,7 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { element: <HomePage />, index: true },
+        { path: 'paymentlink/:id', element: <PaymentLinkView /> },
         { path: 'about-us', element: <About /> },
         { path: 'contact-us', element: <Contact /> },
         { path: 'faqs', element: <Faqs /> },
@@ -231,6 +234,8 @@ const BVN = Loadable(lazy(() => import('../pages/user/BVN')));
 const Deposit = Loadable(lazy(() => import('../pages/user/Deposit')));
 const DepositPreview = Loadable(lazy(() => import('../pages/user/finance/DepositPreview')));
 const Deposits = Loadable(lazy(() => import('../pages/user/DepositLog')));
+const PaymentLink = Loadable(lazy(() => import('../pages/user/PaymentLink')));
+const PaymentLinkDetails = Loadable(lazy(() => import('../pages/user/PaymentLinkDetails')));
 const Ecard = Loadable(lazy(() => import('../pages/user/Ecard')));
 const Payout = Loadable(lazy(() => import('../pages/user/Payout')));
 const Withdraw = Loadable(lazy(() => import('../pages/user/Withdraw')));
@@ -300,3 +305,4 @@ const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+const PaymentLinkView = Loadable(lazy(() => import('../pages/PaymentLink')));

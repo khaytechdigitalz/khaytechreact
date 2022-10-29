@@ -79,7 +79,8 @@ export default function PayoutLogRows({ row, selected, onSelectRow, onViewRow, o
 
 
       <TableCell align="left">{trx} </TableCell>
-      <TableCell align="left">{fDate(created_at)}</TableCell>
+
+       <TableCell align="left">{fDate(created_at)}</TableCell>
     
       <TableCell align="center">{general.cur_sym}{fCurrency(amount)}</TableCell>
       <TableCell align="left">{general.cur_sym}{fCurrency(charge)}</TableCell>

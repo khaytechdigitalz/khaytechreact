@@ -1,0 +1,123 @@
+import { useState,useEffect } from 'react';
+import {Link as RouterLink } from 'react-router-dom';
+
+  // @mui
+import { useTheme } from '@mui/material/styles';
+import {
+  Box,
+  Card,
+  Table,
+  Button,
+  Divider,
+   TableRow,
+  TableBody,
+  TableCell,
+  TableHead,
+  CardHeader,
+   TableContainer,
+} from '@mui/material';
+import axios from '../../../utils/axios';
+
+// utils
+import { fCurrency } from '../../../utils/formatNumber';
+// _mock_
+// components
+import Label from '../../../components/Label';
+import Iconify from '../../../components/Iconify';
+import Scrollbar from '../../../components/Scrollbar';
+import useAuth from '../../../hooks/useAuth';
+
+import {
+  TableNoData,
+  TableSkeleton,
+  TableEmptyRows,
+} from '../../../components/table';
+
+import {
+  SkeletonProductItem,
+} from '../../../components/skeleton';
+import useTable, { emptyRows } from '../../../hooks/useTable';
+// ----------------------------------------------------------------------
+
+export default function AppNewTRX() {
+  const theme = useTheme();
+  const [post, setPost] = useState(null);
+  const { user,general } = useAuth();
+
+  useEffect(() => {
+    axios.get('/user/plinklog').then((response) => {
+      setPost(response);
+      console.log(response);
+     
+    });
+  }, []);
+  if (!post) return <SkeletonProductItem  sx={{ width: 40 }} />;
+  const results = JSON.stringify(post.data.data.requests);
+  const rep = (Object.values(results));
+  const personObject = JSON.parse(results);
+  const isNotFound = (!personObject.length );
+  return (
+    
+    <Card>
+       
+      <CardHeader title="My Payment Links" sx={{ mb: 3 }} />
+       <Scrollbar>
+        <TableContainer sx={{ minWidth: 720 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>TRX ID</TableCell>
+                <TableCell >Details</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>{null}</TableCell>
+                 
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {personObject.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{`TRX-${row.trx}`}</TableCell>
+                  <TableCell>{row.description}</TableCell>
+                  <TableCell>{general.cur_sym}{fCurrency(row.amount)}</TableCell>
+                  <TableCell>
+                  <Label
+                      variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                      color={
+                        (row.status === 'inactive' && 'warning') ||
+                        'success'
+                      }
+                    >
+                    {row.status}
+                    </Label>
+                  </TableCell>
+                  <TableCell>
+                  <Button 
+                  component={RouterLink} to={`${row.trx}`}
+                  color="primary" size="small" variant="contained">
+                   View
+                  </Button>
+                  </TableCell>
+                  
+                </TableRow>
+              ))}
+
+          <TableEmptyRows height={1} emptyRows={emptyRows(12, 4, 5)} />
+
+         <TableNoData isNotFound={isNotFound} />
+            </TableBody>
+
+
+          </Table>
+
+          
+        </TableContainer>
+      </Scrollbar>
+ 
+    </Card>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+ 

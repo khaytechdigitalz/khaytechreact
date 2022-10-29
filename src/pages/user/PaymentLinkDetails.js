@@ -14,7 +14,7 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import useResponsive from '../../hooks/useResponsive';
 
 import {
-  RequestPaymentInput,RequestPaymentBar,RequestPaymentLog,RequestPaymentPie
+PaymentLinkBar,PaymentLinkRequests,PaymentLinkPie
 } from './payments';
 
 
@@ -31,35 +31,29 @@ export default function Payout() {
   }, [dispatch]);
 
   return (
-    <Page title="Request Fund">
+    <Page title="Payment Link Details">
          <Container>
          <HeaderBreadcrumbs
-          heading={'Request Fund' }
+          heading={'View Payments' }
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
            
-            { name: 'Request Fund' },
+            { name: 'View Payments' },
           ]}
         />
-        
-          
-
+         
           <Grid container spacing={isDesktop ? 3 : 5}>
-             <Grid item xs={12} md={8}>
-              <RequestPaymentInput />
-            </Grid>
-
+            
             <Grid item xs={12} md={4}>
-              <RequestPaymentPie />
+              <PaymentLinkPie />
             </Grid>
 
-            <Grid item xs={12} md={12}>
-              <RequestPaymentBar />
+            <Grid item xs={12} md={8}>
+              <PaymentLinkBar />
             </Grid>
-
 
             <Grid item xs={12} md={12} lg={12}>
-            <RequestPaymentLog />
+            <PaymentLinkRequests />
             </Grid>
 
           </Grid>

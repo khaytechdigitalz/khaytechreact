@@ -98,8 +98,7 @@ export default function InviteFriends() {
           <Button onClick={copylink} color="warning" variant="contained">
           Copy
           </Button>
-          {PATH_AUTH.signup876}
-          
+           
         </Stack>
        </ContentStyle>
     </div>

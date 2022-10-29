@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
- 
  // @mui
-import { Grid, Container  } from '@mui/material';
+import {  Grid, Container  } from '@mui/material';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getProducts } from '../../redux/slices/product';
@@ -14,16 +13,15 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import useResponsive from '../../hooks/useResponsive';
 
 import {
-  RequestPaymentInput,RequestPaymentBar,RequestPaymentLog,RequestPaymentPie
+  PaymentLinkInput,
+  PaymentLinkLog
 } from './payments';
-
 
 // ----------------------------------------------------------------------
 
-export default function Payout() {
-   const dispatch = useDispatch();
+export default function PaymentLinkDetails() {
+  const dispatch = useDispatch();
   const isDesktop = useResponsive('up', 'md');
- 
 
 
   useEffect(() => {
@@ -31,37 +29,27 @@ export default function Payout() {
   }, [dispatch]);
 
   return (
-    <Page title="Request Fund">
+    <Page title="Payment">
          <Container>
          <HeaderBreadcrumbs
-          heading={'Request Fund' }
+          heading={'Payment Link' }
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
            
-            { name: 'Request Fund' },
+            { name: 'Request Payment Link' },
           ]}
-        />
-        
-          
+        />         
 
           <Grid container spacing={isDesktop ? 3 : 5}>
+          <Grid item xs={12} md={4}>
+              <PaymentLinkInput />
+            </Grid>
              <Grid item xs={12} md={8}>
-              <RequestPaymentInput />
+              <PaymentLinkLog />
             </Grid>
-
-            <Grid item xs={12} md={4}>
-              <RequestPaymentPie />
-            </Grid>
-
-            <Grid item xs={12} md={12}>
-              <RequestPaymentBar />
-            </Grid>
-
-
-            <Grid item xs={12} md={12} lg={12}>
-            <RequestPaymentLog />
-            </Grid>
-
+        
+ 
+           
           </Grid>
         </Container>
      </Page>
