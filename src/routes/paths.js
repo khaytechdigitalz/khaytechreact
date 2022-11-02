@@ -55,6 +55,8 @@ export const PATH_DASHBOARD = {
     depositlog: path(ROOTS_DASHBOARD, '/deposit/log'),
     savings: path(ROOTS_DASHBOARD, '/savings'),
     airtime: path(ROOTS_DASHBOARD, '/airtime'),
+    airtimehosted: path(ROOTS_DASHBOARD, '/host-sim/airtime'),
+    printvpin: path(ROOTS_DASHBOARD, '/print/v-pin'),
     internet: path(ROOTS_DASHBOARD, '/internet'),
     cabletv: path(ROOTS_DASHBOARD, '/cabletv'),
     electricity: path(ROOTS_DASHBOARD, '/electricity'),

@@ -93,13 +93,14 @@ export default function PaymentLink() {
         // END POST
         
         try {  
+        const url = "/ipn/paystack/paymentlink?trxref=";
         const form = document.querySelector("form");
-        axios.post('/ipn/paystack/paymentlink',{ 
+        axios.post(url+transaction.reference,{ 
           headers: {
             "Content-Type": "multipart/form-data",
           },
           "reference": trx,
-          "paystacktrxref" : trans
+          "paystacktrxref" : transaction.reference
           })
 
         .then(res => { 

@@ -89,7 +89,6 @@ export default function Kyc({ currentProduct }) {
   const results = JSON.stringify(post.data.data);
   const CATEGORY_OPTION = JSON.parse(results);
 
-
   const bank = JSON.parse(user.bank_details);  
   const bankv = Object.entries(bank);
     
@@ -181,7 +180,9 @@ export default function Kyc({ currentProduct }) {
 
       <CardContent>
         <Stack spacing={2}>
-        {bankv.map((row,index) => (
+        {Array.isArray(bankv)
+        ?
+        bankv.map((row,index) => (
         <Stack direction="row" justifyContent="space-between">
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             
@@ -189,7 +190,7 @@ export default function Kyc({ currentProduct }) {
             </Typography>
             <Typography variant="subtitle2">{row[1] || ''}</Typography>
           </Stack>
-           ))}
+           )):null}
          
         </Stack>
       </CardContent>

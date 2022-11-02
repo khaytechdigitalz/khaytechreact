@@ -1,3 +1,4 @@
+export { default as AirtimeHostInput } from './AirtimeHostInput';
 export { default as AirtimeInput } from './AirtimeInput';
 export { default as AirtimePie } from './AirtimePie';
 export { default as AirtimeLog } from './AirtimeLog';
@@ -21,3 +22,5 @@ export { default as BettingSelect} from './BettingSelect';
 export { default as BettingInput} from './BettingInput';
 export { default as BettingSummary } from './BettingSummary';
 export { default as BettingLog } from './BettingLog';
+export { default as VPinInput } from './VPinInput';
+export { default as VPinLog } from './VPinLog';

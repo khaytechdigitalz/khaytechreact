@@ -74,16 +74,7 @@ const navConfig = [
         { title: 'Bank Transfer', path: PATH_DASHBOARD.transfer.bank },
       ],
     },
-    // Convert Airtime TRANSFER
-     {
-      title: 'Airtime To Cash',
-      path: PATH_DASHBOARD.transfer.root,
-      icon: <Iconify icon={'uil:credit-card-search'} width={24} height={24} />,
-      children: [
-        { title: 'Manual Conversion', path: PATH_DASHBOARD.conversion.manual },
-        { title: 'Automatic Conversion', path: PATH_DASHBOARD.conversion.automatic },
-      ],
-    },
+    
     
    ],
 },
@@ -96,8 +87,30 @@ const navConfig = [
   {
     subheader: 'Bills Payment',
     items: [
-      { title: 'Airtime', path: PATH_DASHBOARD.dashboard.airtime, icon:  <Iconify icon={'eva:smartphone-fill'} width={24} height={24} />  },
-      { title: 'Internet', path: PATH_DASHBOARD.dashboard.internet, icon:  <Iconify icon={'eva:wifi-fill'} width={24} height={24} />  },
+       // AIRTIME
+    {
+      title: 'Airtime',
+      path: PATH_DASHBOARD.transfer.root,
+      icon:  <Iconify icon={'eva:smartphone-fill'} width={24} height={24} />,
+      children: [
+        { title: 'Topup (VTPass)', path: PATH_DASHBOARD.dashboard.airtime },
+        { title: 'SME Topup (Simhost)', path: PATH_DASHBOARD.dashboard.airtimehosted },
+        { title: 'Airtime Swap', path: PATH_DASHBOARD.conversion.manual },
+        { title: 'Automatic Conversion', path: PATH_DASHBOARD.conversion.automatic },
+        { title: 'Print VPins', path: PATH_DASHBOARD.dashboard.printvpin },
+      ],
+    },
+       // INTERNET
+       {
+        title: 'Internet',
+        path: PATH_DASHBOARD.transfer.root,
+        icon:  <Iconify icon={'eva:wifi-fill'} width={24} height={24} />,
+        children: [
+          { title: 'Bundles (Vtpass)', path: PATH_DASHBOARD.dashboard.internet },
+          { title: 'SME Data (simhost)', path: PATH_DASHBOARD.dashboard.internet },
+        ],
+      },
+    
       { title: 'Cable TV', path: PATH_DASHBOARD.dashboard.cabletv, icon:  <Iconify icon={'eva:monitor-outline'} width={24} height={24} />  },
       { title: 'Electricity', path: PATH_DASHBOARD.dashboard.electricity, icon:  <Iconify icon={'eva:bulb-outline'} width={24} height={24} />  },
       { title: 'WAEC Pin', path: PATH_DASHBOARD.dashboard.waec, icon:  <Iconify icon={'dashicons:welcome-learn-more'} width={24} height={24} />  },

@@ -94,6 +94,9 @@ export default function Router() {
         { path: 'bank/transfer', element: <Bank /> },
         { path: 'savings', element: <Savings /> },
         { path: 'airtime', element: <Airtime /> },
+        { path: 'host-sim/airtime', element: <AirtimeHost /> },
+        { path: 'print/v-pin', element: <PrintVPin /> },
+        { path: 'print/v-pin/:id', element: <VPinLog /> },
         { path: 'internet', element: <Internet /> },
         { path: 'cabletv', element: <CableTV /> },
         { path: 'electricity', element: <Electricity /> },
@@ -242,6 +245,9 @@ const Withdraw = Loadable(lazy(() => import('../pages/user/Withdraw')));
 const Bank = Loadable(lazy(() => import('../pages/user/Bank')));
 const Savings = Loadable(lazy(() => import('../pages/user/Savings')));
 const Airtime = Loadable(lazy(() => import('../pages/user/Airtime')));
+const AirtimeHost = Loadable(lazy(() => import('../pages/user/Airtime-Host')));
+const PrintVPin = Loadable(lazy(() => import('../pages/user/PrintVPin')));
+const VPinLog = Loadable(lazy(() => import('../pages/user/bills/VPinLogVouchers')));
 const Internet = Loadable(lazy(() => import('../pages/user/Internet')));
 const CableTV = Loadable(lazy(() => import('../pages/user/Cabletv')));
 const Electricity = Loadable(lazy(() => import('../pages/user/Electricity')));
