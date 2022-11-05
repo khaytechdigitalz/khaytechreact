@@ -66,6 +66,7 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'home', element: <Dashboard /> },
+        { path: 'upgrade', element: <Upgrade /> },
         { path: 'settings', element: <Settings /> },
         { path: 'tickets', element: <TIcket /> },
         { path: 'tickets/new', element: <NewTicket /> },
@@ -97,6 +98,7 @@ export default function Router() {
         { path: 'host-sim/airtime', element: <AirtimeHost /> },
         { path: 'print/v-pin', element: <PrintVPin /> },
         { path: 'print/v-pin/:id', element: <VPinLog /> },
+        { path: 'bulk/airtime/topup', element: <BulkAirtime /> },
         { path: 'internet', element: <Internet /> },
         { path: 'cabletv', element: <CableTV /> },
         { path: 'electricity', element: <Electricity /> },
@@ -226,6 +228,7 @@ const NewPassword = Loadable(lazy(() => import('../pages/auth/NewPassword')));
 
 // DASHBOARD
 const Dashboard = Loadable(lazy(() => import('../pages/user/Dashboard')));
+const Upgrade = Loadable(lazy(() => import('../pages/user/Upgrade')));
 const Settings = Loadable(lazy(() => import('../pages/user/Settings')));
 const TIcket = Loadable(lazy(() => import('../pages/user/Tickets')));
 const NewTicket = Loadable(lazy(() => import('../pages/user/ticket/TicketNew')));
@@ -246,6 +249,7 @@ const Bank = Loadable(lazy(() => import('../pages/user/Bank')));
 const Savings = Loadable(lazy(() => import('../pages/user/Savings')));
 const Airtime = Loadable(lazy(() => import('../pages/user/Airtime')));
 const AirtimeHost = Loadable(lazy(() => import('../pages/user/Airtime-Host')));
+const BulkAirtime = Loadable(lazy(() => import('../pages/user/AirtimeBulk')));
 const PrintVPin = Loadable(lazy(() => import('../pages/user/PrintVPin')));
 const VPinLog = Loadable(lazy(() => import('../pages/user/bills/VPinLogVouchers')));
 const Internet = Loadable(lazy(() => import('../pages/user/Internet')));

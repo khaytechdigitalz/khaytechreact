@@ -50,7 +50,7 @@ export default function DepositLogRows({ row, selected, onSelectRow, onViewRow, 
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
-      <Image alt={gateway.name} src={HOST_URL+location+gateway.image} sx={{ width: 30, height: 30, borderRadius: 1.5, flexShrink: 0 }} />
+      <Image alt={gateway.name ? gateway.name : null} src={HOST_URL+location+gateway.image ? gateway.image : null} sx={{ width: 30, height: 30, borderRadius: 1.5, flexShrink: 0 }} />
 
       </TableCell>
 
@@ -59,7 +59,7 @@ export default function DepositLogRows({ row, selected, onSelectRow, onViewRow, 
 
         <Stack>
           <Typography variant="subtitle2" noWrap>
-            {gateway.name}
+            {gateway.name ? gateway.name : null}
           </Typography>
 
           <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'text.disabled', cursor: 'pointer' }}>

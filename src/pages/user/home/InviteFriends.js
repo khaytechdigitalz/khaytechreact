@@ -75,7 +75,7 @@ export default function InviteFriends() {
       <Image
         visibleByDefault
         disabledEffect
-        src="/icons/invite2.png"
+        src="/icons/purse.png"
         sx={{
           left: 40,
           zIndex: 9,

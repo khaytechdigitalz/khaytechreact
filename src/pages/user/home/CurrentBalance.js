@@ -7,6 +7,7 @@ import { Box, Typography, Stack, MenuItem, IconButton, Button, Label } from '@mu
 // utils
 import { useSnackbar } from 'notistack';
 import { fCurrency } from '../../../utils/formatNumber';
+import { fToNow } from '../../../utils/formatTime';
 // _mock_
 import { _bankingCreditCard } from '../../../_mock';
 // components
@@ -61,6 +62,7 @@ const shadowStyle = {
 export default function CurrentBalance({balance}) {
   const theme = useTheme();
   const { user } = useAuth();
+  const plan = user.plans;
   const settings = {
     dots: true,
     arrows: false,
@@ -73,6 +75,10 @@ export default function CurrentBalance({balance}) {
   const CATEGORY_OPTION = [
     {
       "name": "Main Balance",
+      "Title": "Plan Name",
+      "SubTitle": plan ? plan.name : "Free",
+      "ExpireTitle": "Plan Expiry",
+      "ExpireDate": user.plan_expire ? fToNow(user.plan_expire) : "None",
       "balance": user.balance,
       "icon":"/icons/moneybag.png"
   },
@@ -125,7 +131,7 @@ CardItem.propTypes = {
 };
 
 function CardItem({ card }) {
-  const { cardType, balance,  cardHolder, icon, name } = card;
+  const { cardType, balance,  cardHolder, icon, name,Title, SubTitle , ExpireTitle, ExpireDate} = card;
   const [showCurrency, setShowCurrency] = useState(true);
   const { user } = useAuth();
   const {general} = useAuth();
@@ -160,12 +166,12 @@ function CardItem({ card }) {
 
         <Stack direction="row" spacing={5}>
           <div>
-            <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>Account Holder</Typography>
-            <Typography sx={{ typography: 'subtitle1' }}> {user?.firstname} {user?.lastname}</Typography>
+            <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>{Title}</Typography>
+            <Typography sx={{ typography: 'subtitle1' }}> {SubTitle}</Typography>
           </div>
           <div>
-            <Typography sx={{ mb: 1, typography: 'caption', textAlign: 'right', opacity: 0.48 }}>Account Number</Typography>
-            <Typography sx={{ typography: 'subtitle1',textAlign: 'right' }}>{user?.account_number}</Typography>
+            <Typography sx={{ mb: 1, typography: 'caption', textAlign: 'right', opacity: 0.48 }}>{ExpireTitle}</Typography>
+            <Typography sx={{ typography: 'subtitle1',textAlign: 'right' }}>{ExpireDate}</Typography>
           </div>
         </Stack>
       </CardItemStyle>
@@ -239,7 +245,7 @@ function MoreMenuButton() {
           <Button color="primary" 
           disabled
           onClick={generatenuban} 
-           variant="contained">
+          variant="contained">
               Generate Nuban
           </Button>
         </>

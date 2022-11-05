@@ -40,6 +40,7 @@ export const PATH_DASHBOARD = {
 
   dashboard: {
     dashboard: path(ROOTS_DASHBOARD, '/home'),
+    upgrade: path(ROOTS_DASHBOARD, '/upgrade'),
     account: path(ROOTS_DASHBOARD, '/settings'),
     tickets: path(ROOTS_DASHBOARD, '/tickets'),
     ticket: {
@@ -57,6 +58,7 @@ export const PATH_DASHBOARD = {
     airtime: path(ROOTS_DASHBOARD, '/airtime'),
     airtimehosted: path(ROOTS_DASHBOARD, '/host-sim/airtime'),
     printvpin: path(ROOTS_DASHBOARD, '/print/v-pin'),
+    bulktopup: path(ROOTS_DASHBOARD, '/bulk/airtime/topup'),
     internet: path(ROOTS_DASHBOARD, '/internet'),
     cabletv: path(ROOTS_DASHBOARD, '/cabletv'),
     electricity: path(ROOTS_DASHBOARD, '/electricity'),

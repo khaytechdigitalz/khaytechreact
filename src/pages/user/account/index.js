@@ -7,6 +7,7 @@ export { default as Bvn } from './Bvn';
 export { default as BvnSlider } from './BvnSlider';
 export { default as Kyc } from './Kyc';
  export { default as KycSlider } from './KycSlider';
+ export { default as PricingPlan } from './PricingPlan';
 export { default as ReferralLog } from './ReferralLog';
 export { default as ReferralLink } from './ReferralLink';
 export { default as ReferralFollowers } from './ReferralFollowers';

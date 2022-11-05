@@ -33,6 +33,7 @@ const navConfig = [
     subheader: 'Account',
     items: [
       { title: 'Dashboard', path: PATH_DASHBOARD.dashboard.dashboard, icon: ICONS.dashboard },
+      { title: 'Upgrade', path: PATH_DASHBOARD.dashboard.upgrade, icon: ICONS.calendar },
       { title: 'Settings', path: PATH_DASHBOARD.dashboard.account, icon:  <Iconify icon={'eva:settings-2-outline'} width={24} height={24} />  },
       { title: 'Security', path: PATH_DASHBOARD.dashboard.security, icon:  <Iconify icon={'ion:finger-print-sharp'} width={24} height={24} />  },
       { title: 'Referral', path: PATH_DASHBOARD.dashboard.referral, icon:  <Iconify icon={'dashicons:buddicons-buddypress-logo'} width={24} height={24} /> },
@@ -95,6 +96,7 @@ const navConfig = [
       children: [
         { title: 'Topup (VTPass)', path: PATH_DASHBOARD.dashboard.airtime },
         { title: 'SME Topup (Simhost)', path: PATH_DASHBOARD.dashboard.airtimehosted },
+        { title: 'Bulk Topup', path: PATH_DASHBOARD.dashboard.bulktopup },
         { title: 'Airtime Swap', path: PATH_DASHBOARD.conversion.manual },
         { title: 'Automatic Conversion', path: PATH_DASHBOARD.conversion.automatic },
         { title: 'Print VPins', path: PATH_DASHBOARD.dashboard.printvpin },
