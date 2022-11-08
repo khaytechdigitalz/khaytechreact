@@ -48,6 +48,8 @@ const plan = user.plans;
     if(res.data.code === 200)
     {
       enqueueSnackbar(res.data.message);
+      window.location.reload(false);
+
     }
     else
     {
@@ -58,6 +60,7 @@ const plan = user.plans;
  } catch (error) {
    console.error(error);
  }
+ 
 
 };
 

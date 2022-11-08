@@ -33,7 +33,8 @@ const navConfig = [
     subheader: 'Account',
     items: [
       { title: 'Dashboard', path: PATH_DASHBOARD.dashboard.dashboard, icon: ICONS.dashboard },
-      { title: 'Upgrade', path: PATH_DASHBOARD.dashboard.upgrade, icon: ICONS.calendar },
+      { title: 'Leaderboard', path: PATH_DASHBOARD.dashboard.leaderboard, icon: ICONS.analytics},
+      { title: 'Upgrade', path: PATH_DASHBOARD.dashboard.upgrade, icon: ICONS.calendar},
       { title: 'Settings', path: PATH_DASHBOARD.dashboard.account, icon:  <Iconify icon={'eva:settings-2-outline'} width={24} height={24} />  },
       { title: 'Security', path: PATH_DASHBOARD.dashboard.security, icon:  <Iconify icon={'ion:finger-print-sharp'} width={24} height={24} />  },
       { title: 'Referral', path: PATH_DASHBOARD.dashboard.referral, icon:  <Iconify icon={'dashicons:buddicons-buddypress-logo'} width={24} height={24} /> },
@@ -79,10 +80,7 @@ const navConfig = [
     
    ],
 },
-
-
-
-
+ 
   // BILLS PAYMENT
   // ----------------------------------------------------------------------
   {

@@ -66,6 +66,7 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'home', element: <Dashboard /> },
+        { path: 'leaderboard', element: <Leaderboard /> },
         { path: 'upgrade', element: <Upgrade /> },
         { path: 'settings', element: <Settings /> },
         { path: 'tickets', element: <TIcket /> },
@@ -228,6 +229,7 @@ const NewPassword = Loadable(lazy(() => import('../pages/auth/NewPassword')));
 
 // DASHBOARD
 const Dashboard = Loadable(lazy(() => import('../pages/user/Dashboard')));
+const Leaderboard = Loadable(lazy(() => import('../pages/user/Leaderboard')));
 const Upgrade = Loadable(lazy(() => import('../pages/user/Upgrade')));
 const Settings = Loadable(lazy(() => import('../pages/user/Settings')));
 const TIcket = Loadable(lazy(() => import('../pages/user/Tickets')));

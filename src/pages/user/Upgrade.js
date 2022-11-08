@@ -41,7 +41,7 @@ export default function Pricing() {
   if (!CATEGORY_OPTION) return <SkeletonProductItem  sx={{ width: 40 }} />;
 
   return (
-    <Page title="Pricing">
+    <Page title="Upgrade">
       <RootStyle>
         <Container>
           <Typography variant="h3" align="center" paragraph>

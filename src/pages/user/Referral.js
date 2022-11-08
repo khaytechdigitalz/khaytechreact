@@ -21,7 +21,7 @@ export default function Dashboard() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="Dashboard">
+    <Page title="Referral Settings">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
              

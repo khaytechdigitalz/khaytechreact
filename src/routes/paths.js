@@ -40,6 +40,7 @@ export const PATH_DASHBOARD = {
 
   dashboard: {
     dashboard: path(ROOTS_DASHBOARD, '/home'),
+    leaderboard: path(ROOTS_DASHBOARD, '/leaderboard'),
     upgrade: path(ROOTS_DASHBOARD, '/upgrade'),
     account: path(ROOTS_DASHBOARD, '/settings'),
     tickets: path(ROOTS_DASHBOARD, '/tickets'),
