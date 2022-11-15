@@ -34,10 +34,5 @@ export default function App() {
         </ThemeLocalization>
       </ThemeColorPresets>
     </ThemeProvider>
-    
-
-
-  // CUSTOME UI 
-  
   );
 }

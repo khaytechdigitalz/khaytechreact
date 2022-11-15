@@ -83,7 +83,7 @@ export default function EcommerceBestSalesman() {
                 <TableRow key={row.id}>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      {row.plan.name}
+                      {row.plan ? row.plan.name : ''}
                     </Box>
                   </TableCell> 
                   <TableCell>

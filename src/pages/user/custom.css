@@ -1,0 +1,127 @@
+.container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.chart-container {
+    width: 400px;
+    height: 400px
+}
+
+.menu-grid .grid-row {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill,149px);
+    grid-auto-rows: minmax(20px,auto);
+    justify-content: center
+}
+
+.menu-grid .grid-row .grid-item {
+    float: left
+}
+
+@supports (display: grid) {
+    .menu-grid .results > * {
+        margin:0 auto
+    }
+}
+
+.menu-grid .menu-item {
+    padding: 10px;
+    border-radius: 6px;
+    color: #fff;
+    transition: opacity .4s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+.menu-grid .menu-item:hover {
+    opacity: .8
+}
+
+.menu-grid .menu-icon-container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: rgba(0,0,0,.1);
+    border-radius: 100%;
+    padding-bottom: 80%;
+    position: relative;
+    margin-bottom: 10px
+}
+
+.menu-grid .menu-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    max-width: 60%
+}
+
+.menu-grid .menu-title {
+    height: 44px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: Inter
+}
+
+.menu-grid .menu-subtitle {
+    font-size: 12px;
+    color: hsla(0,0%,100%,.8)
+}
+
+.menu-list .menu-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 6px;
+    color: #fff;
+    transition: opacity .4s ease;
+    cursor: pointer
+}
+
+.menu-list .menu-item:not(:last-child) {
+    margin-bottom: 10px
+}
+
+.menu-list .menu-item:hover {
+    opacity: .8
+}
+
+.menu-list .menu-item .menu-body {
+    flex: 1;
+    align-self: center!important
+}
+
+.menu-list .menu-item .menu-icon {
+    padding: 10px;
+    border-radius: 100%;
+    width: 54px;
+    height: 54px;
+    background-color: rgba(0,0,0,.1);
+    margin-right: 10px
+}
+
+.menu-list .menu-item .menu-icon img {
+    max-width: 100%
+}
+
+.menu-list .menu-item .menu-title {
+    text-align: left;
+    font-weight: 600;
+    height: 44px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+}
+ 
+#app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #0b193e;
+    margin-top: 60px
+}

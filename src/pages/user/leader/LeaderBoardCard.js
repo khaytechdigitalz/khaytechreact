@@ -27,7 +27,7 @@ export default function LeaderBoardCard({ product,index }) {
   const {general} = useAuth();
   const linkTo = "#"; // PATH_DASHBOARD.eCommerce.view(paramCase(user.username));
   const image_path = `${HOST_URL}/assets/images/user/profile/`; 
-  const image = user.image ?  user.image :  "default.png";
+  const image = user ?  user.image :  "default.png";
    return (
     <Card>
       <Box sx={{ position: 'relative' }}>

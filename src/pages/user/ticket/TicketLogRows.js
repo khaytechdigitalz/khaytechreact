@@ -67,7 +67,7 @@ export default function DepositLogRows({ row, selected, onSelectRow, onViewRow, 
         </Stack>
       </TableCell>
 
-      <TableCell align="left">{fDate(created_at)}</TableCell>
+      <TableCell align="left">{created_at ? fDate(created_at) : ''}</TableCell>
 
      
 
