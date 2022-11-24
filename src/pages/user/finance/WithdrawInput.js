@@ -95,6 +95,8 @@ export default function PaymentSummary() {
         if(res.data.code === 200)
         {
           enqueueSnackbar(res.data.message);
+          window.location.reload(false);
+
         }
         else
         {

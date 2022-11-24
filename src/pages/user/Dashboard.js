@@ -1,7 +1,8 @@
 // @mui
-import { Container, Drawer, Toolbar, ListItemButton, Grid,Box, Card, Paper,Stack, Divider,Button, CardHeader,IconButton, Typography,styled ,Link } from '@mui/material';
+import { Container, Drawer, Toolbar, ListItemButton, Grid,Box, Card, Paper,Stack, Divider,Button, CardHeader,IconButton, Typography,styled ,Link ,Alert} from '@mui/material';
 // hooks
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -13,6 +14,7 @@ import style from './custom.css';
 import Image from '../../components/Image';
 import Iconify from '../../components/Iconify';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import axios from '../../utils/axios';
 
 // sections
 import { 
@@ -32,6 +34,7 @@ export default function Dashboard() {
   const { user,general } = useAuth();
   const { themeStretch } = useSettings();
   const HEIGHT = 206;
+  const { enqueueSnackbar } = useSnackbar();
   const ContentStyle = styled(Card)(({ theme }) => ({
     marginTop: 20,
     boxShadow: 'none',
@@ -69,7 +72,7 @@ const ICONS = {
 
  const GridStyle = styled(Card)(({ theme }) => ({
   backgroundImage: `linear-gradient(135deg,
-    ${theme.palette.primary.main} 0%,
+    ${theme.palette.primary.main} 100%,
     ${theme.palette.primary.dark} 100%)`,
 }));
 
@@ -84,6 +87,43 @@ const NavDeposit = () => {
  const NavWithdraw = () => {
    navigate(PATH_DASHBOARD.transfer.bank);
   };
+  const NavBVN = () => {
+    navigate(PATH_DASHBOARD.dashboard.bvn);
+   };
+   const NavPIN = () => {
+     navigate(PATH_DASHBOARD.dashboard.security);
+    };
+
+   const NavNuban = async (event, formState) => {
+    try { 
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const form = document.querySelector("form");
+      const formData = new FormData(form);
+
+      axios.post('/user/generate_nuban', formData,{ 
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+       })
+      .then(res => { 
+        if(res.data.code === 200)
+        {
+          enqueueSnackbar(res.data.message);
+          window.location.reload(false);
+        }
+        else
+        {
+          enqueueSnackbar(res.data.message, {variant:'error'});
+        }
+       
+      })
+
+    } catch (error) {
+      console.error(error);
+    }
+
+  }; 
+
   const NavTransfer = () => {
     navigate(PATH_DASHBOARD.transfer.transfer);
    };
@@ -115,14 +155,107 @@ const NavDeposit = () => {
 
         <Typography  sx={{color: 'black'}}  variant="h4"> Hello, {user.username}</Typography>
         </Grid>
-          <Grid item xs={12} md={6}>
-          <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
-          #4B3687 0%,
-          #4B3687 100%)` }}>
-            <br/>  <br/>
-          <Stack >
-        <RowStyle>
+        {(() => {
+                if (user.trxpin === null) {
+                  return (
+                    
+          <Grid item xs={12} md={12}>
+          <Alert severity="error">You have not setup your transaction PIN. Please click 
+          
+           <Button variant="outlined"  color="primary" sx={{color: 'primary', size: 'sm'}} 
+                           onClick={NavPIN}>
+                           Here
+                          </Button>  to setup your pin</Alert>   
+         </Grid>
+           )
+          }
+           
+        })()} 
+         <Grid item xs={12} md={6}>
+        {(() => {
+                if (user.bvn_verify !== 1) {
+                  return (
+                    
+                    <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
+                      #553E85 0%,
+                      #553E85 100%)` }}>
+                      
+                
+                      <Stack spacing={2}>
+                       
+                        <RowStyle>
+                          <br/>
+                        <center>  
+                        <Alert severity="error">Bank Account Not Verified</Alert>                     
+                        <Typography sx={{ typography: 'h6',color: 'white' }}><small>Click the  button below to verify your <b>Bank Account</b></small></Typography>  
+                      
+                      </center>
+                
+                         
+                        </RowStyle>
+                
+                        
+                
+                        <Stack direction="row" spacing={1.5}>
+                          
+                          <Button fullWidth variant="outlined"  color="inherit" sx={{color: 'white'}} 
+                           onClick={NavBVN}>
+                            Verify BVN
+                          </Button> 
+                          
+                        </Stack>
+                        <br/>
+                      </Stack>
+                    </Card>
+                  )
+                }
+                if (user.bvn_verify === 1 && user.account_number === null  ) {
+                  return (
+                    
+                    <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
+                      #553E85 0%,
+                      #553E85 100%)` }}>
+                      
+                
+                      <Stack spacing={2}>
+                       
+                        <RowStyle>
+                          <br/>
+                        <center>  
+                        <Alert severity="info">Virtual Bank Account Not Active Yet</Alert>                     
+                        <Typography sx={{ typography: 'h6',color: 'white' }}><small>Please Click the button below to activate </small></Typography>  
+                      
+                      </center>
+                
+                         
+                        </RowStyle>
+                
+                        
+                
+                        <Stack direction="row" spacing={1.5}>
+                          
+                          <Button fullWidth variant="outlined"  color="inherit" sx={{color: 'white'}} 
+                           onClick={NavNuban}>
+                            Activate NUBAN
+                          </Button> 
+                          
+                        </Stack>
+                        <br/>
+                      </Stack>
+                    </Card>
+                  )
+                }
+
+                if (user.bvn_verify === 1) {
+                  return (
+                    <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
+                      #553E85 0%,
+                      #553E85 100%)` }}>
+                        <br/>  <br/>
+                      <Stack >
+                    <RowStyle>
         <Stack direction="row" divider={<Divider sx={{py: 4, color: 'white'}} orientation="vertical" flexItem />}>
+        
             <Stack width={1} textAlign="center">
               <Typography variant="h6" sx={{color: 'white'}}>Account No.</Typography>
               <Typography variant="body2" sx={{color: 'white'}}>
@@ -141,19 +274,25 @@ const NavDeposit = () => {
               <b> { user.account_name}</b>
               </Typography>
             </Stack>
+
           </Stack>      
           <br/>   
         </RowStyle>
-        
+
       </Stack>
     </Card>
+                  )
+                }
+                 
+              })()} 
+        
           </Grid>
 
           
           <Grid item xs={12} md={6}>
           <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
-      #4B3687 0%,
-      #4B3687 100%)` }}>
+      #553E85 0%,
+      #553E85 100%)` }}>
       
 
       <Stack spacing={2}>

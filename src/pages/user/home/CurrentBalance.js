@@ -33,8 +33,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 const CardItemStyle = styled('div')(({ theme }) => ({
   position: 'relative',
   height: HEIGHT - 16,
-  backgroundSize: 'cover',
   padding: theme.spacing(3),
+  backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   color: theme.palette.common.white,
   backgroundImage: 'url("/images/bg_card.png")',
