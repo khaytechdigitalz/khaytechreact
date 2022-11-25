@@ -19,7 +19,7 @@ export default function AccountChangePassword() {
 
   const ChangePassWordSchema = Yup.object().shape({
     current_password: Yup.string().required('Account Password is required'),
-    password: Yup.string().min(6, 'Pin must be at least 4 characters').required('New Pin is required'),
+    password: Yup.string().min(4, 'Pin must be at least 4 characters').required('New Pin is required'),
     password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Pin must match'),
   });
 

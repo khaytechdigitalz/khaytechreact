@@ -59,7 +59,7 @@ export default function AccountGeneral() {
   const onSubmit = async (formState) => {
     
     try { 
-       await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const form = document.querySelector("form");
       const formData = new FormData(form); 
       axios.post('/user/profile-setting',formData, { 

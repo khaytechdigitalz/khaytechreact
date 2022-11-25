@@ -82,7 +82,6 @@ export default function Kyc({ currentProduct }) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const form = document.querySelector("form");
       const formData = new FormData(form);
-
       axios.post('/user/postkyc', formData,{ 
         headers: {
           "Content-Type": "multipart/form-data",
@@ -91,11 +90,14 @@ export default function Kyc({ currentProduct }) {
         issued_date: formState.issued_date,
         expiry: formState.expiry, 
         type: formState.type, 
+        image: formState.image,
+
        })
       .then(res => { 
         if(res.data.code === 200)
         {
           enqueueSnackbar(res.data.message);
+          window.location.reload(false);
         }
         else
         {
@@ -146,7 +148,7 @@ export default function Kyc({ currentProduct }) {
     
            
                 <LabelStyle>Upload ID Images</LabelStyle>
-                 <RHFTextField
+                <RHFTextField
                   name="image"
                   accept="image/*"
                   InputLabelProps={{ shrink: true }}
