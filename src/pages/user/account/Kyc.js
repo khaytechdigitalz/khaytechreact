@@ -52,7 +52,6 @@ export default function Kyc({ currentProduct }) {
     expiry: Yup.string().required('ID expiry date is required'),
     issued_date: Yup.string().required('ID issued date is required'),
     type: Yup.string().required('Please select ID type'),
-    image: Yup.array().min(1, 'Image is required'),
    });
 
   const defaultValues = useMemo(
