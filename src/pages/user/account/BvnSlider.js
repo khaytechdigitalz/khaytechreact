@@ -38,7 +38,7 @@ export default function BvnSlider() {
         Bank Verification
         </Typography>
        
-        {user?.bvn_verify !== 1 ? 
+        {user?.bvn_verify !== '1' ? 
          <Alert severity="error">Bank Account Not Verified</Alert>
         : 
         <Alert severity="success">Bank Account Verified</Alert>

@@ -173,7 +173,7 @@ const NavDeposit = () => {
         })()} 
          <Grid item xs={12} md={6}>
         {(() => {
-                if (user.bvn_verify !== 1) {
+                if (user.bvn_verify !== '1') {
                   return (
                     
                     <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
@@ -209,7 +209,7 @@ const NavDeposit = () => {
                     </Card>
                   )
                 }
-                if (user.bvn_verify === 1 && user.account_number === null  ) {
+                if (user.bvn_verify === '1' && user.account_number === null  ) {
                   return (
                     
                     <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
@@ -246,7 +246,7 @@ const NavDeposit = () => {
                   )
                 }
 
-                if (user.bvn_verify === 1) {
+                if (user.bvn_verify === '1') {
                   return (
                     <Card sx={{ p: 3,  backgroundImage: `linear-gradient(135deg,
                       #553E85 0%,
